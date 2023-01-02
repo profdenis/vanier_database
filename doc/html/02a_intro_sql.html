@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>02a_intro_sql</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="../html/lecture_notes.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">02a_intro_sql</h1>
+</header>
+<h1 id="introduction-to-sql">Introduction to SQL</h1>
+<h2 id="relational-model">Relational Model</h2>
+<ul>
+<li><strong>DBMS</strong>: Database Management System</li>
+<li><strong>Database</strong> (DB): set of <em>relations</em>
+<ul>
+<li><em>relation</em> = <em>table</em></li>
+</ul></li>
+<li><strong>Relation</strong>: set of <em>tuples</em>
+<ul>
+<li><em>tuple</em> = <em>row</em> = <em>record</em></li>
+</ul></li>
+<li><strong>Tuple</strong>: set of attributes
+<ul>
+<li><em>attribute</em> = <em>column</em></li>
+</ul></li>
+<li>All tuples in a given relation have a fix set of attributes</li>
+<li>Most common terms: <em>table</em>, <em>row</em>, and <em>column</em></li>
+</ul>
+<h2 id="contacts-db">Contacts DB</h2>
+<ul>
+<li>Think of a contacts DB on a phone</li>
+<li>2 tables:
+<ul>
+<li><code>contact(CONTACT_ID, name, phone, address, email)</code></li>
+<li><code>call(CALL_ID, phone, date, time, contact_id*)</code></li>
+</ul></li>
+</ul>
+<h3 id="creating-the-contacts-db">Creating the contacts DB</h3>
+<ol type="1">
+<li>Run the <code>contact.sql</code> file to create the DB
+<ul>
+<li>the SQL commands included in that file will be explained later</li>
+<li>open the file in DataGrip, and run the file in an existing session, or create a new session</li>
+</ul></li>
+<li>To check the results, you can use the <em>Database Explorer</em> tab, or run the following queries:</li>
+</ol>
+<pre class="postgresql"><code>SELECT *
+FROM contacts.contact;</code></pre>
+<pre class="postgresql"><code>SELECT *
+FROM contacts.call;</code></pre>
+<ol start="3" type="1">
+<li>To avoid prefixing the table names with the schema name all the time, we can run the following command:</li>
+</ol>
+<pre class="postgresql"><code>SET search_path TO contacts;</code></pre>
+<pre class="postgresql"><code>SELECT *
+FROM contact;</code></pre>
+<pre class="postgresql"><code>SELECT *
+FROM call;</code></pre>
+<h3 id="single-table-queries">Single Table Queries</h3>
+<ol type="1">
+<li>Find John Doe’s email address</li>
+</ol>
+<pre class="postgresql"><code>SELECT email
+FROM contact
+WHERE name = &#39;John Doe&#39;;</code></pre>
+<ol start="2" type="1">
+<li>Find the contacts without a phone number</li>
+</ol>
+<pre class="postgresql"><code>SELECT *
+FROM contact
+WHERE phone IS NULL;</code></pre>
+<ol start="3" type="1">
+<li>Find the contacts with a phone number</li>
+</ol>
+<pre class="postgresql"><code>SELECT *
+FROM contact
+WHERE phone IS NOT NULL;</code></pre>
+<h4 id="with-aggregate-functions">With Aggregate functions</h4>
+<ol start="4" type="1">
+<li>Count the number of rows in the <code>call</code> table</li>
+</ol>
+<pre class="postgresql"><code>SELECT COUNT(*)
+FROM call;</code></pre>
+<ol start="5" type="1">
+<li>Count the number of rows in the <code>call</code> table with non-null values for <code>contact_id</code></li>
+</ol>
+<pre class="postgresql"><code>SELECT COUNT(contact_id)
+FROM call;</code></pre>
+<ol start="6" type="1">
+<li>Count the number of rows in the <code>call</code> table with null values for <code>contact_id</code></li>
+</ol>
+<pre class="postgresql"><code>SELECT COUNT(*)
+FROM call
+WHERE contact_id IS NULL;</code></pre>
+</body>
+</html>

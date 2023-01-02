@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>03b_joins</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="../html/lecture_notes.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">03b_joins</h1>
+</header>
+<h1 id="queries-with-more-than-1-table">Queries with more than 1 table</h1>
+<h2 id="university-db">University DB</h2>
+<pre class="postgresql"><code>set search_path to university;</code></pre>
+<ol type="1">
+<li><em>Cartesian product</em>: match every row in the first table with every row in the second</li>
+</ol>
+<pre class="postgresql"><code>select *
+from offering,
+     instructor;</code></pre>
+<ol start="2" type="1">
+<li><em>Join</em>: like the cartesian product, but only keep the interesting matching rows
+<ul>
+<li>here, only keep the corresponding instructor ids (column <code>iid</code>)</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>select *
+from offering,
+     instructor
+where offering.iid = instructor.iid;</code></pre>
+<ol start="3" type="1">
+<li>more modern way to write the same query: use an <code>inner join</code></li>
+</ol>
+<pre class="postgresql"><code>select *
+from offering
+         inner join instructor on offering.iid = instructor.iid;
+
+select *
+from offering as o
+         inner join instructor as i on o.iid = i.iid;
+         
+         
+select semester, year, section, i.name as instructor_name, c.name as course_name
+from offering as o
+         inner join instructor as i on o.iid = i.iid
+        inner join course c on c.cid = o.cid;</code></pre>
+<ol start="4" type="1">
+<li>(Almost) the same query with a <code>natural join</code>
+<ul>
+<li>differences: only 1 <code>iid</code> column, and columns in a different order</li>
+<li>not recommend: the behavior of a natural join can be unpredictable</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>select *
+from offering
+         natural join instructor;
+
+-- not work
+select *
+from offering
+         natural join instructor
+         natural join course;</code></pre>
+<ol start="5" type="1">
+<li>Get the instructor ids and names of instructors teaching in the winter 2020 semester
+<ul>
+<li>must specify which of the 2 <code>iid</code> columns we want, even though there are equal</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>select instructor.iid, name
+from offering
+         inner join instructor on offering.iid = instructor.iid
+where semester = &#39;W&#39;
+  and year = 2020;</code></pre>
+<ol start="6" type="1">
+<li>Use <code>distinct</code> to remove duplicates</li>
+</ol>
+<pre class="postgresql"><code>select distinct instructor.iid, name
+from offering
+         inner join instructor on offering.iid = instructor.iid
+where semester = &#39;W&#39;
+  and year = 2020;</code></pre>
+<ol start="7" type="1">
+<li>Get the course codes and names for courses offered in the winter 2020 semester</li>
+</ol>
+<pre class="postgresql"><code>select distinct course.code, course.name
+from course
+         inner join offering on course.cid = offering.cid
+where semester = &#39;W&#39;
+  and year = 2020;</code></pre>
+<ol start="8" type="1">
+<li>Get the course codes and names for courses offered in the winter 2020 semester, along with the instructors names
+<ul>
+<li>first attempt: why this doesn’t work?</li>
+</ul>
+<pre class="postgresql"><code>select code, course.name, instructor.name
+from offering
+         natural join instructor
+         natural join course
+where semester = &#39;W&#39;
+  and year = 2020;</code></pre>
+<ul>
+<li>second attempt</li>
+</ul>
+<pre class="postgresql"><code>select distinct code, course.name, instructor.name
+from offering
+         inner join instructor on offering.iid = instructor.iid
+         inner join course on offering.cid = course.cid
+where semester = &#39;W&#39;
+  and year = 2020;</code></pre></li>
+<li>What about the offerings without an instructor?
+<ul>
+<li>The <code>iid</code> in offering is allowed to be null, but not the <code>cid</code></li>
+<li>if <code>iid</code> is null in offering, it will not match anything from instructor</li>
+<li><em>outer joins</em>: keep the rows that don’t match</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>select o.oid, o.iid, i.iid
+from offering as o
+         inner join instructor as i on o.iid = i.iid;
+
+select o.oid, o.iid, i.iid
+from offering o
+         left outer join instructor i on o.iid = i.iid;
+
+select o.oid, o.iid, i.iid
+from offering o
+         right outer join instructor i on o.iid = i.iid;
+
+select o.oid, o.iid, i.iid
+from offering o
+         full outer join instructor i on o.iid = i.iid;</code></pre>
+<ol start="10" type="1">
+<li>Get the course ids for courses offered in the year 2020, along with the instructors names</li>
+</ol>
+<pre class="postgresql"><code>select distinct cid, instructor.name as instructor_name
+from offering
+         left join instructor on offering.iid = instructor.iid
+where year = 2020;</code></pre>
+<ol start="11" type="1">
+<li>Get the course codes and names for courses offered in the year 2020, along with the semester and the instructors names</li>
+</ol>
+<pre class="postgresql"><code>select distinct code, course.name as course_name, semester, instructor.name as instructor_name
+from (offering left join instructor on offering.iid = instructor.iid)
+         right join course on offering.cid = course.cid
+where year = 2020;</code></pre>
+<ol start="12" type="1">
+<li>Find offerings without an instructor</li>
+</ol>
+<pre class="postgresql"><code>select *
+from offering
+where iid is null;</code></pre>
+<ol start="13" type="1">
+<li>Find students not enrolled in any course</li>
+</ol>
+<pre class="postgresql"><code>select s.*
+from student s
+         left join enrollment e on s.sid = e.sid
+where oid is null;</code></pre>
+<ol start="14" type="1">
+<li>Find courses which have never been offered</li>
+</ol>
+<pre class="postgresql"><code>select c.*
+from course c
+         left join offering o on c.cid = o.cid
+where oid is null;</code></pre>
+<ol start="15" type="1">
+<li>Find offerings in which no students are enrolled in</li>
+</ol>
+<pre class="postgresql"><code>select o.*
+from offering o
+         left join enrollment e on o.oid = e.oid
+where e.oid is null;</code></pre>
+</body>
+</html>

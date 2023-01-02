@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>02b_intro_sql</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="../html/lecture_notes.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">02b_intro_sql</h1>
+</header>
+<h1 id="introduction-to-sql">Introduction to SQL</h1>
+<h2 id="university-db">University DB</h2>
+<p>Run the <code>university.sql</code> file to create the University DB.</p>
+<pre class="postgresql"><code>set search_path to university;</code></pre>
+<ol type="1">
+<li><em>Projection</em>: choose the columns to include in the results</li>
+</ol>
+<pre class="postgresql"><code>select name, email
+from student;</code></pre>
+<ol start="2" type="1">
+<li>Suppose the university is charging 200$ per credit for a course. Find the price for each course.
+<ul>
+<li><code>price</code> is an alias for the calculated column</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>select code, name, credits * 200 as price
+from course;</code></pre>
+<ol start="3" type="1">
+<li><em>Selection</em>: filter the rows to include in the results
+<ul>
+<li>Keep only the course offerings for the winter 2020 semester</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>select *
+from offering
+where semester = &#39;W&#39;
+  and year = 2020;</code></pre>
+<ol start="4" type="1">
+<li><em>Sorting</em>: order the instructors by their names</li>
+</ol>
+<pre class="postgresql"><code>select iid, name, email
+from instructor
+order by name;
+
+select iid, name, email
+from instructor
+order by 2;</code></pre>
+</body>
+</html>

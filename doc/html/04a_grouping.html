@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>04a_grouping</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="../html/lecture_notes.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">04a_grouping</h1>
+</header>
+<h1 id="grouping-and-aggregates">Grouping and Aggregates</h1>
+<h2 id="contacts-db">Contacts DB</h2>
+<pre class="postgresql"><code>SET search_path TO contacts;</code></pre>
+<ol type="1">
+<li>Count the number of rows in the <code>call</code> table</li>
+</ol>
+<pre class="postgresql"><code>SELECT COUNT(*)
+FROM call;</code></pre>
+<ol start="2" type="1">
+<li>Count the number of calls for each phone number in the <code>call</code> table, and rename the <code>count</code> column to something more appropriate.</li>
+</ol>
+<pre class="postgresql"><code>SELECT phone, COUNT(*) AS n_calls
+FROM call
+GROUP BY phone;</code></pre>
+<ol start="3" type="1">
+<li>Count the number of calls for each phone number in the <code>call</code> table, and order the results by the largest number of calls first.</li>
+</ol>
+<pre class="postgresql"><code>SELECT phone, COUNT(*) AS n_calls
+FROM call
+GROUP BY phone
+ORDER BY 2 DESC;</code></pre>
+<ol start="4" type="1">
+<li>Count the number of calls for each phone number in the <code>call</code> table, and keep only the phone numbers with more than 1 call.
+<ul>
+<li>use <code>HAVING</code> with a condition</li>
+<li><code>HAVING</code> is similar to <code>WHERE</code>, but it is executed after the <code>GROUP BY</code>, while the <code>WHERE</code> is executed after the <code>FROM</code>, but before the <code>GROUP BY</code></li>
+<li>even tough <code>SELECT</code> is written first, it is actually executed after <code>HAVING</code>, but before <code>ORDER BY</code> (if present)</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>SELECT phone, COUNT(*) AS n_calls
+FROM call
+GROUP BY phone
+HAVING COUNT(*) &gt; 1;</code></pre>
+<ol start="5" type="1">
+<li>We can group not only the rows of one table, but also any result table from the <code>FROM</code> part of the query
+<ul>
+<li>this query computes the number of calls for each contact (not for each phone number in <code>call</code>, but each <code>contact_id</code> in <code>contact</code>)</li>
+<li>note that contacts without any calls are listed with a count of 0 because we are using a left outer join, so contacts not matching anything in <code>call</code>, in other words, contacts without any associated calls, will be kept in the results</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>SELECT contact.contact_id, COUNT(call_id) AS n_calls
+FROM contact
+         LEFT OUTER JOIN call
+                         ON contact.contact_id = call.contact_id
+GROUP BY contact.contact_id
+ORDER BY n_calls DESC;</code></pre>
+</body>
+</html>

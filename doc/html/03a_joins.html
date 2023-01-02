@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>03a_joins</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="../html/lecture_notes.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">03a_joins</h1>
+</header>
+<h1 id="queries-with-more-than-1-table">Queries with more than 1 table</h1>
+<h2 id="contacts-db">Contacts DB</h2>
+<pre class="postgresql"><code>SET search_path TO contacts;</code></pre>
+<ol type="1">
+<li><em>Cartesian product</em>: match every of a table with every row of the other table
+<ul>
+<li>gives too many rows</li>
+<li>rarely used because it doesn’t usually give useful information</li>
+<li>and it can become very inefficient if the tables involved are large
+<ul>
+<li>the number of rows in the results will be the multiplication of the number of rows in each table involved</li>
+</ul></li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>SELECT *
+FROM call,
+     contact;</code></pre>
+<ol start="2" type="1">
+<li><em>Join</em>: keep only the matching rows, by “following” the foreign key from <code>call</code> to <code>contact</code>
+<ul>
+<li>this is the old way to do a join (a cartesian product followed by a <code>WHERE</code> condition)</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>SELECT *
+FROM call,
+     contact
+WHERE call.contact_id = contact.contact_id;</code></pre>
+<h3 id="joins">Joins</h3>
+<h4 id="inner-join">Inner Join</h4>
+<ol start="3" type="1">
+<li>A more modern way to express a join in SQL
+<ul>
+<li>there are many types of joins, the most common kind is an <code>INNER JOIN</code></li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>SELECT *
+FROM call
+         INNER JOIN contact
+                    ON call.contact_id = contact.contact_id;</code></pre>
+<h4 id="natural-join">Natural join</h4>
+<ol start="4" type="1">
+<li>Join on columns with the same names, using the = operator, and by removing duplicate columns
+<ul>
+<li>note that the columns are in a different order</li>
+<li>it’s not recommended (even discouraged) to use natural joins because the join condition is not specified and might have consequences difficult to predict, especially on the long term if the database is modified after the queries have been written</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>SELECT *
+FROM call
+         NATURAL JOIN contact;
+</code></pre>
+<ul>
+<li>The phone call with ID 2 doesn’t match any contact, therefore it is not listed in the results</li>
+<li>Whenever we use = with <code>NULL</code>, it’s always false, hence call 3 is not in the results</li>
+</ul>
+<h4 id="outer-joins">Outer Joins</h4>
+<ol start="5" type="1">
+<li>Use a <em>left outer join</em> to keep the phone calls not matching any contact
+<ul>
+<li>it is like an inner join, but rows on the left not matching anything on the right will be kept</li>
+<li>use a <em>right outer join</em> to keep the contacts not matching any phone call</li>
+<li>or a <em>full outer join</em> to keep rows not matching on both sides</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>SELECT *
+FROM call
+         LEFT OUTER JOIN contact
+                         ON call.contact_id = contact.contact_id;</code></pre>
+<pre class="postgresql"><code>SELECT *
+FROM call
+         RIGHT OUTER JOIN contact
+                         ON call.contact_id = contact.contact_id;</code></pre>
+<pre class="postgresql"><code>SELECT *
+FROM call FULL OUTER JOIN contact
+    ON call.contact_id = contact.contact_id;</code></pre>
+</body>
+</html>

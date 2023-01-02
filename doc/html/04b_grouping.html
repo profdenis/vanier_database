@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>04b_grouping</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="../html/lecture_notes.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">04b_grouping</h1>
+</header>
+<h1 id="grouping-and-aggregates">Grouping and Aggregates</h1>
+<h2 id="university-db">University DB</h2>
+<pre class="postgresql"><code>set search_path to university;</code></pre>
+<ol type="1">
+<li>Find the number of offerings for each year</li>
+</ol>
+<pre class="postgresql"><code>select year, count(oid)
+from offering
+group by year;</code></pre>
+<ol start="2" type="1">
+<li>Same results because <code>oid</code> cannot be bull</li>
+</ol>
+<pre class="postgresql"><code>select year, count(*)
+from offering
+group by year;</code></pre>
+<ol start="3" type="1">
+<li>Similar, but different results because of null values</li>
+</ol>
+<pre class="postgresql"><code>select year, count(iid)
+from offering
+group by year;</code></pre>
+<ol start="4" type="1">
+<li>Find the number of course offerings for each instructor</li>
+</ol>
+<pre class="postgresql"><code>select iid, count(*)
+from offering
+group by iid;</code></pre>
+<ol start="5" type="1">
+<li>Get the number of students enrolled in each course offering</li>
+</ol>
+<pre class="postgresql"><code>select oid, count(sid)
+from enrollment
+group by oid;</code></pre>
+<ol start="6" type="1">
+<li>Get the number of students enrolled in each course offering
+<ul>
+<li>with course codes, names and sections</li>
+</ul>
+<pre class="postgresql"><code>select e.oid, code, name, section, count(sid) as n_students
+from enrollment e
+     inner join offering o on e.oid = o.oid
+     inner join course c on o.cid = c.cid
+group by e.oid, code, name, section;</code></pre></li>
+<li>What about the offerings without any enrollments?</li>
+</ol>
+<pre class="postgresql"><code>select o.oid, code, name, section, count(sid) as n_students
+from enrollment e
+         right join offering o on e.oid = o.oid
+         inner join course c on o.cid = c.cid
+group by o.oid, code, name, section
+order by n_students desc;</code></pre>
+<ol start="8" type="1">
+<li>Get the number of students enrolled in each course offering
+<ul>
+<li>with course codes, names and sections, but only for course offerings with less than 3 enrollments</li>
+</ul>
+<pre class="postgresql"><code>select o.oid, code, name, section, count(sid) as n_students
+from enrollment e
+     right join offering o on e.oid = o.oid
+     inner join course c on o.cid = c.cid
+group by o.oid, code, name, section
+having count(sid) &lt; 3;</code></pre></li>
+<li>Same, but with less than 1 enrollment</li>
+</ol>
+<pre class="postgresql"><code>select o.oid, code, name, section, count(sid) as n_students
+from enrollment e
+         right join offering o on e.oid = o.oid
+         inner join course c on o.cid = c.cid
+group by o.oid, code, name, section
+having count(sid) &lt; 1;</code></pre>
+<ol start="10" type="1">
+<li>better</li>
+</ol>
+<pre class="postgresql"><code>select o.oid, code, name, section
+from enrollment e
+         right join offering o on e.oid = o.oid
+         inner join course c on o.cid = c.cid
+where e.oid is null;</code></pre>
+<h2 id="exercises">Exercises</h2>
+<ol type="1">
+<li>Get the number of offerings for each instructor</li>
+<li>Get the number of offerings for instructor with id 1, for each year</li>
+<li>Get the number of offerings for each instructor for each year
+<ul>
+<li>what do we do with instructors without any offerings?</li>
+</ul></li>
+<li>Get the number of offerings for each instructor for each semester and each year
+<ul>
+<li>what do we do with semesters without any offerings?</li>
+<li>what do we do with semesters without offerings for some instructors?
+<ul>
+<li>for example, many instructors teach only in the fall and winter semesters, but not in the summer semesters; do we list these off-semesters for each instructor with a count of 0?</li>
+</ul></li>
+</ul></li>
+</ol>
+</body>
+</html>

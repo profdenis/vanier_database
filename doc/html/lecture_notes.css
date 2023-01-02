@@ -1,0 +1,19 @@
+figure {
+    border: solid 2px black;
+    border-radius: 5px;
+    width: fit-content;
+    width: -moz-fit-content;
+}
+
+figure img {
+    max-width: 100%;
+}
+
+figcaption {
+    text-align: center;
+    font-style: oblique;
+    font-weight: bold;
+    border-top: solid 2px black;
+    border-radius: 5px;
+    padding: 5px;
+}

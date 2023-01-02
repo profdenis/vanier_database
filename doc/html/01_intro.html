@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>01_intro</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="../html/lecture_notes.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">01_intro</h1>
+</header>
+<h1 id="introduction">Introduction</h1>
+<h2 id="setting-up-postgresql">Setting up PostgreSQL</h2>
+<h3 id="for-windowsmac">For Windows/Mac</h3>
+<ol type="1">
+<li>Go to <a href="https://www.enterprisedb.com/downloads/postgres-postgresql-downloads">PostgreSQL Download</a> to download the PostgreSQL DBMS</li>
+<li>Go to <a href="https://www.enterprisedb.com/docs/supported-open-source/postgresql/installer/02_installing_postgresql_with_the_graphical_installation_wizard/01_invoking_the_graphical_installer/">Intalling PostgreSQL</a> and follow the instructions to install it</li>
+<li>It will install the DB server and some other tools to manage databases
+<ul>
+<li>most importantly for now, it will install the <code>psql</code> command and the <em>PgAdmin</em> application at the same time as the server</li>
+</ul></li>
+<li>Don’t forget to enter a password for the postgres user
+<ul>
+<li>if it doesn’t ask for a password, it will need to be set from the command line</li>
+<li>you will need to use the <code>psql</code> command to change the password of the <code>postgres</code> user
+<ul>
+<li>Windows: <a href="https://sqlserverguides.com/postgresql-set-user-password/#:~:text=Open%20CMD%20on%20your%20computer,user%20and%20remember%20the%20password.&amp;text=Now%20change%20the%20password%20of%20the%20current%20user%20postgres.">psql Windows</a></li>
+<li>Mac: the commands should be the same as for Linux (see below)</li>
+</ul></li>
+</ul></li>
+</ol>
+<h3 id="for-linux">For Linux</h3>
+<ol type="1">
+<li>Follow this guide to install PostgreSQL on Ubuntu: <a href="https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-20-04-quickstart">PostgreSQL on Ubuntu</a>
+<ul>
+<li>The procedure is very similar for other distributions of Linux</li>
+</ul></li>
+<li>Install <em>PgAdmin</em> from <a href="https://www.pgadmin.org/download/">here</a></li>
+</ol>
+</body>
+</html>

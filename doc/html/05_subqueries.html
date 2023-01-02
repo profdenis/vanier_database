@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>05_subqueries</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="../html/lecture_notes.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">05_subqueries</h1>
+</header>
+<h1 id="sql-sub-queries">SQL Sub-queries</h1>
+<ul>
+<li>A <em>sub-query</em> is a query within another query (or another sub-query)
+<ul>
+<li>we can have many levels of sub-queries</li>
+<li>sometimes we refer to sub-queries as <em>inner</em> queries and to enclosing queries as <em>outer</em> queries</li>
+</ul></li>
+</ul>
+<h2 id="university-database">University Database</h2>
+<pre class="postgresql"><code>set search_path to university;</code></pre>
+<h3 id="non-correlated-sub-queries">Non-Correlated Sub-queries</h3>
+<ul>
+<li>Also called <strong><em>simple</em></strong> sub-queries</li>
+<li><em>Correlated</em> sub-queries will be covered later</li>
+<li>Non-correlated sub-queries are independent of their outer (enclosing) queries
+<ul>
+<li>they can run by themselves</li>
+<li>they don’t depend on something defined in the outer queries</li>
+</ul></li>
+</ul>
+<h4 id="examples-with-2-non-correlated-sub-queries">Examples: with 2 non-correlated sub-queries</h4>
+<ol type="1">
+<li>Find the students and instructors with a <code>@example.com</code> email address</li>
+</ol>
+<pre class="postgresql"><code>select name, email
+from student
+where email like &#39;%@example.com&#39;
+union
+select name, email
+from instructor
+where email like &#39;%@example.com&#39;</code></pre>
+<ol start="2" type="1">
+<li>Find whether or not if there are students and instructors with the same email address</li>
+</ol>
+<pre class="postgresql"><code>select email
+from student
+intersect
+select email
+from instructor;</code></pre>
+<ol start="3" type="1">
+<li>Find courses which have never been offered</li>
+</ol>
+<pre class="postgresql"><code>select cid
+from course
+except
+select cid
+from offering;
+
+select c.cid
+from course c left join offering o on c.cid = o.cid
+where o.oid is null;
+</code></pre>
+<ol start="4" type="1">
+<li>Find students not enrolled in any course</li>
+</ol>
+<pre class="postgresql"><code>select sid
+from student
+except
+select sid
+from enrollment;</code></pre>
+<ol start="5" type="1">
+<li>Find offerings in which no students are enrolled in</li>
+</ol>
+<pre class="postgresql"><code>select oid
+from offering
+except
+select oid
+from enrollment;</code></pre>
+<h3 id="scalar-sub-queries">Scalar (Sub-)queries</h3>
+<ul>
+<li>Scalar (sub-)queries are the simplest kind of (sub-)queries</li>
+<li>They always return exactly 1 row containing exactly 1 column</li>
+<li>They are often (but not always) obtained by calculating some aggregate function</li>
+<li><em>Example</em>:
+<ul>
+<li>Find the number of students with a <code>@example.com</code> email address</li>
+</ul></li>
+</ul>
+<pre class="postgresql"><code>select count(sid) as n_students
+from student
+where email like &#39;%@example.com&#39;</code></pre>
+<ul>
+<li>Scalar sub-queries can be used where a scalar (a single value, usually a number) can be used in another query</li>
+<li>We can use scalar sub-queries as operands of operators expecting single values, such as
+<ul>
+<li>comparison operators <code>=</code>, <code>&lt;</code>, …, and</li>
+<li>arithmetic operators <code>+</code>, <code>*</code>, …</li>
+</ul></li>
+</ul>
+<h4 id="examples">Examples</h4>
+<ol type="1">
+<li>Find courses that have been offered more often than the <code>DB</code> course
+<ol type="1">
+<li>Find the number of times that <code>DB</code> has been offered</li>
+</ol>
+<pre class="postgresql"><code>select count(c.cid)
+from course c
+       left join offering o on c.cid = o.cid
+where c.code = &#39;DB&#39;;</code></pre>
+<ol start="2" type="1">
+<li>Plug 1 into the <code>HAVING</code> clause of a query calculating the number of times each course has been offered - It might be better to start with a fixed number (say number 2) instead of plugging the first query immediately in the second</li>
+</ol>
+<pre class="postgresql"><code>select c.cid, c.code
+from course c
+         left join offering o on c.cid = o.cid
+group by c.cid, c.code
+having count(o.oid) &gt; 3;</code></pre>
+<pre class="postgresql"><code>select c.cid, c.code
+from course c
+         left join offering o on c.cid = o.cid
+group by c.cid, c.code
+having count(o.oid) &gt; (select count(c.cid)
+                       from course c
+                                left join offering o on c.cid = o.cid
+                       where c.code = &#39;DB&#39;
+);</code></pre></li>
+<li>Find the average number of times each course has been offered
+<ul>
+<li>start by finding the number of times each course has been offered</li>
+<li>then take the average</li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>select c.cid, c.code, count(o.oid) as n_offerings
+from course c
+         left join offering o on c.cid = o.cid
+group by c.cid;</code></pre>
+<pre class="postgresql"><code>-- will not work
+select c.cid, c.code, avg(count(o.oid)) as n_offerings
+from course c
+         left join offering o on c.cid = o.cid
+group by c.cid;</code></pre>
+<pre class="postgresql"><code>select round(avg(n_offerings), 2) as avg_n_offerings
+from (select count(o.oid) as n_offerings
+      from course c
+               left join offering o on c.cid = o.cid
+      group by c.cid) as T;</code></pre>
+<ol start="3" type="1">
+<li>Find the courses that have been offered more often than the average (number of times each course has been offered)</li>
+</ol>
+<pre class="postgresql"><code>select c.cid, c.code
+from course c
+         left join offering o on c.cid = o.cid
+group by c.cid
+having count(o.oid) &gt; (select avg(n_offerings) as avg_n_offerings
+                       from (select count(o.oid) as n_offerings
+                             from course c
+                                      left join offering o on c.cid = o.cid
+                             group by c.cid) as T);</code></pre>
+<h3 id="with-sql-select-query-format"><code>with</code> SQL Select Query Format</h3>
+<ul>
+<li>In order to express queries with many levels of sub-queries more easily, we can use the <code>with ... select ...</code> query style</li>
+<li>We (kind of) define temporary tables before the main <code>select</code> query begins</li>
+<li>Then we use the temporary tables in the main <code>select</code> query as if they were tables stored in the database</li>
+</ul>
+<pre class="postgresql"><code>with T2 as (
+    select avg(n_offerings) as avg_n_offerings
+    from (select c.cid, c.code, count(o.oid) as n_offerings
+          from course c
+                   left join offering o on c.cid = o.cid
+          group by c.cid) as T1)
+select c.cid, c.code
+from course c
+         left join offering o on c.cid = o.cid
+group by c.cid
+having count(o.oid) &gt; (select * from T2);</code></pre>
+<ul>
+<li>Don’t <em>over</em>use the <code>with</code> syntax
+<ul>
+<li>for example, don’t rewrite this query</li>
+</ul></li>
+</ul>
+<pre class="postgresql"><code>select name, email
+from student
+where email like &#39;%@example.com&#39;
+union
+select name, email
+from instructor
+where email like &#39;%@example.com&#39;</code></pre>
+<p>as</p>
+<pre class="postgresql"><code>with students_example as (
+    select name, email
+    from student
+    where email like &#39;%@example.com&#39;),
+     instructor_example as (
+         select name, email
+         from instructor
+         where email like &#39;%@example.com&#39;)
+select *
+from students_example
+union
+select *
+from instructor_example;</code></pre>
+<ul>
+<li>While this query is technically correct and equivalent to the original query, the use of <code>with</code> to define 2 temporary tables is overkill here, and actually reduces readability</li>
+<li>Use <code>with</code> only when sub-queries are complicated, or when there are many levels of sub-queries</li>
+<li>We can also use <code>with recursive</code> to write recursive queries</li>
+</ul>
+<h3 id="null-values-in-sql"><code>NULL</code> Values in SQL</h3>
+<ul>
+<li>SQL is using a <em>3-valued logic</em> instead of Boolean logic (a 2-valued logic)</li>
+<li>The 3 values are <code>true</code>, <code>false</code>, and <code>null</code> (or <code>T</code>, <code>F</code> and <code>N</code> in the table below)</li>
+<li>The first 2 values have the usual meaning, while <code>null</code> can have different meanings:
+<ul>
+<li><em>unknown</em></li>
+<li><em>not applicable</em></li>
+<li><em>does not matter</em></li>
+</ul></li>
+<li>Logical operators have to be updated to account for <code>null</code> values</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>A</th>
+<th>B</th>
+<th>NOT A</th>
+<th>A OR B</th>
+<th>A AND B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T</td>
+<td>T</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>F</td>
+</tr>
+<tr class="odd">
+<td>T</td>
+<td>N</td>
+<td>F</td>
+<td>T</td>
+<td>N</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>N</td>
+<td>T</td>
+<td>N</td>
+<td>F</td>
+</tr>
+<tr class="odd">
+<td>N</td>
+<td>T</td>
+<td>N</td>
+<td>T</td>
+<td>N</td>
+</tr>
+<tr class="even">
+<td>N</td>
+<td>F</td>
+<td>N</td>
+<td>N</td>
+<td>F</td>
+</tr>
+<tr class="odd">
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+<h2 id="non-scalar-subqueries">### Non-Scalar (Sub)queries</h2>
+<ul>
+<li>If a (sub-)query returns more than 1 row and/or more than 1 column, then it is <strong>not</strong> a scalar sub-query</li>
+<li>Attempting to use the normal comparison or arithmetic operators with non-scalar sub-queries will fail if there is more than 1 row</li>
+<li>Some DBMS, such as PostgreSQL, allow some operators to work with sub-queries giving exactly 1 row but many columns
+<ul>
+<li>PostgreSQL is an ORDBMS, so it is more flexible with data types</li>
+<li>It will see the single row with multiple columns as a single object with multiple fields</li>
+</ul></li>
+<li>In general, we need to use special operators to deal with non-scalar sub-queries
+<ul>
+<li><code>IN</code>, <code>NOT IN</code>, <code>EXISTS</code>, <code>NOT EXISTS</code>, <code>ANY</code>, <code>ALL</code></li>
+</ul></li>
+</ul>
+<h4 id="in"><code>IN</code></h4>
+<ul>
+<li><code>expression IN (sub-query)</code>
+<ul>
+<li>this is the same as <span class="math inline">\(\in\)</span> in mathematical notation (except that we have to deal with <code>null</code> values)</li>
+<li>the sub-query must return exactly 1 column</li>
+<li><code>true</code> if the expression is equal to 1 of the rows in the sub-query results</li>
+<li><code>false</code> if the expression is not <code>null</code>
+<ul>
+<li>and there are no <code>null</code> values in the sub-query</li>
+<li>and the expression is not equal to any row in the sub-query</li>
+</ul></li>
+<li><code>null</code> if the expression is <code>null</code>
+<ul>
+<li>or if the expression is not equal to any row in the sub-query</li>
+<li>and there is at least 1 <code>null</code> value in the sub-query</li>
+</ul></li>
+</ul></li>
+<li>Because SQL is using a 3-valued logic, evaluating <code>IN</code> is more complicated</li>
+<li>Recall that is we want to know if a column value is <code>null</code>, we cannot use the equality operator <code>=</code> because it will always return <code>null</code></li>
+<li><code>null</code> means <em>unknown</em> in this case, so we don’t know how to compare values to some unknown value</li>
+<li>So we need to use <code>is null</code> instead of <code>= null</code></li>
+<li>The <code>IN</code> operator is comparing values with <code>=</code>, so has soon as it compares with a <code>null</code>, it will evaluate to <code>null</code></li>
+<li>So if the expression is equal to <code>null</code>, <code>IN</code> will evaluate to <code>null</code></li>
+<li>If the expression is not <code>null</code>, then it will compare the expression with non-null values first in the sub-query
+<ul>
+<li>if it finds a match, then the value of <code>IN</code> will be true</li>
+<li>if we don’t find a match, then it will check if the sub-query contains <code>null</code> values
+<ul>
+<li>if not, then we know for sure the expression is not in the sub-query, so the value of <code>IN</code> will be <code>false</code></li>
+<li>if there are <code>null</code> values, then we don’t know for sure if the expression is in the sub-query because we have some <em>unknown</em> (<code>null</code>) values, so the value of <code>IN</code> is <code>null</code></li>
+</ul></li>
+</ul></li>
+<li>This example works as expected</li>
+</ul>
+<pre class="postgresql"><code>-- note that (1, 2, 3) is not really a sub-query, but acts like a sub-query
+-- it is used to simplify the example
+select *
+from course
+where cid in (1, 2, 3);</code></pre>
+<pre class="postgresql"><code>-- note that (2, 3, 4, null) is not really a sub-query, but acts like a sub-query
+-- it is used to simplify the example
+select *
+from course
+where cid in (2, 3, 4, null);</code></pre>
+<ul>
+<li>This example is equivalent, and shows how <code>IN</code> operators are evaluated internally</li>
+</ul>
+<pre class="postgresql"><code>select *
+from course
+where cid = 2
+   or cid = 3
+   or cid = 4
+   or cid = null;</code></pre>
+<ul>
+<li>This works for the courses with a <code>cid</code> value of 2, 3 or 4 because at least 1 of the comparisons will be true and we will get something like <code>T OR F OR F OR N</code>, which is true</li>
+<li>But for courses with a <code>cid</code> not in the provided set, we will get <code>null</code> because <code>F OR F OR F OR N</code> is <code>N</code></li>
+<li>This doesn’t create an issue because rows with a <code>where</code> condition will be dropped</li>
+<li>But if we negate <code>IN</code> to get a <code>NOT IN</code> operator, we will get into trouble</li>
+</ul>
+<pre class="postgresql"><code>select *
+from course
+where cid not in (2, 3, 4, null); 
+
+select * 
+from course
+where cid not in (select cid from offering);
+
+select * 
+from course
+except 
+select c.*
+from course c inner join offering o on c.cid = o.cid;
+
+select c.*
+from course c left join offering o on c.cid = o.cid
+where o.oid is null;
+
+select * 
+from instructor
+where iid not in (select iid from offering);</code></pre>
+<ul>
+<li><p>We get nothing</p></li>
+<li><p>But the course with <code>cid = 1</code> is not in the sub-query, so why don’t we get it?</p></li>
+<li><p>It’s because of the <code>null</code> value</p>
+<ul>
+<li><code>1 in (2, 3, 4, null)</code> evaluates to <code>null</code></li>
+<li>and <code>1 not in (2, 3, 4, null)</code> evaluates to <code>not null</code>, which is <code>null</code></li>
+</ul></li>
+<li><p>So <code>NOT IN</code> queries are dangerous because of <code>null</code> values</p></li>
+<li><p>The following query is correct because we know for sure that <code>cid</code> in course cannot be <code>null</code></p></li>
+<li><p>So we can find courses that have never been offered in this way</p></li>
+</ul>
+<pre class="postgresql"><code>insert into course(name, code, credits)
+values (&#39;Data Structures&#39;, &#39;DS&#39;, 3);
+-- delete from course where code = &#39;DS&#39;;
+select *
+from course
+where cid not in (
+    select cid
+    from offering);</code></pre>
+<ul>
+<li>But trying to do something similar for instructors will create problems because <code>iid</code> in offering can be <code>null</code></li>
+<li>We need to explicitly discard <code>null</code> values in the sub-query in order for the query to return the correct results</li>
+</ul>
+<pre class="postgresql"><code>insert into instructor(name, email, department)
+values (&#39;John&#39;, &#39;john@bbb.com&#39;, &#39;ECE&#39;);
+-- delete from instructor where name = &#39;John&#39;;
+select *
+from instructor
+where iid not in (
+    select iid
+    from offering);</code></pre>
+<pre class="postgresql"><code>select *
+from instructor
+where iid not in (
+    select iid
+    from offering
+    where iid is not null);</code></pre>
+<h4 id="recommendation-dont-use-not-in">Recommendation: don’t use <code>NOT IN</code></h4>
+<h4 id="recommendation-use-a-left-join-instead">Recommendation: use a <code>left join</code> instead</h4>
+<ul>
+<li>Not only the left join (or outer joins in general) forces you to think about <code>null</code> values (and deal with them correctly), but performance-wise, left joins will usually be more efficient</li>
+<li>Using left joins avoids dealing with SQL’s 3-valued-logic</li>
+</ul>
+<pre class="postgresql"><code>select i.*
+from instructor i
+         left join offering o on i.iid = o.iid
+where o.iid is null;</code></pre>
+<h4 id="any-and-all"><code>ANY</code> and <code>ALL</code></h4>
+<ul>
+<li><code>ANY</code> and <code>ALL</code> are used as modifiers to operators (usually comparison operators)
+<ul>
+<li><code>expression operator ANY (sub-query)</code>
+<ul>
+<li><code>true</code> when there exists a row <span class="math inline">\(r\)</span> in the sub-query such that <code>expression operator r</code> is true</li>
+<li><code>false</code> when for all rows r in the sub-query, <code>expression operator r</code> is false and there are no <code>null</code> values in the sub-query</li>
+<li><code>null</code> when for all rows r in the sub-query, <code>expression operator r</code> is false and there is at least 1 <code>null</code> value in the sub-query</li>
+</ul></li>
+<li><code>IN</code> is equivalent to <code>=ANY</code></li>
+</ul></li>
+<li><code>expression operator ALL (sub-query)</code>
+<ul>
+<li><code>true</code> when for all rows <span class="math inline">\(r\)</span> in the sub-query, <code>expression operator r</code> is true</li>
+<li><code>false</code> when <code>expression operator r</code> is false for at least 1 row in the sub-query</li>
+<li><code>null</code> when for all rows <span class="math inline">\(r\)</span> in the sub-query, <code>expression operator r</code> is not false and there is at least 1 <code>null</code> value in the sub-query</li>
+</ul></li>
+<li><code>NOT IN</code> is equivalent to <code>&lt;&gt; ALL</code></li>
+</ul>
+<h4 id="example">Example</h4>
+<ol type="1">
+<li>Find the courses that have been offered the most often
+<ul>
+<li>Note that there can be many “most offered” courses</li>
+<li>Start from the other query <em>Find the courses that have been offered more often than the average</em> and replace <code>avg</code> by <code>max</code></li>
+</ul></li>
+</ol>
+<pre class="postgresql"><code>with T as (
+    select max(n_offerings) as max_n_offerings
+    from (select c.cid, c.code, count(o.oid) as n_offerings
+          from course c
+                   left join offering o on c.cid = o.cid
+          group by c.cid) as T)
+select c.cid, c.code
+from course c
+         left join offering o on c.cid = o.cid
+group by c.cid
+having count(o.oid) = (select * from T);</code></pre>
+<ul>
+<li>If we had many courses equal for the first place, they would be listed</li>
+<li>We can rewrite the query with a <code>&gt;=ALL</code>
+<ul>
+<li>but be careful with <code>null</code> values in general</li>
+<li>here it’s not an issue since the sub-query cannot return <code>null</code> values because of the aggregate function</li>
+<li>but it’s not the case of all possible sub-queries</li>
+</ul></li>
+</ul>
+<pre class="postgresql"><code>with T as (
+    select c.cid, c.code, count(o.oid) as n_offerings
+    from course c
+             left join offering o on c.cid = o.cid
+    group by c.cid)
+select cid, code
+from T
+where n_offerings &gt;= ALL (select n_offerings from T);</code></pre>
+<ul>
+<li>If we were not using <code>with</code>, we would have to write essentially the same query twice, including the <code>group by</code>, and move the <code>where</code> to a <code>having</code></li>
+</ul>
+<pre class="postgresql"><code>select c.cid, c.code
+from course c
+         left join offering o on c.cid = o.cid
+group by c.cid
+having count(o.oid) &gt;= ALL (
+    select count(o.oid) as n_offerings
+    from course c
+             left join offering o on c.cid = o.cid
+    group by c.cid);</code></pre>
+<h4 id="meaning-of-some-operator-all-and-operator-any-queries">Meaning of some <code>operator ALL</code> and <code>operator ANY</code> queries</h4>
+<ul>
+<li>special cases: <code>null</code> values</li>
+<li><code>&gt;=ALL</code>: (greater than or) equal to the largest value in the sub-query</li>
+<li><code>&gt;=ANY</code>: not smaller that the smallest value in the sub-query</li>
+<li><code>&lt;&gt;ALL</code>: same as <code>NOT IN</code></li>
+<li><code>&lt;&gt;ANY</code>: different from at least 1 value in the sub-query</li>
+<li><code>=ALL</code>: all values in the sub-query are the same (there’s no value that is different)</li>
+<li><code>=ANY</code>: same as <code>IN</code></li>
+</ul>
+<h4 id="recommendation-try-to-avoid-queries-that-can-be-messed-up-by-null-values">Recommendation: try to avoid queries that can be messed up by <code>null</code> values</h4>
+<h4 id="exists-and-not-exists"><code>EXISTS</code> and <code>NOT EXISTS</code></h4>
+<ul>
+<li>Checks whether or not a sub-query is empty (returns 0 rows)</li>
+<li>In other words, checks if there exists (or not) some rows in the sub-query</li>
+<li><code>EXISTS</code> is a unary operator since it takes only 1 argument to the right of it
+<ul>
+<li>Likewise <code>NOT</code> is a unary operator, negating its argument on the right</li>
+</ul></li>
+<li>Most of the time, <code>EXISTS</code> is used with correlated sub-queries</li>
+</ul>
+<h3 id="correlated-sub-queries">Correlated Sub-queries</h3>
+<ul>
+<li>When a sub-query depends on a table specified in the outer query, then the sub-query is said to be <em>correlated</em></li>
+<li>It means the correlated sub-query cannot be executed by itself in isolation</li>
+<li><em>Example</em>:
+<ul>
+<li>Find courses that have been offered at least twice</li>
+</ul></li>
+</ul>
+<pre class="postgresql"><code>-- without correlated sub-queries
+select c.cid, name, code
+from course c
+         inner join offering o on c.cid = o.cid
+group by c.cid
+having count(oid) &gt;= 2;</code></pre>
+<pre class="postgresql"><code>-- with correlated sub-queries
+select distinct c.cid, name, code
+from course c
+         inner join offering o1 on c.cid = o1.cid
+where exists(
+              select *
+              from offering o2
+              where o1.cid = o2.cid
+                and o1.oid &lt;&gt; o2.oid
+          );</code></pre>
+<pre class="postgresql"><code>-- without correlated sub-queries, but with 2 copies of offering
+select distinct c.cid, name, code
+from course c
+         inner join offering o1 on c.cid = o1.cid
+         inner join offering o2 on o1.cid = o2.cid
+where o1.oid &lt;&gt; o2.oid;</code></pre>
+<h4 id="examples-1">Examples</h4>
+<ol type="1">
+<li>Find courses that have been offered at most once</li>
+</ol>
+<pre class="postgresql"><code>-- without correlated sub-queries
+-- need a left join here because we need the never offered courses
+select c.cid, name, code
+from course c
+         left join offering o on c.cid = o.cid
+group by c.cid
+having count(oid) &lt;= 1;</code></pre>
+<pre class="postgresql"><code>-- with correlated sub-queries
+-- need a left join here because we need the never offered courses
+select distinct c.cid, name, code
+from course c
+         left join offering o1 on c.cid = o1.cid
+where not exists(
+        select *
+        from offering o2
+        where o1.cid = o2.cid
+          and o1.oid &lt;&gt; o2.oid
+    );</code></pre>
+<ol start="2" type="1">
+<li>Find courses that have never been offered
+<ul>
+<li>We have seen 2 ways previously
+<ul>
+<li>with <code>except</code> (awkward to get course names and codes, need a join anyway to get these)</li>
+<li>with a left join (recommended)</li>
+</ul></li>
+</ul>
+<pre class="postgresql"><code>select cid, name, code
+from course
+except
+select o.cid, name, code
+from offering o
+         inner join course c on o.cid = c.cid;</code></pre>
+<pre class="postgresql"><code>select c.*
+from course c
+         left join offering o on c.cid = o.cid
+where oid is null;</code></pre>
+<ul>
+<li>It is also possible with a correlated sub-query, but it’s less readable
+<ul>
+<li>it reads as “select all course for which an offering doesn’t exist”</li>
+</ul></li>
+</ul>
+<pre class="postgresql"><code>select c.cid, name, code
+from course c
+where not exists(
+        select *
+        from offering o
+        where c.cid = o.cid
+    );</code></pre></li>
+</ol>
+</body>
+</html>
