@@ -160,7 +160,7 @@ entity Lecturer {
 }
 
 entity Course {
-    * course_code: text <<generated>> <<pk>>
+    * course_code: text <<pk>>
     --
     * name: text
     * credits: text <<default 0>>
@@ -205,7 +205,7 @@ entity Lecturer {
 }
 
 entity Course {
-    * course_code: text <<generated>> <<pk>>
+    * course_code: text <<pk>>
     --
     * name: text
     * credits: text <<default 0>>
