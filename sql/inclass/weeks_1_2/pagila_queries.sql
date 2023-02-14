@@ -66,28 +66,92 @@ from film_category
 group by category_id;
 
 select c.category_id, name, count(film_id) as n_films
-from film_category fc inner join category c on c.category_id = fc.category_id
+from film_category fc
+         inner join category c on c.category_id = fc.category_id
 group by c.category_id, name
 order by n_films desc;
 
 select c.category_id, name, count(film_id) as n_films
-from film_category fc right join category c on c.category_id = fc.category_id
+from film_category fc
+         right join category c on c.category_id = fc.category_id
 group by c.category_id, name
 order by n_films desc;
 
 -- 9. Find the number of categories for each film
 
 select f.film_id, f.title, count(category_id) as n_categories
-from film_category fc right join film f on f.film_id = fc.film_id
+from film_category fc
+         right join film f on f.film_id = fc.film_id
 group by f.film_id, f.title
 order by n_categories;
 
 -- 10. Find the number of films
+select count(*)
+from film;
 
 -- 11. Find the number of different languages in the language table
+select count(*)
+from language;
 
 -- 12. Find the number of different languages in the film table
+select count(distinct language_id)
+from film;
 
 -- 13. Find the categories without films
+select c.name
+from category c
+         left join film_category fc on c.category_id = fc.category_id
+where fc.category_id is null;
+
+select category_id, name
+from category
+except
+select c.category_id, name
+from film_category fc
+         inner join category c on c.category_id = fc.category_id;
+
+select name
+from category
+where category_id not in (select category_id
+                          from film_category);
 
 -- 14. category with the largest number of films
+
+select c.category_id, name, count(film_id) as n_films
+from category c
+         left join film_category fc on c.category_id = fc.category_id
+group by c.category_id, name
+order by n_films desc
+limit 1;
+
+with MAX_N_FILMS as (select max(n_films)
+                     from (select c.category_id, name, count(film_id) as n_films
+                           from category c
+                                    left join film_category fc
+                                              on c.category_id = fc.category_id
+                           group by c.category_id, name) as T)
+select c.category_id, name
+from category c
+         left join film_category fc on c.category_id = fc.category_id
+group by c.category_id, name
+having count(film_id) = (select * from MAX_N_FILMS);
+
+
+select c.category_id, name
+from category c
+         left join film_category fc on c.category_id = fc.category_id
+group by c.category_id, name
+having count(film_id) >= ALL (select count(film_id) as n_films
+                              from category c
+                                       left join film_category fc
+                                                 on c.category_id = fc.category_id
+                              group by c.category_id)
+
+with T as (select c.category_id, name, count(film_id) as n_films
+           from category c
+                    left join film_category fc
+                              on c.category_id = fc.category_id
+           group by c.category_id, name)
+select category_id, name
+from T
+where n_films >= ALL (select n_films from T);

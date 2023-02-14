@@ -238,6 +238,7 @@ having count(o.oid) > (select * from T2);
 | N   | F   | N     | N      | F       |
 | N   | N   | N     | N      | N       |
 
+
 ### Non-Scalar (Sub)queries
 
 - If a (sub-)query returns more than 1 row and/or more than 1 column, then it is **not** a scalar sub-query
@@ -343,8 +344,8 @@ having count(o.oid) > (select * from T2);
 - The following query is correct because we know for sure that `cid` in course cannot be `null`
 - So we can find courses that have never been offered in this way
     ```postgresql
-    insert into course(name, code, credits)
-    values ('Data Structures', 'DS', 3);
+    --insert into course(name, code, credits)
+    --values ('Data Structures', 'DS', 3);
     -- delete from course where code = 'DS';
     select *
     from course
@@ -356,8 +357,8 @@ having count(o.oid) > (select * from T2);
 - But trying to do something similar for instructors will create problems because `iid` in offering can be `null`
 - We need to explicitly discard `null` values in the sub-query in order for the query to return the correct results
     ```postgresql
-    insert into instructor(name, email, department)
-    values ('John', 'john@bbb.com', 'ECE');
+    --insert into instructor(name, email, department)
+    --values ('John', 'john@bbb.com', 'ECE');
     -- delete from instructor where name = 'John';
     select *
     from instructor
@@ -562,7 +563,7 @@ having count(o.oid) > (select * from T2);
             ```
 
    - It is also possible with a correlated sub-query, but it's less readable
-       - it reads as "select all course for which an offering doesn't exist"
+       - it reads as "select all courses for which an offering doesn't exist"
           ```postgresql
           select c.cid, name, code
           from course c
