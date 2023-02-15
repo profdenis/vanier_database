@@ -161,53 +161,44 @@ ALTER TABLE blog."user" ALTER COLUMN user_id ADD GENERATED ALWAYS AS IDENTITY (
 -- Data for Name: blogpost; Type: TABLE DATA; Schema: blog; Owner: vanierdb
 --
 
-COPY blog.blogpost (blogpost_id, title, contents, date, user_id) FROM stdin;
-1	select	how to use select statement	2023-02-14	1
-2	flask	intro to flask	2023-02-14	1
-\.
+INSERT INTO blog.blogpost (blogpost_id, title, contents, date, user_id) OVERRIDING SYSTEM VALUE VALUES (1, 'select', 'how to use select statement', '2023-02-14', 1);
+INSERT INTO blog.blogpost (blogpost_id, title, contents, date, user_id) OVERRIDING SYSTEM VALUE VALUES (2, 'flask', 'intro to flask', '2023-02-14', 1);
 
 
 --
 -- Data for Name: blogpost_topic; Type: TABLE DATA; Schema: blog; Owner: vanierdb
 --
 
-COPY blog.blogpost_topic (blogpost_id, topic_id) FROM stdin;
-1	1
-2	2
-2	1
-\.
+INSERT INTO blog.blogpost_topic (blogpost_id, topic_id) VALUES (1, 1);
+INSERT INTO blog.blogpost_topic (blogpost_id, topic_id) VALUES (2, 2);
+INSERT INTO blog.blogpost_topic (blogpost_id, topic_id) VALUES (2, 1);
 
 
 --
 -- Data for Name: comment; Type: TABLE DATA; Schema: blog; Owner: vanierdb
 --
 
-COPY blog.comment (comment_id, contents, date, blogpost_id, user_id, reply_to_id) FROM stdin;
-1	nice article	2023-02-14	1	2	\N
-2	thank you	2023-02-14	1	1	1
-3	needs more details	2023-02-14	2	2	\N
-4	you're welcome	2023-02-14	1	2	2
-\.
+INSERT INTO blog.comment (comment_id, contents, date, blogpost_id, user_id, reply_to_id) OVERRIDING SYSTEM VALUE VALUES (1, 'nice article', '2023-02-14', 1, 2, NULL);
+INSERT INTO blog.comment (comment_id, contents, date, blogpost_id, user_id, reply_to_id) OVERRIDING SYSTEM VALUE VALUES (2, 'thank you', '2023-02-14', 1, 1, 1);
+INSERT INTO blog.comment (comment_id, contents, date, blogpost_id, user_id, reply_to_id) OVERRIDING SYSTEM VALUE VALUES (3, 'needs more details', '2023-02-14', 2, 2, NULL);
+INSERT INTO blog.comment (comment_id, contents, date, blogpost_id, user_id, reply_to_id) OVERRIDING SYSTEM VALUE VALUES (4, 'you''re welcome', '2023-02-14', 1, 2, 2);
+INSERT INTO blog.comment (comment_id, contents, date, blogpost_id, user_id, reply_to_id) OVERRIDING SYSTEM VALUE VALUES (5, 'some other comment', '2023-02-15', 1, 1, NULL);
 
 
 --
 -- Data for Name: topic; Type: TABLE DATA; Schema: blog; Owner: vanierdb
 --
 
-COPY blog.topic (topic_id, name, description) FROM stdin;
-1	DB	Database
-2	Python	Python programming
-\.
+INSERT INTO blog.topic (topic_id, name, description) OVERRIDING SYSTEM VALUE VALUES (1, 'DB', 'Database');
+INSERT INTO blog.topic (topic_id, name, description) OVERRIDING SYSTEM VALUE VALUES (2, 'Python', 'Python programming');
 
 
 --
 -- Data for Name: user; Type: TABLE DATA; Schema: blog; Owner: vanierdb
 --
 
-COPY blog."user" (user_id, nickname, email) FROM stdin;
-1	denis	denis@example.com
-2	bob	bob@example.com
-\.
+INSERT INTO blog."user" (user_id, nickname, email) OVERRIDING SYSTEM VALUE VALUES (1, 'denis', 'denis@example.com');
+INSERT INTO blog."user" (user_id, nickname, email) OVERRIDING SYSTEM VALUE VALUES (2, 'bob', 'bob@example.com');
 
 
 --
@@ -221,7 +212,7 @@ SELECT pg_catalog.setval('blog.blogpost_blogpost_id_seq', 2, true);
 -- Name: comment_comment_id_seq; Type: SEQUENCE SET; Schema: blog; Owner: vanierdb
 --
 
-SELECT pg_catalog.setval('blog.comment_comment_id_seq', 4, true);
+SELECT pg_catalog.setval('blog.comment_comment_id_seq', 5, true);
 
 
 --
