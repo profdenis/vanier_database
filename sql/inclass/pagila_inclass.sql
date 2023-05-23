@@ -1,3 +1,5 @@
+set search_path to pagila;
+
 -- 1. Find films at least 2-hour long
 select *
 from film

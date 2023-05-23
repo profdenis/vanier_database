@@ -13,7 +13,7 @@ set search_path to university;
    group by year;
    ```
 
-2. Same results because `oid` cannot be bull
+2. Same results because `oid` cannot be null
    ```postgresql
    select year, count(*)
    from offering

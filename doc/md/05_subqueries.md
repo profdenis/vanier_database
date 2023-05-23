@@ -95,7 +95,7 @@ set search_path to university;
 1. Find courses that have been offered more often than the `DB` course
     1. Find the number of times that `DB` has been offered
         ```postgresql
-        select count(c.cid)
+        select count(o.cid)
         from course c
                left join offering o on c.cid = o.cid
         where c.code = 'DB';
@@ -117,7 +117,7 @@ set search_path to university;
         from course c
                  left join offering o on c.cid = o.cid
         group by c.cid, c.code
-        having count(o.oid) > (select count(c.cid)
+        having count(o.oid) > (select count(o.cid)
                                from course c
                                         left join offering o on c.cid = o.cid
                                where c.code = 'DB'
@@ -148,6 +148,13 @@ set search_path to university;
           from course c
                    left join offering o on c.cid = o.cid
           group by c.cid) as T;
+   
+   with T as (select count(o.oid) as n_offerings
+          from course c
+                   left join offering o on c.cid = o.cid
+          group by c.cid)
+   select round(avg(n_offerings), 2) as avg_n_offerings
+   from T;
     ```
 
 3. Find the courses that have been offered more often than the average (number of times each course has been offered)
@@ -170,17 +177,26 @@ set search_path to university;
 - We (kind of) define temporary tables before the main `select` query begins
 - Then we use the temporary tables in the main `select` query as if they were tables stored in the database
 ```postgresql
-with T2 as (
-    select avg(n_offerings) as avg_n_offerings
-    from (select c.cid, c.code, count(o.oid) as n_offerings
-          from course c
-                   left join offering o on c.cid = o.cid
-          group by c.cid) as T1)
+with T2 as (select avg(n_offerings) as avg_n_offerings
+            from (select c.cid, c.code, count(o.oid) as n_offerings
+                  from course c
+                           left join offering o on c.cid = o.cid
+                  group by c.cid) as T1)
 select c.cid, c.code
 from course c
          left join offering o on c.cid = o.cid
 group by c.cid
 having count(o.oid) > (select * from T2);
+
+with n_offerings_per_course as
+         (select c.cid, c.code, count(o.oid) as n_offerings
+          from course c
+                   left join offering o on c.cid = o.cid
+          group by c.cid)
+select cid, code
+from n_offerings_per_course
+where n_offerings > (select avg(n_offerings) as avg_n_offerings
+                     from n_offerings_per_course);
 ```
 
 - Don't *over*use the `with` syntax

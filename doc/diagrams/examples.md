@@ -21,6 +21,13 @@
 
 ```plantuml
 @startuml
+entity Call {
+    call_id
+    --
+    phone
+    datetime
+}
+
 entity Contact {
     contact_id
     --
@@ -28,13 +35,6 @@ entity Contact {
     phone
     address
     email
-}
-
-entity Call {
-    call_id
-    --
-    phone
-    datetime
 }
 
 Call "*" -- "0..1" Contact : "            "
@@ -177,7 +177,7 @@ entity Grade {
 Student "*" -- "0..1" Lecturer: < advises
 Student "1" - "*" Grade: < given to
 Course "1" -- "*" Grade: < given for
-Lecturer "   1" - "   *" Grade: < given by
+Lecturer "    1" - "    *" Grade: < given by
 @enduml
 ```
 

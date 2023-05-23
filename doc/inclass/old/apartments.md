@@ -18,15 +18,15 @@
 - Following a similar reasoning, the asking monthly rent is not necessarily the
   same as the current rent.
 
-# Conceptual Diagram
+## Conceptual Diagram
 
 ```plantuml
+@startuml
 
+skinparam linetype ortho
 skinparam classFontSize 20
 skinparam classFontName Source Code Pro
 hide empty methods
-
-@startuml
 
 entity Apartment {
     number
@@ -57,26 +57,27 @@ entity Lease {
 }
 
 <> apartment_building
-Apartment "1..*" -- apartment_building: > located in
+Apartment "1..*" - apartment_building : > located in
 apartment_building -- "1" Building
  
 <> apartment_tenant
 Apartment "*" -- apartment_tenant
 apartment_tenant -- "*" Tenant: < rents
-apartment_tenant .. Lease
+Lease .apartment_tenant
 
 @enduml
 ```
 
-# Logical Diagram
+## Logical Diagram
 
 ```plantuml
 
+@startuml
+
+skinparam linetype ortho
 skinparam classFontSize 20
 skinparam classFontName Source Code Pro
 hide empty methods
-
-@startuml
 
 entity Apartment {
     * number: integer
@@ -106,27 +107,27 @@ entity Lease {
     end_of_lease: date
 }
 
-<> apartment_building
-Apartment "1..*" -- apartment_building: > located in
-apartment_building -- "1" Building
+
+Apartment "1..*" --* "1" Building : > located in
+
  
 <> apartment_tenant
 Apartment "*" -- apartment_tenant
 apartment_tenant -- "*" Tenant: < rents
-apartment_tenant .. Lease
+Lease . apartment_tenant
 
 @enduml
 ```
 
-# Physical Diagram
+## Physical Diagram
 
 ```plantuml
+@startuml
 
+skinparam linetype ortho
 skinparam classFontSize 20
 skinparam classFontName Source Code Pro
 hide empty methods
-
-@startuml
 
 entity Apartment {
     * building_id: integer <<fk>>
@@ -168,11 +169,128 @@ entity Lease {
 'keep unique constraint as an example only
 '<<unique(tenant_id, building_id, number, end_of_lease)>>
 
-Apartment "1..*" -- "1" Building: > located in
+Apartment "1..*" --* "1" Building: > located in
 
 Apartment "1" -- "*" Lease
 Lease "*" -- "1" Tenant: < rents
 
 
+@enduml
+```
+
+# Alternate diagrams
+
+- *Contract* instead of *Lease*
+- and to support many tenants connected to the same contract if multiple tenants sign the contract
+
+## Logical Diagram
+
+```plantuml
+
+@startuml
+
+skinparam linetype ortho
+skinparam classFontSize 20
+skinparam classFontName Source Code Pro
+hide empty methods
+
+entity Apartment {
+    * number: integer
+    asking_rent: numeric(10, 2)
+    available_on: date
+}
+
+entity Building {
+    * building_id: integer <<generated>> <<pk>>
+    --
+    name: text
+    * address: text
+}
+
+entity Tenant {
+    * tenant_id: integer <<generated>> <<pk>>
+    --
+    * first_name: text
+    * last_name: text
+    * home_phone: text
+    employer
+    work_phone
+}
+
+entity Contract {
+    contract_id: integer <<generated>> <<pk>>
+    --
+    monthly_rent: numeric(10, 2)
+    end_of_lease: date
+}
+
+Apartment "1..*" --* "1 " Building: > located in
+
+Apartment "1" - "*" Contract
+
+Contract "*" -- "*" Tenant: < signs 
+
+@enduml
+```
+
+## Physical Diagram
+
+```plantuml
+
+@startuml
+
+skinparam linetype ortho
+skinparam classFontSize 20
+skinparam classFontName Source Code Pro
+hide empty methods
+
+entity Apartment {
+    * building_id: integer <<fk>>
+    * number: integer
+    --
+    asking_rent: numeric(10, 2)
+    available_on: date
+    --
+    <<pk(building_id, number)>>
+}
+
+entity Building {
+    * building_id: integer <<generated>> <<pk>>
+    --
+    name: text
+    * address: text
+}
+
+entity Tenant {
+    * tenant_id: integer <<generated>> <<pk>>
+    --
+    * first_name: text
+    * last_name: text
+    * home_phone: text
+    employer
+    work_phone
+}
+
+entity Contract {
+    * contract_id: integer <<generated>> <<pk>>
+    --
+    * monthly_rent: numeric(10, 2)
+    end_of_lease: date
+    * building_id: integer
+    * number: integer
+    --
+    <<fk Apartment(building_id, number)>>
+}
+
+entity contract_tenant {
+    * contract_id: integer <<fk>>
+    * tenant_id: integer <<fk>>
+}
+
+Apartment "1..*" --* "1" Building: > located in
+
+Apartment "1   " -- "*" Contract
+contract_tenant "*" -- "1" Contract 
+contract_tenant "*" -- "1" Tenant 
 @enduml
 ```

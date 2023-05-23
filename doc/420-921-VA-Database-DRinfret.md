@@ -2,12 +2,13 @@
 
 # Faculty of Continuing Education
 
-|                  |                 |              |                              |
-|------------------|-----------------|--------------|------------------------------|
-| **Course title** | Database        | **Teacher**  | Denis Rinfret                |
-| **Course \#**    | 420-921-VA      | **Email**    | rinfretd@vaniercollege.qc.ca |
-| **Section**      | 87411           | **Semester** | Jan 17 to Apr 5 2023         |
-| **Schedule**     | As shown on LÉA | **Room**     | Online (Zoom)                |
+|                  |            |              |                              |
+|------------------|------------|--------------|------------------------------|
+| **Course title** | Database   | **Teacher**  | Denis Rinfret                |
+| **Course \#**    | 420-921-VA | **Email**    | rinfretd@vaniercollege.qc.ca |
+| **Section**      | 01222      | **Semester** | May 2 to June 22 2023        |
+| **Ponderation**  | 3-4-3      | **Room**     | Online (Zoom)                |
+|                  |            | **Schedule** | As shown on LÉA              |
 
 ## Course Description
 
@@ -16,8 +17,10 @@ development. Using a relational database management system (RDBMS), students
 will learn to define, manipulate, and query a database. This course covers
 relational databases and the entity-relationship (ER) model, along with the
 Structured Query Language (SQL). In addition, students will learn how to
-establish data confidentiality (management of authorization), to process data (
-stored procedure and scripts), and to save and restore a database.
+establish data confidentiality (management of authorization), to process data
+(stored procedure and scripts), and to save and restore a database.
+
+### Course ponderation (theory, lab, and homework hours): 3-4-3
 
 ## Course's role in the program
 
@@ -61,27 +64,25 @@ tutorials. The list will be updated throughout the course as needed.
 
 ## Weekly breakdown of course activities (tentative)
 
-| Week    | Topics                              | Assessments              |
-|---------|-------------------------------------|--------------------------|
-| 1, 2    | Relational model, Basic SQL queries |                          |
-| 3, 4    | ERDs, DB creation                   |                          |
-| 5, 6    | Advanced SQL queries                | Assignment 1 (Feb 23)    |
-| 7, 8, 9 | Entity-Relationship modelling       | Project proposal (Mar 2) |
-| 10      | User management, triggers, backups  | Assignment 2 (Mar 23)    |
-| 11      | Project work                        | Exam (Mar 30)            |
-| 12      | Project work                        | Project (Apr 5)          |
+| Week | Topics                              | Assessments               |
+|------|-------------------------------------|---------------------------|
+| 1, 2 | Relational model, Basic SQL queries |                           |
+| 3    | ERDs, DB creation                   | Assignment 1 (May 21)     |
+| 4    | Advanced SQL queries                | Project proposal (May 28) |
+| 5, 6 | Entity-Relationship modelling       | Assignment 2 (June 11)    |
+| 7    | User management, triggers, backups  | Exam (June 15)            |
+| 8    | Project work                        | Project (June 22)         |
+
 
 ## Grading Scheme
 
 | Component     | Grade | Approx. due date |
 |---------------|-------|------------------|
-| Assignment 1  | 20%   | February 23      |
-| Assignment 2  | 20%   | March 23         |
-| Exam          | 30%   | March 30         |
-| Project (LIA) | 30%   | April 5          |
+| Assignment 1  | 20%   | May 21           |
+| Assignment 2  | 20%   | June 11          |
+| Exam          | 30%   | June 15          |
+| Project (LIA) | 30%   | June 22          |
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 
 ### Late work
 
@@ -89,6 +90,9 @@ A 10% penalty for each late day will be applied on assignments submitted
 after the deadline. The project (LIA) and the exam cannot be submitted late.
 Exceptions can only be granted only according to the College policies and
 procedures.
+
+<br>
+<br>
 
 ## Project (Learning Integration Assessment)
 
@@ -138,6 +142,9 @@ deliverables:
 - Deliverable 1: Project proposal
 - Deliverable 2: Project Design and implementation
 - Deliverable 3: Project report and presentation
+
+<br>
+<br>
 
 ### SPLI
 
@@ -206,7 +213,3 @@ from what is presented in referenced material. Written and spoken class
 material may be part of exams. There is no grade for attendance, but
 students are responsible for in-class work and assessments whether they
 are present or absent.
-
-
-
-

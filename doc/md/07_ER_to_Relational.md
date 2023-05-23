@@ -11,14 +11,19 @@
 
 
 - **Table schema**:
-    - *detailed form*: table name and set of column names plus data types and primary keys, and sometimes other
+    - *detailed form*: table name and set of column names plus data types and
+      primary keys, and sometimes other
       constraints such as `NOT NULL`
         - columns part of the primary key are either underlined or capitalized
-            - to avoid issues with some DBMS, write table and column names with lowercase characters only in
+            - to avoid issues with some DBMS, write table and column names with
+              lowercase characters only in
               the `CREATE TABLE` statements
         - columns part of a foreign key are followed by a *
-        - *example*: `employee(EMP_ID integer, name text, address text, dept_id* integer)`
+        -
+        *example*: `employee(EMP_ID integer, name text, address text, dept_id* integer)`
     - other forms in between the previous 2 are also possible
+- **Physical diagram**: starting from a logical diagram, convert all the
+  relationships into foreign keys and additional entities (or tables) if needed
 
 ### Steps
 
@@ -29,21 +34,29 @@
 
 2. Every many-many relationship will be a table
     - attributes of the relationship are added to the table schema
-    - add a foreign key column (or columns) for each table involved in the relationship
-    - choose a primary key from the current columns, or add a new primary key columns (such as an ID column)
+    - add a foreign key column (or columns) for each table involved in the
+      relationship
+    - choose a primary key from the current columns, or add a new primary key
+      columns (such as an ID column)
 
-**Advice**: count the number of entities in the ER diagram, add the number of many-many relationships to it, and this
+**Advice**: count the number of entities in the ER diagram, add the number of
+many-many relationships to it, and this
 number will be the number of tables in the relational schema
 
 3. Many-one relationships will **NOT** become tables
-    - instead, add a foreign key column on the many side referencing the primary on the one side
-    - if the one side is actually *exactly one*, then make the foreign key column `NOT NULL`
+    - instead, add a foreign key column on the many side referencing the primary
+      on the one side
+    - if the one side is actually *exactly one*, then make the foreign key
+      column `NOT NULL`
 
 4. One-one relationships will **NOT** become tables
-    - treat the one-one relationaships similarly to many-one relationships, except that you bring only one of the
+    - treat the one-one relationaships similarly to many-one relationships,
+      except that you bring only one of the
       primary keys as a foreign key on the other side
-    - there's no perfect rule about which side to choose, it depends on the context
-    - if it is an exactly-one-at-most-one relationship, then usually the foreign key will be on the at-most-one side (
+    - there's no perfect rule about which side to choose, it depends on the
+      context
+    - if it is an exactly-one-at-most-one relationship, then usually the foreign
+      key will be on the at-most-one side (
       pointing to the exactly-one side)
 
 ### Examples
@@ -54,6 +67,8 @@ number will be the number of tables in the relational schema
 
 - `contact(CONTACT_ID, name, phone, address, email)`
 - `call(CALL_ID, phone, date, time, contact_id*)`
+
+![contacts alternative notation](../images/contacts_phys_uml.png)
 
 #### Simple Bank
 
@@ -82,6 +97,8 @@ number will be the number of tables in the relational schema
 - `Course(CODE, name, credits)`
 - `Grade(GRADE_ID, student_id* NOT NULL, lecturer_id* NOT NULL, course_code* NOT NULL, semester, year, result)`
 
+![College_phys_uml.png](../images/College_phys_uml.png)
+
 #### Music
 
 ![Music.png](../images/Music.png)
@@ -94,6 +111,8 @@ number will be the number of tables in the relational schema
 - `writer_work(WRITER_ID*, WORK_ID*, percentage)`
 - `performance(PERFORMANCE_ID, act_id*, concert_id*, work_id*)`
 
+![Music_phys_uml.png](../images/Music_phys_uml.png)
+
 #### Appartments
 
 ![ER_apartment_building_improved.png](../images/ER_apartment_building_improved.png)
@@ -103,3 +122,5 @@ number will be the number of tables in the relational schema
 - `tenant(TENANT_ID, first_name, last_name, employer, work_phone)`
 - `lease(LEASE_ID, building_id*, apartment_number*, rent, end_of_lease)`
 - `tenant_lease(tenant_id*, lease_id*)`
+
+![ER_apartment_building_phys_uml.png](../images/ER_apartment_building_phys_uml.png)

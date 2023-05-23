@@ -12,8 +12,7 @@ SET search_path TO contacts;
    FROM call;
    ```
 
-2. Count the number of calls for each phone number in the `call` table, and rename the `count` column to something more
-   appropriate.
+2. Count the number of calls for each phone number in the `call` table, and rename the `count` column to something more appropriate.
    ```postgresql
    SELECT phone, COUNT(*) AS n_calls
    FROM call
@@ -29,8 +28,7 @@ SET search_path TO contacts;
    ORDER BY 2 DESC;
    ```
 
-4. Count the number of calls for each phone number in the `call` table, and keep only the phone numbers with more than 1
-   call.
+4. Count the number of calls for each phone number in the `call` table, and keep only the phone numbers with more than 1 call.
     - use `HAVING` with a condition
     - `HAVING` is similar to `WHERE`, but it is executed after the `GROUP BY`, while the `WHERE` is executed after
       the `FROM`, but before the `GROUP BY`
