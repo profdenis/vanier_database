@@ -75,7 +75,7 @@ BEGIN
 END;
 $$;
 
-create trigger last_name_changes
+create trigger name_changes
     before update
     on person
     for each row

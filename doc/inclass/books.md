@@ -42,6 +42,7 @@ entity Book {
     title
     pub_date
     isbn
+   
 }
 
 entity Author {
@@ -93,6 +94,9 @@ entity Book {
     * title: text
     * pub_date: date
     isbn: text
+    * retail_price: decimal(6, 2)
+    sale_price: decimal(6, 2)
+    * quantity: integer <<default 0>>
 }
 
 entity Author {
@@ -131,6 +135,34 @@ Chapter "0..*" --* "1" Book
 
 Tag "0..*" -- "0..*" Book
 
+entity Customer {
+    * customer_id: integer <<generated>> <<pk>>
+    --
+    * name: text
+    * email: text
+}
+
+entity Order {
+    * order_id: integer <<generated>> <<pk>>
+    --
+    * subtotal: decimal(8, 2)
+    * shipping: decimal(8, 2)
+    * taxes: decimal(8, 2)
+    * total: decimal(8, 2)
+}
+
+entity book_order {
+    * book_price: decimal(6, 2) <<default 0>>
+    * book_quantity: integer <<default 1>>
+}
+
+Customer "1" -- "0..*" Order
+<> book_order_diamond
+Book "*" - book_order_diamond
+book_order_diamond - "*" Order
+
+book_order .. book_order_diamond
+
 @enduml
 ```
 
@@ -144,6 +176,9 @@ entity Book {
     * title: text
     * pub_date: date
     isbn: text
+    * retail_price: decimal(6, 2)
+    sale_price: decimal(6, 2)
+    * quantity: integer <<default 0>>
     --
     publisher_id: integer <<fk>>
 }
@@ -202,6 +237,41 @@ entity tag_book {
 }
 tag_book "0..*" - "1" Book
 tag_book "0..*" -- "1" Tag
+
+
+entity Customer {
+    * customer_id: integer <<generated>> <<pk>>
+    --
+    * name: text
+    * email: text
+}
+
+entity Order {
+    * order_id: integer <<generated>> <<pk>>
+    --
+    * subtotal: decimal(8, 2)
+    * shipping: decimal(8, 2)
+    * taxes: decimal(8, 2)
+    * total: decimal(8, 2)
+    --
+    * customer_id: integer <<fk>
+}
+
+entity book_order {
+    * book_price: decimal(6, 2) <<default 0>>
+    * book_quantity: integer <<default 1>>
+    --
+    * book_id: integer <<fk>>
+    * order_id: integer <<fk>>
+    --
+    <<pk(book_id, order_id)>>
+}
+
+Customer "1" -- "0..*" Order
+
+Book "1" - "*" book_order
+book_order "*" -- "1" Order
+
 
 @enduml
 ```
