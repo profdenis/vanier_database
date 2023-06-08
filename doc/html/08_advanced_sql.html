@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>420-921-VA Database</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="github.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">420-921-VA Database</h1>
+</header>
+<h1 id="advanced-sql">Advanced SQL</h1>
+<h2 id="recursive-queries">Recursive queries</h2>
+<h3 id="postgresql-syntax">PostgreSQL syntax</h3>
+<ul>
+<li>Basic syntax (https://www.postgresqltutorial.com/postgresql-recursive-query/):</li>
+</ul>
+<pre><code>WITH RECURSIVE cte_name AS(
+    CTE_query_definition -- non-recursive term
+    UNION [ALL]
+    CTE_query definion  -- recursive term
+) SELECT * FROM cte_name;</code></pre>
+<ul>
+<li>CTE: <em>common table expression</em></li>
+<li>Since recursive queries are (of course) recursive, we need a <em>base case</em>, called a <em>non-recursive term</em> here</li>
+<li>Then we need 1 or more recursive terms</li>
+<li><code>with recursive</code> works, at the beginning, a bit like the <code>with</code> queries ( without <code>recursive</code>)</li>
+<li>It will evaluate the non-recursive term first, to initialise the result set</li>
+<li>Then it will start evaluating the recursive term multiple times, in a loop, until no new rows are added to the results
+<ul>
+<li>each time it evaluates the recursive term, it will try to add new rows to the result set</li>
+<li>the recursive term is correlated to the <code>cte_name</code></li>
+</ul></li>
+</ul>
+<h3 id="example-on-the-blogpost-db">Example on the blogpost DB</h3>
+<figure>
+<img src="../images/blogpost.png" alt="" /><figcaption>Blogpost DB</figcaption>
+</figure>
+<ul>
+<li>We want to find all the replies to a given comment recursively
+<ul>
+<li>we don’t want only the direct replies, but also all the replies of the replies</li>
+</ul></li>
+<li>First attempt to retrieve only the direct replies:</li>
+</ul>
+<pre class="postgresql"><code>set search_path to blog3;
+select comment_id, contents, reply_to_id, user_id
+from comment
+where blogpost_id = 1 and reply_to_id is null;</code></pre>
+<ul>
+<li>To get the replies to the replies, we need to use the <code>with recurrsive</code> syntax described above</li>
+</ul>
+<pre class="postgresql"><code>with recursive replies as (select comment_id, contents, reply_to_id, user_id
+                           from comment
+                           where reply_to_id = 1
+                           union
+                           select comment.comment_id,
+                                  comment.contents,
+                                  comment.reply_to_id,
+                                  comment.user_id
+                           from comment
+                                    inner join replies
+                                               on replies.comment_id = comment.reply_to_id)
+select *
+from replies;</code></pre>
+<ul>
+<li>If we need to include the original comment we are starting with in the result, we need a slightly different non-recursive term
+<ul>
+<li>use <code>comment_id = 1</code> instead of <code>reply_to_id = 1</code></li>
+</ul></li>
+<li><ul>
+<li>If we need to include the comments starting with a blog post, we need a slightly different non-recursive term
+<ul>
+<li>use <code>blogpost_id = 1</code> instead of <code>reply_to_id = 1</code></li>
+</ul></li>
+</ul></li>
+</ul>
+<pre class="postgresql"><code>with recursive replies as (select comment_id, contents, reply_to_id, user_id
+                           from comment
+                           where blogpost_id = 1
+                           union
+                           select comment.comment_id,
+                                  comment.contents,
+                                  comment.reply_to_id,
+                                  comment.user_id
+                           from comment
+                                    inner join replies
+                                               on replies.comment_id = comment.reply_to_id)
+select *
+from replies;</code></pre>
+<h2 id="views">Views</h2>
+<ul>
+<li>Views are basically virtual tables</li>
+<li>They are a layer on top of other tables</li>
+<li>Along with access control, they can be used to ensure different levels of privacy and security</li>
+<li>For example, the human resources department usually needs to know about their employees’ social insurance numbers ( SINs)
+<ul>
+<li>to report to the different governments for income taxes, etc…</li>
+</ul></li>
+<li>But the IT services (except maybe the top-level DBAs), marketing, etc… departments should not have access to SINs</li>
+<li>Access to the base employee table, with SINs, can be granted to some employees (or to some roles if using role-based access control)</li>
+<li>A view on top of the employee table can be created without the SINs, and access to other employees can be granted on the view</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">drop</span> <span class="kw">schema</span> <span class="cf">if</span> <span class="kw">exists</span> company <span class="kw">cascade</span>;</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">create</span> <span class="kw">schema</span> company;</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="kw">set</span> search_path <span class="kw">to</span> company;</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="kw">create</span> <span class="kw">table</span> employee_priv</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>(</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>    eid   <span class="dt">integer</span> <span class="kw">generated</span> always <span class="kw">as</span> identity <span class="kw">primary</span> <span class="kw">key</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    <span class="fu">sin</span>   <span class="dt">CHAR</span>(<span class="dv">9</span>) <span class="kw">not</span> <span class="kw">null</span> <span class="kw">unique</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>    name  text    <span class="kw">not</span> <span class="kw">null</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>    phone text</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>);</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a><span class="kw">insert</span> <span class="kw">into</span> employee_priv(<span class="fu">sin</span>, name, phone)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="kw">values</span> (<span class="st">&#39;123456789&#39;</span>, <span class="st">&#39;Denis&#39;</span>, <span class="st">&#39;123-456-7890&#39;</span>),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>       (<span class="st">&#39;987654321&#39;</span>, <span class="st">&#39;Jane&#39;</span>, <span class="st">&#39;987-654-3210&#39;</span>);</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="kw">from</span> employee_priv;</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">create</span> <span class="kw">or</span> <span class="kw">replace</span> <span class="kw">view</span> employee <span class="kw">AS</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">select</span> eid, name, phone</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="kw">from</span> employee_priv;</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">from</span> employee;</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">--drop role hr;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="co">--drop role itsupport;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="kw">create</span> <span class="kw">role</span> hr;</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="kw">create</span> <span class="kw">role</span> itsupport;</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="kw">grant</span> <span class="kw">select</span>, <span class="kw">insert</span>, <span class="kw">update</span>, <span class="kw">delete</span> <span class="kw">on</span> employee_priv <span class="kw">to</span> hr;</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="kw">grant</span> <span class="kw">select</span> <span class="kw">on</span> employee <span class="kw">to</span> itsupport;</span></code></pre></div>
+<ul>
+<li><p>Creating users and roles are not completely standard across all relational DBMSs</p></li>
+<li><p>Every DBMS should have the grant and revoke SQL commands</p></li>
+<li><p><a href="https://www.postgresql.org/docs/current/sql-createuser.html">PostgreSQL - create user</a></p></li>
+<li><p><a href="https://www.postgresql.org/docs/current/sql-alteruser.html">PostgreSQL - alter user</a></p></li>
+<li><p><a href="https://www.postgresql.org/docs/current/sql-grant.html">PostgreSQL - grant</a></p></li>
+<li><p>Views can be created on commonly used queries, often including joins, to simplify writing other queries</p></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="kw">set</span> search_path <span class="kw">to</span> university;</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="kw">create</span> <span class="kw">or</span> <span class="kw">replace</span> <span class="kw">view</span> studentcourse <span class="kw">as</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="kw">select</span> s.sid,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>       s.name <span class="kw">as</span> student_name,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>       c.code,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>       c.name <span class="kw">as</span> course_name,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>       o.semester,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>       o.<span class="dt">year</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="kw">from</span> student s</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>         <span class="kw">left</span> <span class="kw">join</span> enrollment e <span class="kw">on</span> s.sid <span class="op">=</span> e.sid</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>         <span class="kw">inner</span> <span class="kw">join</span> offering o <span class="kw">on</span> e.<span class="kw">oid</span> <span class="op">=</span> o.<span class="kw">oid</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a>         <span class="kw">inner</span> <span class="kw">join</span> course c <span class="kw">on</span> o.cid <span class="op">=</span> c.cid;</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a><span class="kw">from</span> studentcourse;</span></code></pre></div>
+<ul>
+<li>We can restrict the view rows to a specific student, for a specific semester and year
+<ul>
+<li>could be useful when creating schedules</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">select</span> <span class="op">*</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">from</span> studentcourse</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">where</span> sid <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>  <span class="kw">and</span> semester <span class="op">=</span> <span class="st">&#39;W&#39;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>  <span class="kw">and</span> <span class="dt">year</span> <span class="op">=</span> <span class="dv">2020</span>;</span></code></pre></div>
+<h3 id="logical-data-independence">Logical Data Independence</h3>
+<ul>
+<li>Views can also be used to minimize the impact of schema changes in the database</li>
+<li>Suppose a table schema needs to be modified, possibly because a table needs to be decomposed to reduce redundancy because of a previously unknown functional dependency</li>
+<li>Then all queries using this table must be updated, which might be difficult to do</li>
+<li>A view with the same name and columns can be created to replace the old table
+<ul>
+<li>this view would be defined on the new tables replacing the old table</li>
+</ul></li>
+</ul>
+<h3 id="are-views-updatable">Are Views Updatable?</h3>
+<ul>
+<li>The best answer is <em>maybe, but probably not</em> (at least not in general)</li>
+<li>If we want to update an employee’s phone number, then we probably could do it through the view, since the view has a direct mapping to exactly 1 table, minus the SIN column
+<ul>
+<li>the update can be redirected to the <code>employee_priv</code> table</li>
+</ul></li>
+<li>But we cannot insert a new row in the employee view because the <code>employee_priv</code> table has the SIN column, which cannot be <code>null</code>
+<ul>
+<li>also, since it has the <code>unique</code> constraint, we cannot set it to a default value
+<ul>
+<li>actually, we could set it to a default value for at most 1 employee</li>
+</ul></li>
+</ul></li>
+<li>Similarly, trying to update the <code>studentcourse</code> view could be complicated because it comes from the join of 4 tables
+<ul>
+<li>updating 1 row in <code>studentcourse</code> could mean we need to modify multiples rows in 1 or many tables underneath
+<ul>
+<li>if we try to change a student’s enrollment in a course offering through the view, then we will need to update the enrollment table, which doesn’t show up directly in the view (its columns are not selected by the view query)</li>
+</ul></li>
+<li>same kind of problem for inserting rows</li>
+<li>it might be possible to do in some cases, but there’s no universal way to do it</li>
+</ul></li>
+<li>There are similar issues with deleting rows through a view
+<ul>
+<li>it is possible in some cases, but not all</li>
+</ul></li>
+</ul>
+<h2 id="constraints">Constraints</h2>
+<ul>
+<li>Constraints can be defined in <code>create table</code> statements</li>
+<li>Or added to existing tables with <code>alter table</code> statements</li>
+<li>Different types of constraints
+<ul>
+<li>Null or not null</li>
+<li>Primary key</li>
+<li>Unique</li>
+<li>Foreign key</li>
+<li>Check</li>
+<li>Domain</li>
+<li>Assertion</li>
+</ul></li>
+</ul>
+<h3 id="null-or-not-null-constraints"><code>null</code> or <code>not null</code> Constraints</h3>
+<ul>
+<li>A column can allow <code>null</code> values</li>
+<li>Or disallow them with <code>not null</code></li>
+<li>Default: allow <code>null</code> values</li>
+</ul>
+<h3 id="primary-key-constraints">Primary Key Constraints</h3>
+<ul>
+<li>A column or group of columns can be designated as the <code>primary key</code></li>
+<li>Primary key columns cannot be <code>null</code>
+<ul>
+<li>implicit <code>not null</code> for each primary key column</li>
+</ul></li>
+<li>We can use a column constraint if the primary key has only 1 column
+<ul>
+<li><code>sid integer primary key</code></li>
+</ul></li>
+<li>If the primary key has more than 1 column, we must use a table constraint
+<ul>
+<li>specified after all columns in the <code>create table</code> statement</li>
+<li><code>primary key(eid, sid)</code></li>
+</ul></li>
+</ul>
+<h3 id="unique-constraints">Unique Constraints</h3>
+<ul>
+<li>Like primary keys, but for candidate (secondary) keys</li>
+<li>Defined in the same way, but with <code>unique</code> instead of <code>primary key</code></li>
+<li><em>Example</em>:
+<ul>
+<li>adding a <code>unique</code> constraint to the <code>code</code> column of the <code>course</code> table</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">set</span> search_path <span class="kw">to</span> university;</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="co">-- alter table course drop constraint course_code_key;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="kw">alter</span> <span class="kw">table</span> course</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    <span class="kw">add</span> <span class="kw">unique</span> (code);</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">insert</span> <span class="kw">into</span> course(name, code, credits)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="kw">values</span> (<span class="st">&#39;Data Structures&#39;</span>, <span class="st">&#39;DS&#39;</span>, <span class="dv">3</span>);</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="co">-- delete from course where code = &#39;DS&#39;;</span></span></code></pre></div>
+<h3 id="foreign-key-constraints">Foreign Key Constraints</h3>
+<ul>
+<li>References to other tables</li>
+<li>Usually refers to primary keys in other tables</li>
+<li>Usually created to represent relationships when translating an ER diagram into a relational schema</li>
+<li>A column or group of columns can be references to a column or group of columns in another table</li>
+<li>We can use a column constraint if the foreign key has only 1 column
+<ul>
+<li><code>sid integer references student(sid)</code></li>
+</ul></li>
+<li>If the foreign key has more than 1 column, we must use a table constraint
+<ul>
+<li>specified after all columns in the <code>create table</code> statement</li>
+<li><code>foreign key(eid, sid) references enrollment(eid, sid)</code></li>
+</ul></li>
+</ul>
+<h3 id="fk-constraints-policy">FK Constraints Policy</h3>
+<ul>
+<li>When we insert a new row in a table with a foreign key, the value we specify for the foreign key column(s) must exists in the other table we refer to
+<ul>
+<li>this is often called a <strong>referential integrity constraint</strong>
+<ul>
+<li>this usually corresponds to a <em>many-exactly-one</em> relationship</li>
+</ul></li>
+<li>exception: if we allow <code>null</code> values for the foreign key column(s), then <code>null</code> values don’t have to exist in the other table
+<ul>
+<li>and <code>null</code> values usually won’t exist because the column(s) the FK refers to will usually be primary key columns</li>
+<li>this usually corresponds to a <em>many-at-most-one</em> relationship</li>
+</ul></li>
+</ul></li>
+<li>But what happens when we delete or update a row in the table the FK refers to?
+<ul>
+<li>If the value the FK column(s) refers to doesn’t exist anymore, what do we do?</li>
+</ul></li>
+<li>In the SQL standards, the valid actions are
+<ul>
+<li><code>RESTRICT</code>, <code>CASCADE</code>, <code>SET NULL</code>, <code>NO ACTION</code> and <code>SET DEFAULT</code></li>
+</ul></li>
+<li>Not all valid actions are implemented in all DBMSs</li>
+<li>The default FK policy is <code>RESTRICT</code>
+<ul>
+<li>if performing the update or delete would leave “<em>orphan</em>” rows (rows that refer to non-existing values), then block the update or delete and return an error message</li>
+<li><code>NO ACTION</code> is a synonym for <code>RESTRICT</code></li>
+</ul></li>
+<li>If the <code>CASCADE</code> policy is set
+<ul>
+<li>then the changes are propagated to rows depending on the original row
+<ul>
+<li>if the row is deleted, then the rows depending on it will also be deleted (<strong>very dangerous</strong>)</li>
+<li>if the row is updated, then the rows depending on it will also be updated</li>
+</ul></li>
+</ul></li>
+<li>If the policy is set to <code>SET NULL</code> or <code>SET DEFAULT</code>, it will replace the FK column(s) values by the <code>null</code> or default value, if possible</li>
+</ul>
+<h3 id="check-constraints">Check Constraints</h3>
+<ul>
+<li>Check if an expression before performing an insert or update
+<ul>
+<li>if the expression is false, then the insert or update will abort</li>
+<li>otherwise, it will succeed</li>
+<li>be careful: if the expression evaluates to <code>null</code>, then the insert or update will succeed</li>
+</ul></li>
+<li>If the check constraints refers to only 1 column, it can be specified as a column constraint
+<ul>
+<li><code>score integer check(score &gt;= 0 and score &lt;= 100)</code></li>
+</ul></li>
+<li>If the check constraints refers to 2 or more columns, it must be specified as a table constraint
+<ul>
+<li><code>check(end_date &gt;= start_date)</code>
+<ul>
+<li>note that if any of the dates is <code>null</code>, the expression will be <code>null</code> and the check will pass</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="domain-constraints">Domain Constraints</h3>
+<ul>
+<li>A domain is used to restrict the possible values for a data type</li>
+<li>A domain
+<ul>
+<li>can have a default value</li>
+<li>can be defined with a <code>null</code> or <code>not null</code> constraint</li>
+<li>can have 1 or more check constraints</li>
+</ul></li>
+<li>A domain can be used to avoid repeating too many constraints, especially check constraints
+<ul>
+<li><code>create domain score as integer check(score &gt;= 0 and score &lt;= 100)</code></li>
+</ul></li>
+</ul>
+<h3 id="assertions">Assertions</h3>
+<ul>
+<li>General constraints that can apply to more than 1 row of a table or to columns of more than 1 table</li>
+<li>Like more general check constraints that are not limited to only 1 row</li>
+<li>Most DBMSs do not have full assertion support, even no assertion support at all</li>
+</ul>
+<h2 id="triggers">Triggers</h2>
+<ul>
+<li>Triggers are used in active databases</li>
+<li>They are similar to <em>events</em> in an <em>event-driven architecture</em></li>
+<li>A trigger usually executes a function on some specific event or events</li>
+<li>The function it executes is similar to an event handler
+<ul>
+<li>for example, in an HTML page, you can associate a JavaScript function to an <code>onclick</code> event on a button
+<ul>
+<li><code>&lt;button onclick="do_something()"&gt;Do something&lt;/button&gt;</code></li>
+</ul></li>
+</ul></li>
+<li>Triggers follow the <em>ECA structure</em> to define <em>active rules</em>
+<ul>
+<li><strong>E</strong>vent: signal (trigger) invoking the rule</li>
+<li><strong>C</strong>ondition: logical test, determines if the action will be carried out or not</li>
+<li><strong>A</strong>ction: code or function (in SQL, PL/SQL, or some other supported language) running on the DB</li>
+</ul></li>
+<li>Trigger support varies across DBMSs</li>
+</ul>
+<h3 id="when-to-use-triggers">When to Use Triggers</h3>
+<ul>
+<li>Triggers can be used to enforce constraints that cannot be enforced in other ways
+<ul>
+<li>if assertions are not supported, then similar functionality can be achieved with triggers</li>
+<li>but triggers are more powerful than assertions</li>
+</ul></li>
+<li>Triggers can be used for logging
+<ul>
+<li>if you want (or need) to keep change logs, then triggers can help</li>
+<li>normally, when inserts, updates and deletes are executed on the DB, no traces will be left</li>
+<li>create triggers to insert data in a log or history table (or tables)</li>
+<li>more details: https://en.wikipedia.org/wiki/Log_trigger</li>
+</ul></li>
+<li>Triggers can be used for many other things
+<ul>
+<li>to generate/update values for other columns</li>
+<li>to update a statistics table</li>
+<li>to audit sensitive data</li>
+<li>to send emails to DBAs on critical events</li>
+<li>to implement other business rules</li>
+</ul></li>
+<li>Similarly to event-driven programming in JavaScript or other programming languages, functions need to be associated to some events
+<ul>
+<li>the most common events are: <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code></li>
+<li>with 1 modifier (specified before the event): <code>BEFORE</code> or <code>AFTER</code></li>
+</ul></li>
+<li>The event can be triggered for each row or for the whole statement
+<ul>
+<li>a single <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code> statement can apply to 1 or multiple rows</li>
+<li>by default, we get a <em>statement-level</em> trigger</li>
+<li>if we specify <em>FOR EACH ROW</em>, then we get a <em>row-level</em> trigger</li>
+</ul></li>
+<li>For example, after inserting a new employee’s information in an <code>employee</code> table, we might want to automatically create an account to let the new employee log in on the company system
+<ul>
+<li>creating such an account probably necessitates inserting a row in an <code>account</code> table</li>
+<li>so we need an <code>AFTER INSERT</code> trigger for this</li>
+<li>note that sometimes, this functionality is handled by the front-end application, not the database</li>
+</ul></li>
+<li>Another example: we could have a <code>BEFORE DELETE</code> trigger to archive important deleted data
+<ul>
+<li>we could insert the deleted data in another table</li>
+<li>we could also record who deleted the data, and when it was deleted</li>
+</ul></li>
+<li>Unfortunately, trigger implementations vary in different DBMSs
+<ul>
+<li>Some support only subsets of the standard, some make small changes to it</li>
+</ul></li>
+<li>In PostgreSQL, triggers can be created with the following (simplified) syntax</li>
+</ul>
+<pre><code>CREATE TRIGGER trigger_name 
+{BEFORE | AFTER | INSTEAD OF} {event [OR ...]}
+   ON table_name
+   [FOR [EACH] {ROW | STATEMENT}]
+       EXECUTE PROCEDURE trigger_function</code></pre>
+<ul>
+<li>where <code>event</code> can be <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> or <code>TRUNCATE</code></li>
+<li>Refer to these for more details:
+<ul>
+<li><a href="https://www.postgresqltutorial.com/creating-first-trigger-postgresql/">https://www.postgresqltutorial.com/creating-first-trigger-postgresql/</a></li>
+<li><a href="https://www.postgresql.org/docs/14/sql-createtrigger.html">https://www.postgresql.org/docs/14/sql-createtrigger.html</a></li>
+<li><a href="https://www.postgresql.org/docs/14/triggers.html">https://www.postgresql.org/docs/14/triggers.html</a></li>
+</ul></li>
+<li>On MySQL/MariaDB, the basic syntax is</li>
+</ul>
+<pre><code>CREATE TRIGGER trigger_name
+{BEFORE | AFTER} {INSERT | UPDATE| DELETE }
+ON table_name FOR EACH ROW
+trigger_body;</code></pre>
+<ul>
+<li>Refer to these for more details:
+<ul>
+<li><a href="https://www.mysqltutorial.org/create-the-first-trigger-in-mysql.aspx">https://www.mysqltutorial.org/create-the-first-trigger-in-mysql.aspx</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/create-trigger.html">https://dev.mysql.com/doc/refman/8.0/en/create-trigger.html</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/trigger-syntax.html">https://dev.mysql.com/doc/refman/8.0/en/trigger-syntax.html</a></li>
+</ul></li>
+<li>On Oracle, triggers can be created using the following syntax</li>
+</ul>
+<pre><code>CREATE [OR REPLACE] TRIGGER trigger_name
+{BEFORE | AFTER } triggering_event ON table_name
+[FOR EACH ROW]
+[FOLLOWS | PRECEDES another_trigger]
+[ENABLE / DISABLE ]
+[WHEN condition]
+DECLARE
+    declaration statements
+BEGIN
+    executable statements
+EXCEPTION
+    exception_handling statements
+END;</code></pre>
+<ul>
+<li><p><a href="https://www.oracletutorial.com/plsql-tutorial/oracle-trigger/">https://www.oracletutorial.com/plsql-tutorial/oracle-trigger/</a></p></li>
+<li><p>To make good use of triggers, we need to write functions or procedures in some programming language</p>
+<ul>
+<li>PL/SQL (programming language for SQL) is supported in some form in most relational databases</li>
+<li>or some other supported programming language, such as C
+<ul>
+<li>PostgreSQL supports <em>user-defined types (UDT)</em> and <em>user defined functions (UDF)</em></li>
+<li>UDF can be defined in PL/SQL or C</li>
+<li>UDF can be used for triggers</li>
+</ul></li>
+<li>other programming languages support programming languages in different ways</li>
+</ul></li>
+</ul>
+</body>
+</html>

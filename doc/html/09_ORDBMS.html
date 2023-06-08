@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>420-921-VA Database</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="github.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">420-921-VA Database</h1>
+</header>
+<h1 id="object-relational-dbms">Object-Relational DBMS</h1>
+<h2 id="normalized-contacts">Normalized Contacts</h2>
+<h3 id="contacts1-relational-schema"><code>contacts1</code> Relational Schema</h3>
+<pre class="postgresql"><code>DROP SCHEMA IF EXISTS contacts1 CASCADE;
+CREATE SCHEMA contacts1;
+SET search_path TO contacts1;
+
+CREATE TABLE users (
+    uid INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    username VARCHAR(15) NOT NULL,
+    email TEXT NOT NULL,
+    firstname TEXT,
+    lastname TEXT,
+    emergency_contact TEXT
+);</code></pre>
+<pre class="postgresql"><code>INSERT INTO users (username, email, emergency_contact)
+    VALUES (&#39;denis&#39;, &#39;denis.rinfret@example.com&#39;, &#39;help@example.com&#39;),
+            (&#39;minh&#39;, &#39;minh@example.com&#39;, &#39;contact@example.com&#39;);</code></pre>
+<pre class="postgresql"><code>SELECT * FROM users;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+<th>
+firstname
+</th>
+<th>
+lastname
+</th>
+<th>
+emergency_contact
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+help@example.com
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+contact@example.com
+</td>
+</tr>
+</table>
+<h3 id="what-do-we-need-to-do-to-allow-more-than-1-contact-per-user">What do we need to do to allow more than 1 contact per user?</h3>
+<ol type="1">
+<li>If the number of contacts is fixed, say <code>n</code> contacts, then we could have <code>n</code> contacts columns, as long as <code>n</code> is small.</li>
+<li>But if <code>n</code> is not small or if <code>n</code> is unknown, then we must have another table, a <code>contacts</code> table, to preserve the <em>first normal form</em>.</li>
+<li>The first normal form says that each column value must be <em>atomic</em>.</li>
+</ol>
+<h3 id="contacts2-relational-schema"><code>contacts2</code> Relational Schema</h3>
+<pre class="postgresql"><code>DROP SCHEMA IF EXISTS contacts2 CASCADE;
+CREATE SCHEMA contacts2;
+SET search_path TO contacts2;
+
+CREATE TABLE users (
+    uid INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    username VARCHAR(15) NOT NULL,
+    email TEXT NOT NULL,
+    firstname TEXT,
+    lastname TEXT
+);
+
+CREATE TABLE contacts (
+    cid INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email TEXT NOT NULL,
+    uid INTEGER REFERENCES users(uid)
+)</code></pre>
+<pre class="postgresql"><code> INSERT INTO users (username, email)
+    VALUES (&#39;denis&#39;, &#39;denis.rinfret@example.com&#39;),
+            (&#39;minh&#39;, &#39;minh@example.com&#39;);
+
+INSERT INTO contacts (email, uid) 
+    VALUES (&#39;help@example.com&#39;, 1), (&#39;minh@example.com&#39;, 1), 
+        (&#39;contact@example.com&#39;, 2) , (&#39;ha@example.com&#39;, 2);
+    </code></pre>
+<pre class="postgresql"><code>SELECT * FROM users;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+<th>
+firstname
+</th>
+<th>
+lastname
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT * FROM contacts;</code></pre>
+<table>
+<tr>
+<th>
+cid
+</th>
+<th>
+email
+</th>
+<th>
+uid
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+help@example.com
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+contact@example.com
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+ha@example.com
+</td>
+<td>
+2
+</td>
+</tr>
+</table>
+<h3 id="join-necessary-to-get-all-data">Join necessary to get all data</h3>
+<pre class="postgresql"><code>SELECT * FROM users u INNER JOIN contacts c ON u.uid = c.uid;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+<th>
+firstname
+</th>
+<th>
+lastname
+</th>
+<th>
+cid
+</th>
+<th>
+email_1
+</th>
+<th>
+uid_1
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+1
+</td>
+<td>
+help@example.com
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+2
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+3
+</td>
+<td>
+contact@example.com
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+4
+</td>
+<td>
+ha@example.com
+</td>
+<td>
+2
+</td>
+</tr>
+</table>
+<ol type="1">
+<li>Joins can be slow.</li>
+<li>But without normalization, we have redundant data and anomalies can occur.</li>
+<li>An <code>Object-Relational</code> DBMS (ORDBMS) can help.</li>
+</ol>
+<h2 id="de-normalized-contacts">De-normalized Contacts</h2>
+<h3 id="contacts3-object-relational-schema"><code>contacts3</code> Object-Relational Schema</h3>
+<pre class="postgresql"><code>DROP SCHEMA IF EXISTS contacts3 CASCADE;
+CREATE SCHEMA contacts3;
+SET search_path TO contacts3;
+
+CREATE TABLE users (
+    uid INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    username VARCHAR(15) NOT NULL,
+    email TEXT NOT NULL,
+    firstname TEXT,
+    lastname TEXT,
+    emergency_contacts TEXT[]
+);</code></pre>
+<pre class="postgresql"><code>INSERT INTO users (username, email, emergency_contacts)
+VALUES (&#39;denis&#39;, &#39;denis.rinfret@example.com&#39;,
+        ARRAY [&#39;help@example.com&#39;, &#39;minh@example.com&#39;]),
+       (&#39;minh&#39;, &#39;minh@example.com&#39;,
+        ARRAY [&#39;contact@example.com&#39;, &#39;ha@example.com&#39;]);</code></pre>
+<pre class="postgresql"><code>SELECT uid, emergency_contacts FROM users;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+emergency_contacts
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+[‘help@example.com’, ‘minh@example.com’]
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+[‘contact@example.com’, ‘ha@example.com’]
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT uid, username, email, firstname, lastname, 
+        unnest(emergency_contacts) 
+FROM users;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+<th>
+firstname
+</th>
+<th>
+lastname
+</th>
+<th>
+unnest
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+help@example.com
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+minh@example.com
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+contact@example.com
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+ha@example.com
+</td>
+</tr>
+</table>
+<h3 id="find-users-with-a-specific-email-as-first-emergency-contact">Find users with a specific email as first emergency contact</h3>
+<pre class="postgresql"><code>SELECT uid, username, email
+FROM users
+WHERE emergency_contacts[1] = &#39;help@example.com&#39;;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+</tr>
+</table>
+<h3 id="find-users-with-a-specific-email-as-any-emergency-contact">Find users with a specific email as any emergency contact</h3>
+<pre class="postgresql"><code> 
+SELECT uid, username, email
+FROM users
+WHERE &#39;ha@example.com&#39; = ANY (emergency_contacts);</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+</tr>
+</table>
+<h3 id="find-users-who-are-listed-as-emergency-contacts-of-other-users">Find users who are listed as emergency contacts of other users</h3>
+<pre class="postgresql"><code>SELECT uid, username, email
+FROM users
+WHERE email IN (SELECT unnest(emergency_contacts) 
+                FROM users);</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT distinct uid, username, email
+FROM users
+         INNER JOIN
+     (SELECT unnest(emergency_contacts) AS emergency_email
+      FROM users) AS all_contacts 
+         ON email = emergency_email;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+</tr>
+</table>
+<h3 id="without-unnest-and-subqueries">Without <code>unnest</code> and subqueries</h3>
+<pre class="postgresql"><code>SELECT u1.uid, u1.username, u1.email
+FROM users u1 INNER JOIN users u2 
+     ON u1.email =ANY (u2.emergency_contacts);</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+</tr>
+</table>
+<h3 id="explain-analyze-on-previous-queries">EXPLAIN ANALYZE on previous queries</h3>
+<pre class="postgresql"><code>EXPLAIN ANALYZE 
+SELECT * FROM contacts2.users u INNER JOIN contacts2.contacts c ON u.uid = c.uid;</code></pre>
+<table>
+<tr>
+<th>
+QUERY PLAN
+</th>
+</tr>
+<tr>
+<td>
+Hash Join (cost=20.35..45.53 rows=1200 width=188) (actual time=0.040..0.043 rows=4 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+  Hash Cond: (c.uid = u.uid)
+</td>
+</tr>
+<tr>
+<td>
+  -&gt; Seq Scan on contacts c (cost=0.00..22.00 rows=1200 width=40) (actual time=0.018..0.018 rows=4 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+  -&gt; Hash (cost=14.60..14.60 rows=460 width=148) (actual time=0.013..0.013 rows=2 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+        Buckets: 1024 Batches: 1 Memory Usage: 9kB
+</td>
+</tr>
+<tr>
+<td>
+        -&gt; Seq Scan on users u (cost=0.00..14.60 rows=460 width=148) (actual time=0.007..0.008 rows=2 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+Planning Time: 0.168 ms
+</td>
+</tr>
+<tr>
+<td>
+Execution Time: 0.072 ms
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>EXPLAIN ANALYZE SELECT * FROM contacts3.users;</code></pre>
+<table>
+<tr>
+<th>
+QUERY PLAN
+</th>
+</tr>
+<tr>
+<td>
+Seq Scan on users (cost=0.00..13.90 rows=390 width=180) (actual time=0.015..0.015 rows=2 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+Planning Time: 0.070 ms
+</td>
+</tr>
+<tr>
+<td>
+Execution Time: 0.029 ms
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>EXPLAIN ANALYZE 
+SELECT uid, username, email, firstname, lastname, 
+        unnest(emergency_contacts) 
+FROM contacts3.users;</code></pre>
+<table>
+<tr>
+<th>
+QUERY PLAN
+</th>
+</tr>
+<tr>
+<td>
+ProjectSet (cost=0.00..36.33 rows=3900 width=180) (actual time=0.020..0.023 rows=4 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+  -&gt; Seq Scan on users (cost=0.00..13.90 rows=390 width=180) (actual time=0.014..0.015 rows=2 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+Planning Time: 0.084 ms
+</td>
+</tr>
+<tr>
+<td>
+Execution Time: 0.045 ms
+</td>
+</tr>
+</table>
+<h2 id="user-defined-types">User-Defined Types</h2>
+<h3 id="contacts4-object-relational-schema"><code>contacts4</code> Object-relational schema</h3>
+<pre class="postgresql"><code>DROP SCHEMA IF EXISTS contacts4 CASCADE;
+CREATE SCHEMA contacts4;
+SET search_path TO contacts4;
+
+CREATE TYPE contact_type AS ENUM (&#39;emergency&#39;, &#39;friend&#39;, 
+                                  &#39;family&#39;, &#39;colleague&#39;);
+
+CREATE TYPE contact AS (
+    email TEXT,
+    type contact_type
+);</code></pre>
+<pre class="postgresql"><code>CREATE TABLE users (
+    uid INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    username VARCHAR(15) NOT NULL,
+    email TEXT NOT NULL,
+    firstname TEXT,
+    lastname TEXT, 
+    contacts contact[]
+);</code></pre>
+<pre class="postgresql"><code>INSERT INTO users (username, email, contacts)
+    VALUES (&#39;denis&#39;, &#39;denis.rinfret@example.com&#39;, 
+            ARRAY[(&#39;help@example.com&#39;, &#39;emergency&#39;)::contact, 
+                  (&#39;minh@example.com&#39;, &#39;friend&#39;)::contact]),
+            (&#39;minh&#39;, &#39;minh@example.com&#39;, 
+             ARRAY[(&#39;contact@example.com&#39;, &#39;family&#39;)::contact, 
+                   (&#39;ha@example.com&#39;, &#39;colleague&#39;)::contact]);</code></pre>
+<pre class="postgresql"><code>SELECT uid, contacts FROM users;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+contacts
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+{“(help@example.com,emergency)”,“(minh@example.com,friend)”}
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+{“(contact@example.com,family)”,“(ha@example.com,colleague)”}
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT uid, username, email, 
+    (unnest(contacts)::contact).*
+FROM users;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+<th>
+email_1
+</th>
+<th>
+type
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+help@example.com
+</td>
+<td>
+emergency
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+friend
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+contact@example.com
+</td>
+<td>
+family
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+ha@example.com
+</td>
+<td>
+colleague
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT uid, username, email, 
+        (unnest(contacts)::contact).email AS contact_email, 
+        (unnest(contacts)::contact).type AS contact_type 
+FROM users;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+<th>
+contact_email
+</th>
+<th>
+contact_type
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+help@example.com
+</td>
+<td>
+emergency
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+friend
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+contact@example.com
+</td>
+<td>
+family
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+ha@example.com
+</td>
+<td>
+colleague
+</td>
+</tr>
+</table>
+<h3 id="find-the-emergency-contacts-of-users">Find the emergency contacts of users</h3>
+<pre class="postgresql"><code>SELECT *
+FROM (SELECT uid, username, email, 
+        (unnest(contacts)::contact).email AS contact_email, 
+        (unnest(contacts)::contact).type AS contact_type 
+      FROM users) AS temp
+WHERE contact_type = &#39;emergency&#39;;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+<th>
+contact_email
+</th>
+<th>
+contact_type
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+help@example.com
+</td>
+<td>
+emergency
+</td>
+</tr>
+</table>
+<h3 id="find-users-without-emergency-contacts">Find users without emergency contacts</h3>
+<pre class="postgresql"><code>SELECT uid, username, email
+FROM users
+WHERE &#39;emergency&#39; NOT IN (SELECT (unnest(contacts)::contact).type);</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT uid, username, email
+FROM users
+WHERE &#39;emergency&#39; !=ALL (SELECT (unnest(contacts)::contact).type);</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+</tr>
+</table>
+<h2 id="jsonb-instead-of-arrays">JSONB instead of arrays</h2>
+<h3 id="contacts5-object-relational-schema"><code>contacts5</code> Object-Relational Schema</h3>
+<pre class="postgresql"><code>DROP SCHEMA IF EXISTS contacts5 CASCADE;
+CREATE SCHEMA contacts5;
+SET search_path TO contacts5;
+
+CREATE TABLE users (
+    uid INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    username VARCHAR(15) NOT NULL,
+    email TEXT NOT NULL,
+    firstname TEXT,
+    lastname TEXT, 
+    contacts jsonb
+);</code></pre>
+<pre class="postgresql"><code>INSERT INTO users (username, email, contacts)
+    VALUES (&#39;denis&#39;, &#39;denis.rinfret@example.com&#39;, 
+            &#39;{&quot;emergency&quot;: &quot;help@example.com&quot;, &quot;friend&quot;: &quot;minh@example.com&quot;}&#39;),
+            (&#39;minh&#39;, &#39;minh@example.com&#39;, 
+            &#39;{&quot;family&quot;: &quot;contact@example.com&quot;, &quot;colleague&quot;: &quot;ha@example.com&quot;}&#39;);</code></pre>
+<pre class="postgresql"><code>SELECT uid, contacts FROM users;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+contacts
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+{‘friend’: ‘minh@example.com’, ‘emergency’: ‘help@example.com’}
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+{‘family’: ‘contact@example.com’, ‘colleague’: ‘ha@example.com’}
+</td>
+</tr>
+</table>
+<h3 id="users-with-an-emergency-contact">Users with an emergency contact</h3>
+<pre class="postgresql"><code>SELECT uid, username, email
+FROM users
+WHERE &#39;emergency&#39; IN (SELECT jsonb_object_keys(contacts));</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT uid, username, email
+FROM users
+WHERE contacts ? &#39;emergency&#39;;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT uid, username, email, contacts-&gt;&#39;emergency&#39; AS emergency
+FROM users
+WHERE contacts ? &#39;emergency&#39;;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+<th>
+emergency
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+help@example.com
+</td>
+</tr>
+</table>
+<h3 id="users-without-emergency-contacts">Users without emergency contacts</h3>
+<pre class="postgresql"><code>SELECT uid, username, email
+FROM users
+WHERE NOT(contacts ? &#39;emergency&#39;);</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+</tr>
+</table>
+<h2 id="relational-schema-with-contact-types">Relational Schema with contact types</h2>
+<h3 id="contacts6-relational-schema"><code>contacts6</code> Relational Schema</h3>
+<pre class="postgresql"><code>DROP SCHEMA IF EXISTS contacts6 CASCADE;
+CREATE SCHEMA contacts6;
+SET search_path TO contacts6;
+
+CREATE TABLE users (
+    uid INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    username VARCHAR(15) NOT NULL,
+    email TEXT NOT NULL,
+    firstname TEXT,
+    lastname TEXT
+);</code></pre>
+<pre class="postgresql"><code>CREATE TYPE contact_type AS ENUM (&#39;emergency&#39;, &#39;friend&#39;, 
+                                  &#39;family&#39;, &#39;colleague&#39;);
+
+CREATE TABLE contacts (
+    cid INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email TEXT NOT NULL,
+    type contact_type NOT NULL,
+    uid INTEGER REFERENCES users(uid)
+);</code></pre>
+<pre class="postgresql"><code>INSERT INTO users (username, email)
+    VALUES (&#39;denis&#39;, &#39;denis.rinfret@example.com&#39;),
+            (&#39;minh&#39;, &#39;minh@example.com&#39;);
+
+INSERT INTO contacts (email, type, uid) 
+    VALUES (&#39;help@example.com&#39;, &#39;emergency&#39;, 1), (&#39;minh@example.com&#39;, &#39;friend&#39;, 1), 
+        (&#39;contact@example.com&#39;, &#39;colleague&#39;, 2) , (&#39;ha@example.com&#39;, &#39;family&#39;, 2);</code></pre>
+<pre class="postgresql"><code>SELECT * FROM users;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+<th>
+firstname
+</th>
+<th>
+lastname
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT * FROM contacts;</code></pre>
+<table>
+<tr>
+<th>
+cid
+</th>
+<th>
+email
+</th>
+<th>
+type
+</th>
+<th>
+uid
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+help@example.com
+</td>
+<td>
+emergency
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+friend
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+contact@example.com
+</td>
+<td>
+colleague
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+ha@example.com
+</td>
+<td>
+family
+</td>
+<td>
+2
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT *
+FROM users u
+         INNER JOIN contacts c ON u.uid = c.uid;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+<th>
+firstname
+</th>
+<th>
+lastname
+</th>
+<th>
+cid
+</th>
+<th>
+email_1
+</th>
+<th>
+type
+</th>
+<th>
+uid_1
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+1
+</td>
+<td>
+help@example.com
+</td>
+<td>
+emergency
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+denis
+</td>
+<td>
+denis.rinfret@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+2
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+friend
+</td>
+<td>
+1
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+3
+</td>
+<td>
+contact@example.com
+</td>
+<td>
+colleague
+</td>
+<td>
+2
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+<td>
+None
+</td>
+<td>
+None
+</td>
+<td>
+4
+</td>
+<td>
+ha@example.com
+</td>
+<td>
+family
+</td>
+<td>
+2
+</td>
+</tr>
+</table>
+<h3 id="users-without-emergency-contacts-1">Users without emergency contacts</h3>
+<pre class="postgresql"><code>SELECT uid, username, email
+FROM users
+WHERE uid NOT IN (SELECT uid 
+                 FROM contacts
+                 WHERE type = &#39;emergency&#39;);</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>SELECT users.uid, username, email
+FROM users LEFT JOIN (SELECT uid 
+                     FROM contacts
+                     WHERE type = &#39;emergency&#39;) AS temp
+    ON users.uid = temp.uid
+WHERE temp.uid IS NULL;</code></pre>
+<table>
+<tr>
+<th>
+uid
+</th>
+<th>
+username
+</th>
+<th>
+email
+</th>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+minh
+</td>
+<td>
+minh@example.com
+</td>
+</tr>
+</table>
+<h3 id="explain-analyze-for-users-with-emergency-contacts">EXPLAIN ANALYZE for users with emergency contacts</h3>
+<h4 id="users-table-with-array-of-contact-types">Users table with array of contact types</h4>
+<pre class="postgresql"><code>EXPLAIN ANALYZE
+SELECT uid, username, email
+FROM contacts4.users
+WHERE &#39;emergency&#39; !=ALL (SELECT (unnest(contacts)::contacts4.contact).type);</code></pre>
+<table>
+<tr>
+<th>
+QUERY PLAN
+</th>
+</tr>
+<tr>
+<td>
+Seq Scan on users (cost=0.00..57.29 rows=195 width=84) (actual time=0.040..0.041 rows=1 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+  Filter: (SubPlan 1)
+</td>
+</tr>
+<tr>
+<td>
+  Rows Removed by Filter: 1
+</td>
+</tr>
+<tr>
+<td>
+  SubPlan 1
+</td>
+</tr>
+<tr>
+<td>
+    -&gt; Result (cost=0.00..0.19 rows=10 width=4) (actual time=0.005..0.006 rows=2 loops=2)
+</td>
+</tr>
+<tr>
+<td>
+          -&gt; ProjectSet (cost=0.00..0.07 rows=10 width=32) (actual time=0.003..0.004 rows=2 loops=2)
+</td>
+</tr>
+<tr>
+<td>
+                -&gt; Result (cost=0.00..0.01 rows=1 width=0) (actual time=0.000..0.000 rows=1 loops=2)
+</td>
+</tr>
+<tr>
+<td>
+Planning Time: 0.151 ms
+</td>
+</tr>
+<tr>
+<td>
+Execution Time: 0.079 ms
+</td>
+</tr>
+</table>
+<h4 id="users-table-with-jsonb-contacts">Users table with JSONB contacts</h4>
+<pre class="postgresql"><code>EXPLAIN ANALYZE
+SELECT uid, username, email
+FROM contacts5.users
+WHERE NOT(contacts ? &#39;emergency&#39;);</code></pre>
+<table>
+<tr>
+<th>
+QUERY PLAN
+</th>
+</tr>
+<tr>
+<td>
+Seq Scan on users (cost=0.00..14.88 rows=390 width=84) (actual time=0.018..0.019 rows=1 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+  Filter: (NOT (contacts ? ‘emergency’::text))
+</td>
+</tr>
+<tr>
+<td>
+  Rows Removed by Filter: 1
+</td>
+</tr>
+<tr>
+<td>
+Planning Time: 0.080 ms
+</td>
+</tr>
+<tr>
+<td>
+Execution Time: 0.036 ms
+</td>
+</tr>
+</table>
+<h4 id="users-table-with-another-table-for-contacts">Users table with another table for contacts</h4>
+<pre class="postgresql"><code>EXPLAIN ANALYZE
+SELECT uid, username, email
+FROM contacts6.users
+WHERE uid NOT IN (SELECT uid 
+                 FROM contacts6.contacts
+                 WHERE type = &#39;emergency&#39;);</code></pre>
+<table>
+<tr>
+<th>
+QUERY PLAN
+</th>
+</tr>
+<tr>
+<td>
+Seq Scan on users (cost=24.14..39.89 rows=230 width=84) (actual time=0.037..0.037 rows=1 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+  Filter: (NOT (hashed SubPlan 1))
+</td>
+</tr>
+<tr>
+<td>
+  Rows Removed by Filter: 1
+</td>
+</tr>
+<tr>
+<td>
+  SubPlan 1
+</td>
+</tr>
+<tr>
+<td>
+    -&gt; Seq Scan on contacts (cost=0.00..24.13 rows=6 width=4) (actual time=0.009..0.010 rows=1 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+          Filter: (type = ‘emergency’::contact_type)
+</td>
+</tr>
+<tr>
+<td>
+          Rows Removed by Filter: 3
+</td>
+</tr>
+<tr>
+<td>
+Planning Time: 0.134 ms
+</td>
+</tr>
+<tr>
+<td>
+Execution Time: 0.067 ms
+</td>
+</tr>
+</table>
+<pre class="postgresql"><code>EXPLAIN ANALYZE
+SELECT users.uid, username, email
+FROM users LEFT JOIN (SELECT uid 
+                     FROM contacts
+                     WHERE type = &#39;emergency&#39;) AS temp
+    ON users.uid = temp.uid
+WHERE temp.uid IS NULL;</code></pre>
+<table>
+<tr>
+<th>
+QUERY PLAN
+</th>
+</tr>
+<tr>
+<td>
+Hash Anti Join (cost=24.20..44.55 rows=454 width=84) (actual time=0.052..0.053 rows=1 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+  Hash Cond: (users.uid = contacts.uid)
+</td>
+</tr>
+<tr>
+<td>
+  -&gt; Seq Scan on users (cost=0.00..14.60 rows=460 width=84) (actual time=0.020..0.021 rows=2 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+  -&gt; Hash (cost=24.13..24.13 rows=6 width=4) (actual time=0.017..0.018 rows=1 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+        Buckets: 1024 Batches: 1 Memory Usage: 9kB
+</td>
+</tr>
+<tr>
+<td>
+        -&gt; Seq Scan on contacts (cost=0.00..24.13 rows=6 width=4) (actual time=0.012..0.013 rows=1 loops=1)
+</td>
+</tr>
+<tr>
+<td>
+              Filter: (type = ‘emergency’::contact_type)
+</td>
+</tr>
+<tr>
+<td>
+              Rows Removed by Filter: 3
+</td>
+</tr>
+<tr>
+<td>
+Planning Time: 0.201 ms
+</td>
+</tr>
+<tr>
+<td>
+Execution Time: 0.087 ms
+</td>
+</tr>
+</table>
+<h2 id="what-do-we-deal-with-many-many-relationships">What do we deal with many-many relationships?</h2>
+<ul>
+<li>In a relational DB, we need an extra table in between the 2 tables
+<ul>
+<li>For example, we need a table in between Users and Contacts, containing foreign keys to user IDs and contact IDs</li>
+</ul></li>
+<li>How do we get all the data?
+<ul>
+<li>With 2 joins</li>
+</ul></li>
+<li>How about the other data models?
+<ul>
+<li>With arrays?</li>
+<li>With JSONB?</li>
+</ul></li>
+</ul>
+<p><strong>No miracle solutions for many-many relationships</strong></p>
+</body>
+</html>

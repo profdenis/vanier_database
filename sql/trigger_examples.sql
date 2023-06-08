@@ -43,6 +43,7 @@ create trigger last_updated
     on contact
     for each row
 execute function last_updated();
+
 create trigger last_updated
     before update
     on person
@@ -53,7 +54,7 @@ execute function last_updated();
 create table person_audits
 (
     id         integer generated always as identity primary key,
-    person_id  integer                                not null,
+    person_id  integer references person(person_id)   not null,
     first_name text                                   not null,
     last_name  text                                   not null,
     changed_on timestamp with time zone default now() not null
