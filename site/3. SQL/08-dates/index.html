@@ -1,0 +1,2244 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://profdenis.github.io/vanier_database/3.%20SQL/08-dates/">
+      
+      
+        <link rel="prev" href="../07-r%C3%A9cursives/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>8 - Using date and timestamp - Database</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4af4bdda.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../style.css">
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/puml.css">
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/interaction.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#8-using-date-and-timestamp" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Database" class="md-header__button md-logo" aria-label="Database" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Database
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              8 - Using date and timestamp
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/profdenis/vanier_database" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    profdenis/vanier_database
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Database Course
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../1.%20Introduction/01-Introduction-aux-bd/" class="md-tabs__link">
+          
+  
+  1. Introduction
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../2.%20The%20relational%20model/01-Pr%C3%A9sentation/" class="md-tabs__link">
+          
+  
+  2. The relational model
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../01-intro/" class="md-tabs__link">
+          
+  
+  3. SQL
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Database" class="md-nav__button md-logo" aria-label="Database" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Database
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/profdenis/vanier_database" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    profdenis/vanier_database
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Course
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    1. Introduction
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            1. Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/01-Introduction-aux-bd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    What is a Database?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/02-Types-de-bases-de-donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Types
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/03-Historique-des-bases-de-donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    History of Databases
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/04-Exemples-de-Bases-de-Donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Examples of Databases in Different Contexts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    PostgreSQL
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            PostgreSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/01-Intro-a-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to PostgreSQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/02-Avantages-de-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advantages of PostgreSQL Compared to Other DBMSs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/03-Entreprises-utilisant-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Companies Using PostgreSQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/04-Configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PostgreSQL Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    2. The relational model
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            2. The relational model
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2.%20The%20relational%20model/01-Pr%C3%A9sentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Presentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2.%20The%20relational%20model/02-ERD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to Entity-Relationship Diagrams
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    3. SQL
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            3. SQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-intro/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1 - Introduction to SQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02a-bases-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2a - Contact Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02b-bases-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2b - University Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03a-jointures-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3a - Queries with More Than One Table (Contacts)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03b-jointures-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3b - Queries with More Than One Table (University)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04a-groupes-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4a - Grouping and Aggregates (Contacts)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04b-groupes-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4b - Grouping and Aggregates (University)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-survol-op%C3%A9rations-SQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5 - Overview of Operations in SQL Queries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-imbriqu%C3%A9es/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6 - Nested SQL Queries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-r%C3%A9cursives/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7 - Recursive Queries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    8 - Using date and timestamp
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    8 - Using date and timestamp
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#differences-between-date-and-timestamp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differences between date and timestamp
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Differences between date and timestamp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-comparisons-with-dates-in-iso-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple comparisons with dates in ISO format
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-date-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common date functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common date functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extract" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXTRACT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#date_part" class="md-nav__link">
+    <span class="md-ellipsis">
+      DATE_PART
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DATE_PART">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#differences-between-extract-and-date_part" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differences between EXTRACT and DATE_PART
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#date_trunc" class="md-nav__link">
+    <span class="md-ellipsis">
+      DATE_TRUNC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#now-and-current_date" class="md-nav__link">
+    <span class="md-ellipsis">
+      now and current_date
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#differences-between-now-and-current_date" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differences between now() and current_date
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations-with-interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operations with interval
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#calculate-age" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calculate age
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convert-a-string-to-a-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      Convert a string to a date
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format-a-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format a date
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#date-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Date operations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timestamp-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timestamp operations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#important-points-to-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      Important points to note
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#converting-an-interval-to-a-number-of-hours-float" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting an interval to a number of hours (float)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conversion-to-numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversion to numeric
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#important-points-to-note_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Important points to note
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#differences-between-date-and-timestamp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differences between date and timestamp
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Differences between date and timestamp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-comparisons-with-dates-in-iso-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simple comparisons with dates in ISO format
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-date-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common date functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common date functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extract" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXTRACT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#date_part" class="md-nav__link">
+    <span class="md-ellipsis">
+      DATE_PART
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DATE_PART">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#differences-between-extract-and-date_part" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differences between EXTRACT and DATE_PART
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#date_trunc" class="md-nav__link">
+    <span class="md-ellipsis">
+      DATE_TRUNC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#now-and-current_date" class="md-nav__link">
+    <span class="md-ellipsis">
+      now and current_date
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#differences-between-now-and-current_date" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differences between now() and current_date
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations-with-interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operations with interval
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#calculate-age" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calculate age
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convert-a-string-to-a-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      Convert a string to a date
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format-a-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      Format a date
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#date-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Date operations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timestamp-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timestamp operations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#important-points-to-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      Important points to note
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#converting-an-interval-to-a-number-of-hours-float" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting an interval to a number of hours (float)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conversion-to-numeric" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversion to numeric
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#important-points-to-note_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Important points to note
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="8-using-date-and-timestamp">8 - Using <code>date</code> and <code>timestamp</code><a class="headerlink" href="#8-using-date-and-timestamp" title="Permanent link">&para;</a></h1>
+<p>Here is a guide on operations and functions for dates and timestamps in PostgreSQL.</p>
+<h2 id="differences-between-date-and-timestamp">Differences between <code>date</code> and <code>timestamp</code><a class="headerlink" href="#differences-between-date-and-timestamp" title="Permanent link">&para;</a></h2>
+<p>Here are the main differences between the <code>date</code> and <code>timestamp</code> types in PostgreSQL:</p>
+<ol type="1">
+<li>
+<p>Stored content:</p>
+<ul>
+<li><code>date</code> stores only a date (year, month, day)</li>
+<li><code>timestamp</code> stores a date and time (year, month, day, hour, minute, second, and optionally fractions of a second)</li>
+</ul>
+</li>
+<li>
+<p>Storage size:</p>
+<ul>
+<li><code>date</code> occupies 4 bytes</li>
+<li><code>timestamp</code> occupies 8 bytes</li>
+</ul>
+</li>
+<li>
+<p>Precision:</p>
+<ul>
+<li><code>date</code> has a precision of one day</li>
+<li><code>timestamp</code> has a precision of one microsecond</li>
+</ul>
+</li>
+<li>
+<p>Range of values:</p>
+<ul>
+<li><code>date</code>: from 4713 BC to 5874897 AD</li>
+<li><code>timestamp</code>: from 4713 BC to 294276 AD</li>
+</ul>
+</li>
+<li>
+<p>Temporal operations:</p>
+<ul>
+<li><code>date</code> allows basic operations on dates</li>
+<li><code>timestamp</code> allows more precise operations including hours, minutes, and seconds</li>
+</ul>
+</li>
+<li>
+<p>Time zone:</p>
+<ul>
+<li><code>date</code> does not include time zone information</li>
+<li><code>timestamp</code> may or may not include time zone information (depending on whether you use <code>timestamp with time zone</code>
+  or <code>timestamp without time zone</code>)</li>
+</ul>
+</li>
+<li>
+<p>Usage:</p>
+<ul>
+<li><code>date</code> is used when only the date is important (e.g., birth date)</li>
+<li><code>timestamp</code> is used when you need the precise date and time (e.g., transaction timestamp)</li>
+</ul>
+</li>
+</ol>
+<p>In general, <code>timestamp</code> offers more flexibility and precision, but <code>date</code> can be sufficient and more efficient in terms
+of storage if only the date is necessary.</p>
+<h3 id="conversion">Conversion<a class="headerlink" href="#conversion" title="Permanent link">&para;</a></h3>
+<p>To convert a <code>timestamp</code> to a <code>date</code>, or vice-versa, you can <em>cast</em> from one to the other:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">select</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="p">()::</span><span class="nb">date</span><span class="p">);</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">-- now() gives the current timestamp</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2024-09-27</td>
+</tr>
+</tbody>
+</table>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">select</span><span class="w"> </span><span class="p">(</span><span class="k">CURRENT_DATE</span><span class="p">::</span><span class="k">timestamp</span><span class="p">);</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">-- CURRENT_DATE gives today&#39;s date</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">current_date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2024-09-27 00:00:00.000000</td>
+</tr>
+</tbody>
+</table>
+<h2 id="simple-comparisons-with-dates-in-iso-format">Simple comparisons with dates in ISO format<a class="headerlink" href="#simple-comparisons-with-dates-in-iso-format" title="Permanent link">&para;</a></h2>
+<p>PostgreSQL natively supports the ISO 8601 date format (YYYY-MM-DD) for comparisons:</p>
+<ul>
+<li>Table <code>users</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">created</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">denis</td>
+<td style="text-align: left;">2024-09-25 20:42:08.200074</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">bob</td>
+<td style="text-align: left;">2023-08-09 12:12:00.000000</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">alice</td>
+<td style="text-align: left;">2024-07-25 02:42:08.200074</td>
+</tr>
+</tbody>
+</table>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">from</span><span class="w"> </span><span class="n">users</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">where</span><span class="w"> </span><span class="n">created</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">&#39;2024-09-15&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">created</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">denis</td>
+<td style="text-align: left;">2024-09-25 20:42:08.200074</td>
+</tr>
+</tbody>
+</table>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">-- Select records between two dates</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">from</span><span class="w"> </span><span class="n">users</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">where</span><span class="w"> </span><span class="n">created</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="s1">&#39;2023-01-01&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="s1">&#39;2023-12-12&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">created</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">bob</td>
+<td style="text-align: left;">2023-08-09 12:12:00.000000</td>
+</tr>
+</tbody>
+</table>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">-- Select records between two dates</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">from</span><span class="w"> </span><span class="n">users</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">where</span><span class="w"> </span><span class="n">created</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="s1">&#39;2023-01-01&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="s1">&#39;2023-08-09&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">created</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-date-functions">Common date functions<a class="headerlink" href="#common-date-functions" title="Permanent link">&para;</a></h2>
+<h3 id="extract">EXTRACT<a class="headerlink" href="#extract" title="Permanent link">&para;</a></h3>
+<p>Allows extracting a specific part of a date or timestamp.</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">select</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">year</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">created</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">year</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">denis</td>
+<td style="text-align: left;">2024</td>
+</tr>
+<tr>
+<td style="text-align: left;">alice</td>
+<td style="text-align: left;">2024</td>
+</tr>
+<tr>
+<td style="text-align: left;">bob</td>
+<td style="text-align: left;">2023</td>
+</tr>
+</tbody>
+</table>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">select</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="k">month</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">created</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">month</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">month</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">denis</td>
+<td style="text-align: left;">9</td>
+</tr>
+<tr>
+<td style="text-align: left;">alice</td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;">bob</td>
+<td style="text-align: left;">8</td>
+</tr>
+</tbody>
+</table>
+<h3 id="date_part">DATE_PART<a class="headerlink" href="#date_part" title="Permanent link">&para;</a></h3>
+<p>Similar to EXTRACT, allows obtaining a specific part of a date.</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">select</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">date_part</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">created</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">year</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">denis</td>
+<td style="text-align: left;">2024</td>
+</tr>
+<tr>
+<td style="text-align: left;">alice</td>
+<td style="text-align: left;">2024</td>
+</tr>
+<tr>
+<td style="text-align: left;">bob</td>
+<td style="text-align: left;">2023</td>
+</tr>
+</tbody>
+</table>
+<h4 id="differences-between-extract-and-date_part">Differences between <code>EXTRACT</code> and <code>DATE_PART</code><a class="headerlink" href="#differences-between-extract-and-date_part" title="Permanent link">&para;</a></h4>
+<p>Here are the main differences between the <code>EXTRACT()</code> and <code>DATE_PART()</code> functions in PostgreSQL:</p>
+<ol type="1">
+<li>
+<p>Syntax:</p>
+<ul>
+<li><code>EXTRACT()</code> uses the syntax: <code>EXTRACT(field FROM source)</code></li>
+<li><code>DATE_PART()</code> uses the syntax: <code>DATE_PART('field', source)</code></li>
+</ul>
+</li>
+<li>
+<p>SQL Standard:</p>
+<ul>
+<li><code>EXTRACT()</code> conforms to the SQL standard</li>
+<li><code>DATE_PART()</code> is specific to PostgreSQL</li>
+</ul>
+</li>
+<li>
+<p>Return type:</p>
+<ul>
+<li><code>EXTRACT()</code> returns a numeric type since PostgreSQL 14</li>
+<li><code>DATE_PART()</code> always returns a double precision (float8)</li>
+</ul>
+</li>
+<li>
+<p>Performance:</p>
+<ul>
+<li>Before PostgreSQL 14, <code>EXTRACT()</code> was rewritten as <code>DATE_PART()</code> internally</li>
+<li>Since PostgreSQL 14, the implementations are different</li>
+</ul>
+</li>
+<li>
+<p>Precision:</p>
+<ul>
+<li><code>EXTRACT()</code> can be more precise for certain calculations since PostgreSQL 14</li>
+<li><code>DATE_PART()</code> may lose precision in some cases due to the float type</li>
+</ul>
+</li>
+<li>
+<p>Usage:</p>
+<ul>
+<li><code>EXTRACT()</code> is generally preferred for SQL compatibility</li>
+<li><code>DATE_PART()</code> is still used out of habit or for compatibility with older versions</li>
+</ul>
+</li>
+</ol>
+<p>In practice, the two functions are very similar and interchangeable in most cases. The choice often depends on personal
+preferences or coding conventions. For better portability and precision, <code>EXTRACT()</code> is generally recommended.</p>
+<h3 id="date_trunc">DATE_TRUNC<a class="headerlink" href="#date_trunc" title="Permanent link">&para;</a></h3>
+<p>Truncates a date to a specified precision.</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">select</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">date_trunc</span><span class="p">(</span><span class="s1">&#39;month&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">created</span><span class="p">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">date_trunc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">denis</td>
+<td style="text-align: left;">2024-09-01 00:00:00.000000</td>
+</tr>
+<tr>
+<td style="text-align: left;">bob</td>
+<td style="text-align: left;">2023-08-01 00:00:00.000000</td>
+</tr>
+<tr>
+<td style="text-align: left;">alice</td>
+<td style="text-align: left;">2024-07-01 00:00:00.000000</td>
+</tr>
+</tbody>
+</table>
+<h3 id="now-and-current_date"><code>now</code> and <code>current_date</code><a class="headerlink" href="#now-and-current_date" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>now()</code>: Returns the current date and time with time zone.</li>
+<li><code>current_date</code>: Returns the current date.</li>
+</ul>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">select</span><span class="w"> </span><span class="n">now</span><span class="p">();</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2024-09-25 21:12:05.032204 +00:00</td>
+</tr>
+</tbody>
+</table>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">select</span><span class="w"> </span><span class="k">current_date</span><span class="p">;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">current_date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2024-09-25</td>
+</tr>
+</tbody>
+</table>
+<h3 id="differences-between-now-and-current_date">Differences between <code>now()</code> and <code>current_date</code><a class="headerlink" href="#differences-between-now-and-current_date" title="Permanent link">&para;</a></h3>
+<ol type="1">
+<li>
+<p>Return type:</p>
+<ul>
+<li><code>now()</code> returns a timestamp with time zone (date and time with time zone)</li>
+<li><code>current_date</code> returns only a date (without time or time zone)</li>
+</ul>
+</li>
+<li>
+<p>Precision:</p>
+<ul>
+<li><code>now()</code> includes hour, minutes, seconds, and microseconds</li>
+<li><code>current_date</code> returns only the date (year, month, day)</li>
+</ul>
+</li>
+<li>
+<p>Usage in transactions:</p>
+<ul>
+<li><code>now()</code> returns the same value throughout a transaction</li>
+<li><code>current_date</code> can change if the transaction spans midnight</li>
+</ul>
+</li>
+<li>
+<p>Performance:</p>
+<ul>
+<li><code>current_date</code> is generally faster because it only processes the date</li>
+</ul>
+</li>
+<li>
+<p>Behavior with time zones:</p>
+<ul>
+<li><code>now()</code> takes into account the session&rsquo;s time zone</li>
+<li><code>current_date</code> always returns the server&rsquo;s local date</li>
+</ul>
+</li>
+<li>
+<p>Flexibility:</p>
+<ul>
+<li><code>now()</code> can be easily converted to other temporal types</li>
+<li><code>current_date</code> is limited to operations on dates</li>
+</ul>
+</li>
+<li>
+<p>Consistency:</p>
+<ul>
+<li><code>now()</code> remains constant in a transaction, useful for data consistency</li>
+<li><code>current_date</code> can change, always reflecting the current date</li>
+</ul>
+</li>
+</ol>
+<p>In summary, <code>now()</code> offers more precision and flexibility, while <code>current_date</code> is simpler and faster when only the date
+is needed.</p>
+<h2 id="operations-with-interval">Operations with <code>interval</code><a class="headerlink" href="#operations-with-interval" title="Permanent link">&para;</a></h2>
+<p>Using <code>interval</code> allows performing calculations on dates:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">-- Add 1 month to the current date</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">select</span><span class="w"> </span><span class="k">current_date</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="s1">&#39;1 month&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">?column?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2024-10-25 00:00:00.000000</td>
+</tr>
+</tbody>
+</table>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">-- Subtract 2 weeks from a specific date</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">select</span><span class="w"> </span><span class="nb">date</span><span class="w"> </span><span class="s1">&#39;2023-01-15&#39;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="s1">&#39;2 weeks&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">-- users created in the last month</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">select</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">users</span><span class="p">.</span><span class="n">created</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">from</span><span class="w"> </span><span class="n">users</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">where</span><span class="w"> </span><span class="n">created</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">current_date</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="s1">&#39;1 month&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">created</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">denis</td>
+<td style="text-align: left;">2024-09-25 20:42:08.200074</td>
+</tr>
+</tbody>
+</table>
+<h2 id="advanced-examples">Advanced examples<a class="headerlink" href="#advanced-examples" title="Permanent link">&para;</a></h2>
+<h3 id="calculate-age">Calculate age<a class="headerlink" href="#calculate-age" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">select</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="n">created</span><span class="p">)</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">from</span><span class="w"> </span><span class="n">users</span><span class="p">;</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1">-- Returns the interval between the specified date and the current date</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">age</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">denis</td>
+<td style="text-align: left;">0 years 0 mons 0 days -20 hours -42 mins -8.200074 secs</td>
+</tr>
+<tr>
+<td style="text-align: left;">bob</td>
+<td style="text-align: left;">1 years 1 mons 15 days 11 hours 48 mins 0.0 secs</td>
+</tr>
+<tr>
+<td style="text-align: left;">alice</td>
+<td style="text-align: left;">0 years 1 mons 30 days 21 hours 17 mins 51.799926 secs</td>
+</tr>
+</tbody>
+</table>
+<h3 id="convert-a-string-to-a-date">Convert a string to a date<a class="headerlink" href="#convert-a-string-to-a-date" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">select</span><span class="w"> </span><span class="n">to_date</span><span class="p">(</span><span class="s1">&#39;2023-09-21&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;yyyy-mm-dd&#39;</span><span class="p">);</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1">-- Converts the string to a date</span>
+</span></code></pre></div>
+<h3 id="format-a-date">Format a date<a class="headerlink" href="#format-a-date" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">select</span><span class="w"> </span><span class="n">to_char</span><span class="p">(</span><span class="k">current_date</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;DD/MM/YYYY&#39;</span><span class="p">);</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1">-- Formats the current date in DD/MM/YYYY format</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">to_char</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">25/09/2024</td>
+</tr>
+</tbody>
+</table>
+<p>These examples cover the most common operations on dates and timestamps in PostgreSQL. Remember that PostgreSQL offers
+many other functions and capabilities for manipulating dates and times according to your specific needs.</p>
+<h2 id="date-operations">Date operations<a class="headerlink" href="#date-operations" title="Permanent link">&para;</a></h2>
+<ol type="1">
+<li>
+<p>Date subtraction:</p>
+<ul>
+<li>You can subtract two dates to get an interval.</li>
+<li>Example: <code>date '2023-09-21' - date '2023-01-01'</code> will return an interval representing the difference between these
+  two dates.</li>
+</ul>
+</li>
+<li>
+<p>Addition/Subtraction with an interval:</p>
+<ul>
+<li>You can add or subtract an interval to a date.</li>
+<li>Example: <code>date '2023-09-21' + interval '1 month'</code> will add one month to the specified date.</li>
+</ul>
+</li>
+</ol>
+<h2 id="timestamp-operations">Timestamp operations<a class="headerlink" href="#timestamp-operations" title="Permanent link">&para;</a></h2>
+<ol type="1">
+<li>
+<p>Timestamp subtraction:</p>
+<ul>
+<li>Subtracting two timestamps returns an interval.</li>
+<li>Example: <code>timestamp '2023-09-21 10:00:00' - timestamp '2023-09-20 09:00:00'</code> will give the interval between these
+  two moments.</li>
+</ul>
+</li>
+<li>
+<p>Addition/Subtraction with an interval:</p>
+<ul>
+<li>As with dates, you can add or subtract intervals to timestamps.</li>
+<li>Example: <code>timestamp '2023-09-21 10:00:00' - interval '2 hours'</code> will subtract 2 hours from the timestamp.</li>
+</ul>
+</li>
+</ol>
+<h2 id="important-points-to-note">Important points to note<a class="headerlink" href="#important-points-to-note" title="Permanent link">&para;</a></h2>
+<ol type="1">
+<li>
+<p>Precision: Operations on timestamps are more precise because they take into account hours, minutes, and seconds.</p>
+</li>
+<li>
+<p>Time zones: For <code>timestamp with time zone</code>, PostgreSQL automatically handles time zone adjustments during operations.</p>
+</li>
+<li>
+<p>Complex intervals: You can use complex intervals like <code>interval '1 year 2 months 3 days'</code> for more elaborate
+   calculations.</p>
+</li>
+<li>
+<p>AGE() function: To calculate the difference between two dates or timestamps in a more readable way, you can use the
+   <code>age()</code> function.</p>
+</li>
+</ol>
+<p>These operations are very useful for performing temporal calculations in your queries, such as finding the duration
+between two events or calculating future or past dates based on a reference date.</p>
+<h2 id="converting-an-interval-to-a-number-of-hours-float">Converting an interval to a number of hours (float)<a class="headerlink" href="#converting-an-interval-to-a-number-of-hours-float" title="Permanent link">&para;</a></h2>
+<p>The most common method for converting an interval to a number is to transform it into seconds, then divide it to get the
+desired unit. To get a number of hours as a float, you can use the EXTRACT function with the &lsquo;epoch&rsquo; unit:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">select</span><span class="w"> </span><span class="k">extract</span><span class="p">(</span><span class="n">epoch</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="s1">&#39;4 hours 30 minutes&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3600</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">hours</span><span class="p">;</span>
+</span></code></pre></div>
+<p>This query will return 4.5, representing 4 hours and 30 minutes in decimal format.</p>
+<h2 id="conversion-to-numeric">Conversion to numeric<a class="headerlink" href="#conversion-to-numeric" title="Permanent link">&para;</a></h2>
+<p>For a conversion to numeric type, which offers arbitrary precision, you can use a similar approach:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">select</span><span class="w"> </span><span class="k">cast</span><span class="p">(</span><span class="k">extract</span><span class="p">(</span><span class="n">epoch</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="nb">interval</span><span class="w"> </span><span class="s1">&#39;4 hours 30 minutes&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3600</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nb">numeric</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">hours</span><span class="p">;</span>
+</span></code></pre></div>
+<p>This query will convert the interval to a numeric number with 2 decimal places.</p>
+<h2 id="important-points-to-note_1">Important points to note<a class="headerlink" href="#important-points-to-note_1" title="Permanent link">&para;</a></h2>
+<ol type="1">
+<li>
+<p>Precision: Converting an interval to a number can lead to a loss of precision, especially for intervals including
+   years or months, as these units don&rsquo;t have a fixed duration in seconds.</p>
+</li>
+<li>
+<p>Variable units: Years and months are treated specially in PostgreSQL intervals. For example, &lsquo;1 year&rsquo; is not always
+   equal to 365 days, which can lead to unexpected results during conversion.</p>
+</li>
+<li>
+<p>Choice of unit: You can adjust the divisor (3600.0 in the examples above) to get other units. For example, use
+   86400.0 to get days, or 60.0 for minutes.</p>
+</li>
+<li>
+<p><code>to_char()</code> function: For more complex formatting needs, you can use the to_char() function which allows formatting
+   various data types, including intervals.</p>
+</li>
+</ol>
+<p>In conclusion, although PostgreSQL does not provide a direct conversion of an interval to float or numeric, it is
+possible to perform this conversion using the EXTRACT function with the &lsquo;epoch&rsquo; unit, followed by a division and
+possibly a CAST if necessary.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../07-r%C3%A9cursives/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 7 - Recursive Queries">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                7 - Recursive Queries
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.select", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/puml.js"></script>
+      
+        <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/interaction.js"></script>
+      
+    
+  </body>
+</html>

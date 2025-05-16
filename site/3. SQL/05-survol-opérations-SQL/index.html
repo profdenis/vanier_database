@@ -1,0 +1,3067 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://profdenis.github.io/vanier_database/3.%20SQL/05-survol-op%C3%A9rations-SQL/">
+      
+      
+        <link rel="prev" href="../04b-groupes-universit%C3%A9/">
+      
+      
+        <link rel="next" href="../06-imbriqu%C3%A9es/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>5 - Overview of Operations in SQL Queries - Database</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4af4bdda.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../style.css">
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/puml.css">
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/interaction.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#5-overview-of-operations-in-sql-queries" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Database" class="md-header__button md-logo" aria-label="Database" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Database
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              5 - Overview of Operations in SQL Queries
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/profdenis/vanier_database" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    profdenis/vanier_database
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Database Course
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../1.%20Introduction/01-Introduction-aux-bd/" class="md-tabs__link">
+          
+  
+  1. Introduction
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../2.%20The%20relational%20model/01-Pr%C3%A9sentation/" class="md-tabs__link">
+          
+  
+  2. The relational model
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../01-intro/" class="md-tabs__link">
+          
+  
+  3. SQL
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Database" class="md-nav__button md-logo" aria-label="Database" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Database
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/profdenis/vanier_database" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    profdenis/vanier_database
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Course
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    1. Introduction
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            1. Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/01-Introduction-aux-bd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    What is a Database?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/02-Types-de-bases-de-donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Types
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/03-Historique-des-bases-de-donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    History of Databases
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/04-Exemples-de-Bases-de-Donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Examples of Databases in Different Contexts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    PostgreSQL
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            PostgreSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/01-Intro-a-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to PostgreSQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/02-Avantages-de-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advantages of PostgreSQL Compared to Other DBMSs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/03-Entreprises-utilisant-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Companies Using PostgreSQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/04-Configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PostgreSQL Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    2. The relational model
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            2. The relational model
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2.%20The%20relational%20model/01-Pr%C3%A9sentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Presentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2.%20The%20relational%20model/02-ERD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to Entity-Relationship Diagrams
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    3. SQL
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            3. SQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-intro/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1 - Introduction to SQL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02a-bases-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2a - Contact Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02b-bases-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2b - University Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03a-jointures-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3a - Queries with More Than One Table (Contacts)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03b-jointures-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3b - Queries with More Than One Table (University)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04a-groupes-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4a - Grouping and Aggregates (Contacts)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04b-groupes-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4b - Grouping and Aggregates (University)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    5 - Overview of Operations in SQL Queries
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    5 - Overview of Operations in SQL Queries
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-customer-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Customer Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-select-and-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using SELECT and FROM
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using SELECT and FROM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-select-all-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Select All Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-select-specific-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Select Specific Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-select-with-an-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Select with an Alias
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-where-clause" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the WHERE Clause
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the WHERE Clause">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-filter-by-city" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Filter by City
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-filter-by-last-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Filter by Last Name
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-filter-by-email" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Filter by Email
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-4-filter-by-multiple-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 4: Filter by Multiple Conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-5-filter-by-numeric-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 5: Filter by Numeric Conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-order-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using ORDER BY
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using ORDER BY">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-simple-sort-by-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Simple Sort by Name
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-sort-in-descending-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Sort in Descending Order
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-sort-by-multiple-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Sort by Multiple Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-4-sort-with-a-where-clause" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 4: Sort with a WHERE Clause
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scalar-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scalar Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scalar Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-using-upper-to-convert-to-uppercase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Using UPPER to Convert to Uppercase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-using-length-to-get-the-length-of-a-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Using LENGTH to Get the Length of a String
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-using-functions-on-dates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Using Functions on Dates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregate-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aggregate Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Aggregate Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-4-using-count-to-count-the-number-of-customers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 4: Using COUNT to Count the Number of Customers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-5-using-avg-to-calculate-an-average" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 5: Using AVG to Calculate an Average
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-6-using-min-and-max-to-find-extreme-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 6: Using MIN and MAX to Find Extreme Values
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inner-join-inner-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inner Join (INNER JOIN)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Inner Join (INNER JOIN)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-the-orders-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the Orders Table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explanations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-1-add-each-customers-email-to-the-order-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Add Each Customer&rsquo;s Email to the Order List
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example 1: Add Each Customer’s Email to the Order List">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-list-all-orders-from-jean-dupont" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: List All Orders from Jean Dupont
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example 2: List All Orders from Jean Dupont">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#left-outer-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Left Outer Join
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Left Outer Join">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-find-customers-who-have-no-orders" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query: Find Customers Who Have No Orders
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query: Find Customers Who Have No Orders">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results-of-the-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      Results of the Query
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-of-outer-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison of Outer Joins
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparison of Outer Joins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-left-join-left-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Left Join (LEFT JOIN)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-right-join-right-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Right Join (RIGHT JOIN)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-full-outer-join-full-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Full Outer Join (FULL JOIN)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-differences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Differences
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#important-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      Important Note
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grouping-with-group-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grouping with GROUP BY
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Grouping with GROUP BY">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-number-of-orders-per-customer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Number of Orders per Customer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouping-concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grouping Concept
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Grouping Concept">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group Definition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-formation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group Formation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouping-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grouping Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visual-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usefulness-of-grouping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usefulness of Grouping
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-total-order-amount-by-city" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Total Order Amount by City
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-having" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using HAVING
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-customers-with-more-than-one-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Customers with More Than One Order
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-4-cities-with-a-total-order-amount-greater-than-500" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 4: Cities with a Total Order Amount Greater Than 500
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-imbriqu%C3%A9es/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6 - Nested SQL Queries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-r%C3%A9cursives/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7 - Recursive Queries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-dates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8 - Using date and timestamp
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-customer-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Customer Table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-select-and-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using SELECT and FROM
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using SELECT and FROM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-select-all-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Select All Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-select-specific-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Select Specific Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-select-with-an-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Select with an Alias
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-where-clause" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the WHERE Clause
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the WHERE Clause">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-filter-by-city" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Filter by City
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-filter-by-last-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Filter by Last Name
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-filter-by-email" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Filter by Email
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-4-filter-by-multiple-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 4: Filter by Multiple Conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-5-filter-by-numeric-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 5: Filter by Numeric Conditions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-order-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using ORDER BY
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using ORDER BY">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-simple-sort-by-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Simple Sort by Name
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-sort-in-descending-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Sort in Descending Order
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-sort-by-multiple-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Sort by Multiple Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-4-sort-with-a-where-clause" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 4: Sort with a WHERE Clause
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scalar-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scalar Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scalar Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-using-upper-to-convert-to-uppercase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Using UPPER to Convert to Uppercase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-using-length-to-get-the-length-of-a-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Using LENGTH to Get the Length of a String
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-using-functions-on-dates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Using Functions on Dates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregate-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aggregate Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Aggregate Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-4-using-count-to-count-the-number-of-customers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 4: Using COUNT to Count the Number of Customers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-5-using-avg-to-calculate-an-average" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 5: Using AVG to Calculate an Average
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-6-using-min-and-max-to-find-extreme-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 6: Using MIN and MAX to Find Extreme Values
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inner-join-inner-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inner Join (INNER JOIN)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Inner Join (INNER JOIN)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-the-orders-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the Orders Table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explanations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-1-add-each-customers-email-to-the-order-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Add Each Customer&rsquo;s Email to the Order List
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example 1: Add Each Customer’s Email to the Order List">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-list-all-orders-from-jean-dupont" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: List All Orders from Jean Dupont
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example 2: List All Orders from Jean Dupont">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#left-outer-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      Left Outer Join
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Left Outer Join">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-find-customers-who-have-no-orders" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query: Find Customers Who Have No Orders
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query: Find Customers Who Have No Orders">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results-of-the-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      Results of the Query
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-of-outer-joins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison of Outer Joins
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparison of Outer Joins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-left-join-left-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Left Join (LEFT JOIN)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-right-join-right-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Right Join (RIGHT JOIN)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-full-outer-join-full-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Full Outer Join (FULL JOIN)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-differences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Differences
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#important-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      Important Note
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grouping-with-group-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grouping with GROUP BY
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Grouping with GROUP BY">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-number-of-orders-per-customer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Number of Orders per Customer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouping-concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grouping Concept
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Grouping Concept">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group Definition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-formation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group Formation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouping-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grouping Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visual-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usefulness-of-grouping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usefulness of Grouping
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-total-order-amount-by-city" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Total Order Amount by City
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-having" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using HAVING
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-customers-with-more-than-one-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Customers with More Than One Order
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-4-cities-with-a-total-order-amount-greater-than-500" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 4: Cities with a Total Order Amount Greater Than 500
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="5-overview-of-operations-in-sql-queries">5 - Overview of Operations in SQL Queries<a class="headerlink" href="#5-overview-of-operations-in-sql-queries" title="Permanent link">&para;</a></h1>
+<p>To begin understanding the basic operations of an SQL query, let&rsquo;s examine a simple projection using the <code>SELECT</code> and
+<code>FROM</code> clauses. These clauses are fundamental for extracting data from a relational database like PostgreSQL. We&rsquo;ll
+illustrate this with a store customer table.</p>
+<h2 id="creating-a-customer-table">Creating a Customer Table<a class="headerlink" href="#creating-a-customer-table" title="Permanent link">&para;</a></h2>
+<p>Let&rsquo;s imagine we have a table named <code>customers</code> that contains information about store customers. Here&rsquo;s how this table
+might be defined and populated with some example rows:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p">(</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">id</span><span class="w">                </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="n">lastname</span><span class="w">          </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="n">firstname</span><span class="w">         </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="n">email</span><span class="w">             </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="n">city</span><span class="w">              </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="n">registration_date</span><span class="w"> </span><span class="nb">DATE</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">);</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="p">(</span><span class="n">lastname</span><span class="p">,</span><span class="w"> </span><span class="n">firstname</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="n">registration_date</span><span class="p">)</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Dupont&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Jean&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;jean.dupont@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Paris&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-01-15&#39;</span><span class="p">),</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">       </span><span class="p">(</span><span class="s1">&#39;Martin&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Marie&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;marie.martin@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Lyon&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-02-20&#39;</span><span class="p">),</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">       </span><span class="p">(</span><span class="s1">&#39;Durand&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Paul&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;paul.durand@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Marseille&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-03-10&#39;</span><span class="p">),</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">       </span><span class="p">(</span><span class="s1">&#39;Lefevre&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Sophie&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;sophie.lefevre@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Toulouse&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-04-05&#39;</span><span class="p">),</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">       </span><span class="p">(</span><span class="s1">&#39;Moreau&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Pierre&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;pierre.moreau@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Nice&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-05-18&#39;</span><span class="p">),</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">       </span><span class="p">(</span><span class="s1">&#39;Simon&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Lucie&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;lucie.simon@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Nantes&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-06-22&#39;</span><span class="p">),</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">       </span><span class="p">(</span><span class="s1">&#39;Laurent&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Julie&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;julie.laurent@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Bordeaux&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-07-30&#39;</span><span class="p">),</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">       </span><span class="p">(</span><span class="s1">&#39;Lemoine&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Antoine&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;antoine.lemoine@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Strasbourg&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-08-14&#39;</span><span class="p">),</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">       </span><span class="p">(</span><span class="s1">&#39;Roux&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Claire&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;claire.roux@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Lille&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-09-01&#39;</span><span class="p">),</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">       </span><span class="p">(</span><span class="s1">&#39;Petit&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Nicolas&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;nicolas.petit@example.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Rennes&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-10-10&#39;</span><span class="p">);</span>
+</span></code></pre></div>
+<h2 id="using-select-and-from">Using <code>SELECT</code> and <code>FROM</code><a class="headerlink" href="#using-select-and-from" title="Permanent link">&para;</a></h2>
+<p>The <code>SELECT</code> clause is used to specify the columns you want to retrieve, while the <code>FROM</code> clause indicates the table
+from which this data comes. Here are some examples of SQL queries using these clauses:</p>
+<h3 id="example-1-select-all-columns">Example 1: Select All Columns<a class="headerlink" href="#example-1-select-all-columns" title="Permanent link">&para;</a></h3>
+<p>To retrieve all information from the <code>customers</code> table, you can use the asterisk (<code>*</code>) to indicate that you want all
+columns:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-2-select-specific-columns">Example 2: Select Specific Columns<a class="headerlink" href="#example-2-select-specific-columns" title="Permanent link">&para;</a></h3>
+<p>If you only want certain columns, for example, the name and email of customers, you can specify these columns in the
+<code>SELECT</code> clause:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">lastname</span><span class="p">,</span><span class="w"> </span><span class="n">email</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-3-select-with-an-alias">Example 3: Select with an Alias<a class="headerlink" href="#example-3-select-with-an-alias" title="Permanent link">&para;</a></h3>
+<p>You can also use aliases to rename columns in the result. This can be useful for making results more readable or to
+avoid name conflicts:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">lastname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">CustomerName</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">CustomerEmail</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>SELECT</code></strong>: Specifies the columns to retrieve.</li>
+<li><strong><code>FROM</code></strong>: Indicates the table from which the data comes.</li>
+</ul>
+<p>These basic operations form the foundation of data manipulation in SQL. As you progress, you&rsquo;ll learn to use other
+clauses and functions to perform more complex operations, such as filtering with <code>WHERE</code>, sorting with <code>ORDER BY</code>, and
+much more.</p>
+<h2 id="using-the-where-clause">Using the <code>WHERE</code> Clause<a class="headerlink" href="#using-the-where-clause" title="Permanent link">&para;</a></h2>
+<p>The second fundamental operation in an SQL query is filtering data using the <code>WHERE</code> clause. This clause allows you to
+specify conditions that must be met for a row to be included in the query result. Let&rsquo;s look at some simple examples of
+filtering on our <code>customers</code> table.</p>
+<p>The <code>WHERE</code> clause is used to extract only records that meet a specific condition. Here are some examples illustrating
+its use:</p>
+<h3 id="example-1-filter-by-city">Example 1: Filter by City<a class="headerlink" href="#example-1-filter-by-city" title="Permanent link">&para;</a></h3>
+<p>Suppose we want to retrieve all customers who live in Paris. We&rsquo;ll use the <code>WHERE</code> clause to specify this condition:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Paris&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-2-filter-by-last-name">Example 2: Filter by Last Name<a class="headerlink" href="#example-2-filter-by-last-name" title="Permanent link">&para;</a></h3>
+<p>If we want to find all customers whose last name is &ldquo;Durand&rdquo;, we can write the following query:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">lastname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Durand&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-3-filter-by-email">Example 3: Filter by Email<a class="headerlink" href="#example-3-filter-by-email" title="Permanent link">&para;</a></h3>
+<p>To retrieve customers whose email address ends with &ldquo;@example.com&rdquo;, we can use the <code>LIKE</code> operator with a search
+pattern:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%@example.com&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-4-filter-by-multiple-conditions">Example 4: Filter by Multiple Conditions<a class="headerlink" href="#example-4-filter-by-multiple-conditions" title="Permanent link">&para;</a></h3>
+<p>It&rsquo;s also possible to combine multiple conditions using the logical operators <code>AND</code> and <code>OR</code>. For example, to select
+customers who live in Lyon or Marseille, we&rsquo;ll use <code>OR</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Lyon&#39;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">   </span><span class="k">OR</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Marseille&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<p>To select customers who live in Paris and whose last name is &ldquo;Dupont&rdquo;, we&rsquo;ll use <code>AND</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Paris&#39;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">lastname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Dupont&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-5-filter-by-numeric-conditions">Example 5: Filter by Numeric Conditions<a class="headerlink" href="#example-5-filter-by-numeric-conditions" title="Permanent link">&para;</a></h3>
+<p>Although our <code>customers</code> table doesn&rsquo;t contain numeric data in this example, if it had a column like <code>age</code>, we could
+filter customers over 30 years old as follows:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="summary_1">Summary<a class="headerlink" href="#summary_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>WHERE</code></strong>: Used to filter rows based on specific conditions.</li>
+<li><strong>Logical Operators</strong>: <code>AND</code>, <code>OR</code> to combine multiple conditions.</li>
+<li><strong>Comparison Operators</strong>: <code>=</code>, <code>&gt;</code>, <code>=</code>, `` (not equal).</li>
+<li><strong><code>LIKE</code></strong>: Used for pattern searches in character strings.</li>
+</ul>
+<p>The <code>WHERE</code> clause is essential for extracting relevant and precise data from a database, based on the specific needs of
+the user or application.</p>
+<h2 id="using-order-by">Using <code>ORDER BY</code><a class="headerlink" href="#using-order-by" title="Permanent link">&para;</a></h2>
+<p>Sorting results in an SQL query is done using the <code>ORDER BY</code> clause. This clause allows you to specify the order in
+which rows should be returned, whether in ascending or descending order. You can sort results based on one or more
+columns.</p>
+<h3 id="example-1-simple-sort-by-name">Example 1: Simple Sort by Name<a class="headerlink" href="#example-1-simple-sort-by-name" title="Permanent link">&para;</a></h3>
+<p>To sort results by customer name in ascending order (default), you can use the following query:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lastname</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-2-sort-in-descending-order">Example 2: Sort in Descending Order<a class="headerlink" href="#example-2-sort-in-descending-order" title="Permanent link">&para;</a></h3>
+<p>To sort results by customer name in descending order, use the <code>DESC</code> keyword:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lastname</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-3-sort-by-multiple-columns">Example 3: Sort by Multiple Columns<a class="headerlink" href="#example-3-sort-by-multiple-columns" title="Permanent link">&para;</a></h3>
+<p>You can sort results by multiple columns. For example, to sort first by city in ascending order, then by name in
+descending order:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="n">lastname</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-4-sort-with-a-where-clause">Example 4: Sort with a <code>WHERE</code> Clause<a class="headerlink" href="#example-4-sort-with-a-where-clause" title="Permanent link">&para;</a></h3>
+<p>You can combine <code>ORDER BY</code> with a <code>WHERE</code> clause to filter and sort results. For example, to get customers from Paris
+sorted by registration date:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Paris&#39;</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">registration_date</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="summary_2">Summary<a class="headerlink" href="#summary_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>ORDER BY</code></strong>: Used to specify the order of results.</li>
+<li><strong>Ascending Order</strong>: By default, results are sorted in ascending order (<code>ASC</code>).</li>
+<li><strong>Descending Order</strong>: Use <code>DESC</code> to sort in descending order.</li>
+<li><strong>Multiple Sorting</strong>: You can sort by multiple columns by separating them with commas.</li>
+<li><strong>Combination with <code>WHERE</code></strong>: <code>ORDER BY</code> can be used after <code>WHERE</code> to sort filtered results.</li>
+</ul>
+<p>Sorting results is a powerful feature that allows you to present data in an organized and readable way, based on your
+specific needs.</p>
+<h2 id="scalar-functions">Scalar Functions<a class="headerlink" href="#scalar-functions" title="Permanent link">&para;</a></h2>
+<p>In SQL, functions can be used in the <code>SELECT</code> clause to perform various operations on data. These functions can be
+aggregate functions, which operate on a set of values to return a single one, or scalar functions, which operate on a
+single value and return a new value.</p>
+<p>Scalar functions are applied to each row individually. Here are some examples:</p>
+<h3 id="example-1-using-upper-to-convert-to-uppercase">Example 1: Using <code>UPPER</code> to Convert to Uppercase<a class="headerlink" href="#example-1-using-upper-to-convert-to-uppercase" title="Permanent link">&para;</a></h3>
+<p>Suppose we want to display last names in uppercase:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">UPPER</span><span class="p">(</span><span class="n">lastname</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">UppercaseName</span><span class="p">,</span><span class="w"> </span><span class="n">firstname</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-2-using-length-to-get-the-length-of-a-string">Example 2: Using <code>LENGTH</code> to Get the Length of a String<a class="headerlink" href="#example-2-using-length-to-get-the-length-of-a-string" title="Permanent link">&para;</a></h3>
+<p>To get the length of email addresses:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">lastname</span><span class="p">,</span><span class="w"> </span><span class="k">LENGTH</span><span class="p">(</span><span class="n">email</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">EmailLength</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-3-using-functions-on-dates">Example 3: Using Functions on Dates<a class="headerlink" href="#example-3-using-functions-on-dates" title="Permanent link">&para;</a></h3>
+<p>Imagine we&rsquo;ve added a <code>registration_date</code> column to our <code>customers</code> table and we want to extract the registration year:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">    </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">registration_date</span><span class="w"> </span><span class="nb">DATE</span><span class="p">;</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="k">SET</span><span class="w"> </span><span class="n">registration_date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2023-01-15&#39;</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1">-- (Add dates for other customers as needed)</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">lastname</span><span class="p">,</span><span class="w"> </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">YEAR</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">registration_date</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">RegistrationYear</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</span></code></pre></div>
+<h2 id="aggregate-functions">Aggregate Functions<a class="headerlink" href="#aggregate-functions" title="Permanent link">&para;</a></h2>
+<p>Aggregate functions calculate a single value from a set of values. Here are some examples:</p>
+<h3 id="example-4-using-count-to-count-the-number-of-customers">Example 4: Using <code>COUNT</code> to Count the Number of Customers<a class="headerlink" href="#example-4-using-count-to-count-the-number-of-customers" title="Permanent link">&para;</a></h3>
+<p>To count the total number of customers in the table:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">NumberOfCustomers</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-5-using-avg-to-calculate-an-average">Example 5: Using <code>AVG</code> to Calculate an Average<a class="headerlink" href="#example-5-using-avg-to-calculate-an-average" title="Permanent link">&para;</a></h3>
+<p>If we had an <code>age</code> column and we wanted to calculate the average age of customers:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="nb">INT</span><span class="p">;</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="k">SET</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="c1">-- (Add ages for other customers as needed)</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">AverageAge</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="example-6-using-min-and-max-to-find-extreme-values">Example 6: Using <code>MIN</code> and <code>MAX</code> to Find Extreme Values<a class="headerlink" href="#example-6-using-min-and-max-to-find-extreme-values" title="Permanent link">&para;</a></h3>
+<p>To find the minimum and maximum age:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">MIN</span><span class="p">(</span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">MinimumAge</span><span class="p">,</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">MaximumAge</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="summary_3">Summary<a class="headerlink" href="#summary_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Scalar Functions</strong>: Operate on each row individually (e.g., <code>UPPER</code>, <code>LENGTH</code>, <code>EXTRACT</code>).</li>
+<li><strong>Aggregate Functions</strong>: Operate on a set of rows to return a single value (e.g., <code>COUNT</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>).</li>
+<li><strong>Date Functions</strong>: Used to manipulate and extract information from dates (e.g., <code>EXTRACT</code>).</li>
+</ul>
+<p>These functions enhance SQL&rsquo;s capabilities by allowing advanced transformations and calculations on data.</p>
+<h2 id="inner-join-inner-join">Inner Join (<code>INNER JOIN</code>)<a class="headerlink" href="#inner-join-inner-join" title="Permanent link">&para;</a></h2>
+<p>An inner join (INNER JOIN) is an operation that combines rows from two tables based on a common condition, typically a
+foreign key. It returns only rows for which there is a match in both tables.</p>
+<h3 id="creating-the-orders-table">Creating the Orders Table<a class="headerlink" href="#creating-the-orders-table" title="Permanent link">&para;</a></h3>
+<p>To create an <code>orders</code> table that records orders placed by customers, we&rsquo;ll define a foreign key linking each order to a
+specific customer in the <code>customers</code> table. Here&rsquo;s how you can create this table, insert data, and represent it in
+Markdown format.</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">orders</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="p">(</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span><span class="n">id</span><span class="w">          </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">    </span><span class="n">customer_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">),</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span><span class="n">order_date</span><span class="w">  </span><span class="nb">DATE</span><span class="p">,</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">    </span><span class="n">amount</span><span class="w">      </span><span class="nb">DECIMAL</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="p">);</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="p">(</span><span class="n">customer_id</span><span class="p">,</span><span class="w"> </span><span class="n">order_date</span><span class="p">,</span><span class="w"> </span><span class="n">amount</span><span class="p">)</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-01-20&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">       </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-02-15&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">.</span><span class="mi">50</span><span class="p">),</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">       </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-03-05&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">.</span><span class="mi">75</span><span class="p">),</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">       </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-03-15&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">       </span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-04-10&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">450</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="w">       </span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-04-15&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="w">       </span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-04-20&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="w">       </span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-06-30&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+</span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="w">       </span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-08-20&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+</span><span id="__span-20-19"><a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="w">       </span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2023-09-10&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">320</span><span class="p">.</span><span class="mi">00</span><span class="p">);</span>
+</span></code></pre></div>
+<h3 id="explanations">Explanations<a class="headerlink" href="#explanations" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>customer_id</code></strong>: This column is a foreign key that references the identifier (<code>id</code>) of the <code>customers</code> table. This
+  establishes a relationship between orders and customers, indicating which customer placed each order.</li>
+<li><strong><code>order_date</code></strong>: Records the date on which the order was placed.</li>
+<li><strong><code>amount</code></strong>: Indicates the total amount of the order.</li>
+</ul>
+<p>This structure allows modeling a one-to-many relationship between customers and orders, where a customer can place
+multiple orders.</p>
+<h3 id="example-1-add-each-customers-email-to-the-order-list">Example 1: Add Each Customer&rsquo;s Email to the Order List<a class="headerlink" href="#example-1-add-each-customers-email-to-the-order-list" title="Permanent link">&para;</a></h3>
+<p>To get a list of all orders with the associated customer&rsquo;s email, we use an inner join between the <code>orders</code> table and
+the <code>customers</code> table. The join condition is that the customer ID in the <code>orders</code> table (<code>customer_id</code>) must match the
+customer ID in the <code>customers</code> table (<code>id</code>).</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">OrderID</span><span class="p">,</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">amount</span><span class="p">,</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">email</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">         </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">customer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
+</span></code></pre></div>
+<h4 id="explanation">Explanation<a class="headerlink" href="#explanation" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong><code>SELECT</code></strong>: Specifies the columns to include in the result. Here, we select the order ID, order date, amount, and
+  customer email.</li>
+<li><strong><code>FROM orders</code></strong>: Indicates that the main table for the join is <code>orders</code>.</li>
+<li><strong><code>INNER JOIN customers ON orders.customer_id = customers.id</code></strong>: Performs the inner join by linking orders to
+  customers using the foreign key <code>customer_id</code> of <code>orders</code> and the primary key <code>id</code> of <code>customers</code>.</li>
+</ul>
+<h3 id="example-2-list-all-orders-from-jean-dupont">Example 2: List All Orders from Jean Dupont<a class="headerlink" href="#example-2-list-all-orders-from-jean-dupont" title="Permanent link">&para;</a></h3>
+<p>To list all orders placed by Jean Dupont, we also use an inner join, but with an additional condition to filter the
+results.</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">OrderID</span><span class="p">,</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">amount</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">         </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">customer_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">id</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">lastname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Dupont&#39;</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">firstname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Jean&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<h4 id="explanation_1">Explanation<a class="headerlink" href="#explanation_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong><code>WHERE customers.lastname = 'Dupont' AND customers.firstname = 'Jean'</code></strong>: Adds a condition to filter results to
+  include only orders placed by Jean Dupont.</li>
+<li>The join links the <code>orders</code> and <code>customers</code> tables in the same way as in the first example, but the <code>WHERE</code> restricts
+  results to a specific customer.</li>
+</ul>
+<h3 id="summary_4">Summary<a class="headerlink" href="#summary_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Inner Join</strong>: Combines rows from two tables for which there is a match in the specified columns.</li>
+<li><strong>Usage</strong>: Often used to combine data spread across multiple tables, such as associating orders with customers.</li>
+<li><strong>Syntax</strong>: <code>INNER JOIN</code> followed by the matching condition (<code>ON</code>).</li>
+</ul>
+<p>Inner joins are essential for fully exploiting relationships between tables in a relational database. They allow
+combining and analyzing data from different sources in a coherent and efficient manner.</p>
+<h2 id="left-outer-join">Left Outer Join<a class="headerlink" href="#left-outer-join" title="Permanent link">&para;</a></h2>
+<p>A left outer join (<code>LEFT JOIN</code>) is used to return all rows from the left table (in this case, <code>customers</code>), as well as
+matching rows from the right table (<code>orders</code>). If no match is found in the right table, the results will contain null
+values for the columns of the right table.</p>
+<h3 id="query-find-customers-who-have-no-orders">Query: Find Customers Who Have No Orders<a class="headerlink" href="#query-find-customers-who-have-no-orders" title="Permanent link">&para;</a></h3>
+<p>To identify customers who have not placed orders, we can use a left outer join and filter the results to include only
+rows for which there is no match in the <code>orders</code> table.</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">lastname</span><span class="p">,</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">firstname</span><span class="p">,</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">email</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">         </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">customer_id</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
+</span></code></pre></div>
+<h4 id="explanation_2">Explanation<a class="headerlink" href="#explanation_2" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong><code>LEFT JOIN</code></strong>: Returns all rows from the <code>customers</code> table and matching rows from <code>orders</code>. If a customer has no
+  orders, the columns of <code>orders</code> will contain null values.</li>
+<li><strong><code>WHERE orders.id IS NULL</code></strong>: Filters the results to include only customers who have no orders, i.e., those for whom
+  <code>orders.id</code> is <code>NULL</code>.</li>
+</ul>
+<h3 id="results-of-the-query">Results of the Query<a class="headerlink" href="#results-of-the-query" title="Permanent link">&para;</a></h3>
+<p>Here&rsquo;s the Markdown table representing the results of this query:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>Last Name</th>
+<th>First Name</th>
+<th>Email</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>Moreau</td>
+<td>Pierre</td>
+<td>pierre.moreau@example.com</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Laurent</td>
+<td>Julie</td>
+<td>julie.laurent@example.com</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Petit</td>
+<td>Nicolas</td>
+<td>nicolas.petit@example.com</td>
+</tr>
+</tbody>
+</table>
+<p>These results show customers who have no orders recorded in the database. The left outer join is particularly useful for
+identifying records in one table that don&rsquo;t match records in another table.</p>
+<h2 id="comparison-of-outer-joins">Comparison of Outer Joins<a class="headerlink" href="#comparison-of-outer-joins" title="Permanent link">&para;</a></h2>
+<h3 id="1-left-join-left-join">1. Left Join (<code>LEFT JOIN</code>)<a class="headerlink" href="#1-left-join-left-join" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Returns all rows from the left table (first mentioned table).</li>
+<li>Includes matching rows from the right table if they exist.</li>
+<li>If no match is found, the columns of the right table contain <code>NULL</code>.</li>
+</ul>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">         </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">customer_id</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="2-right-join-right-join">2. Right Join (<code>RIGHT JOIN</code>)<a class="headerlink" href="#2-right-join-right-join" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Returns all rows from the right table (second mentioned table).</li>
+<li>Includes matching rows from the left table if they exist.</li>
+<li>If no match is found, the columns of the left table contain NULL.</li>
+</ul>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">         </span><span class="k">RIGHT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">customer_id</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="3-full-outer-join-full-join">3. Full Outer Join (<code>FULL JOIN</code>)<a class="headerlink" href="#3-full-outer-join-full-join" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Combines the results of a left join and a right join.</li>
+<li>Returns all rows from both tables.</li>
+<li>If no match is found, the columns of the non-matching table contain NULL.</li>
+</ul>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">         </span><span class="k">FULL</span><span class="w"> </span><span class="k">OUTER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">customer_id</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="key-differences">Key Differences<a class="headerlink" href="#key-differences" title="Permanent link">&para;</a></h3>
+<ol type="1">
+<li>
+<p><strong>LEFT JOIN</strong>: Useful for finding all records from the left table, even if they don&rsquo;t have a match in the right
+   table.</p>
+</li>
+<li>
+<p><strong>RIGHT JOIN</strong>: Similar to LEFT JOIN, but focusing on the right table. Less commonly used, as you can usually get the
+   same result by reversing the order of the tables and using a LEFT JOIN.</p>
+</li>
+<li>
+<p><strong>FULL JOIN</strong>: Combines the results of the two previous joins. Useful for seeing all data from both tables, whether
+   there&rsquo;s a match or not.</p>
+</li>
+</ol>
+<h3 id="example-usage">Example Usage<a class="headerlink" href="#example-usage" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>LEFT JOIN</strong>: Find all customers, whether they&rsquo;ve placed orders or not.</li>
+<li><strong>RIGHT JOIN</strong>: Find all orders, even if they&rsquo;re associated with customers who no longer exist in the customers table.</li>
+<li><strong>FULL JOIN</strong>: See all customers and all orders, identifying cases where there&rsquo;s no match in either table.</li>
+</ul>
+<h3 id="important-note">Important Note<a class="headerlink" href="#important-note" title="Permanent link">&para;</a></h3>
+<p>The word <code>OUTER</code> can be added to each of these joins (<code>LEFT OUTER JOIN</code>, <code>RIGHT OUTER JOIN</code>, and <code>FULL OUTER JOIN</code>), but
+it&rsquo;s optional. Using <code>OUTER</code> doesn&rsquo;t change the behavior of the join; it simply makes explicit the fact that it&rsquo;s an
+outer join.</p>
+<p>These outer joins are essential for analyzing data that may not have perfect matches between tables, thus allowing a
+more complete view of the available data.</p>
+<h2 id="grouping-with-group-by">Grouping with <code>GROUP BY</code><a class="headerlink" href="#grouping-with-group-by" title="Permanent link">&para;</a></h2>
+<p>Groupings in SQL, done with the <code>GROUP BY</code> clause, allow aggregating data based on specific criteria. Here&rsquo;s a detailed
+explanation with examples using our <code>customers</code> and <code>orders</code> tables.</p>
+<p>The <code>GROUP BY</code> clause is used to group rows that have the same values in specified columns. It&rsquo;s often used with
+aggregate functions like <code>COUNT()</code>, <code>SUM()</code>, <code>AVG()</code>, etc.</p>
+<h3 id="example-1-number-of-orders-per-customer">Example 1: Number of Orders per Customer<a class="headerlink" href="#example-1-number-of-orders-per-customer" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">number_of_orders</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">customer_id</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Which might give a result like:</p>
+<table>
+<thead>
+<tr>
+<th>customer_id</th>
+<th>number_of_orders</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The concept of grouping in SQL, particularly with the <code>GROUP BY</code> clause, is essential for understanding how data is
+aggregated and summarized. Here&rsquo;s a detailed explanation of the group formation process:</p>
+<h3 id="grouping-concept">Grouping Concept<a class="headerlink" href="#grouping-concept" title="Permanent link">&para;</a></h3>
+<h4 id="group-definition">Group Definition<a class="headerlink" href="#group-definition" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Grouping Key</strong>: Groups are defined by the distinct values of one or more columns specified in the <code>GROUP BY</code> clause.
+  In our example, the grouping key is <code>customer_id</code>. This means that each unique value of <code>customer_id</code> in the <code>orders</code>
+  table defines a distinct group.</li>
+</ul>
+<h4 id="group-formation">Group Formation<a class="headerlink" href="#group-formation" title="Permanent link">&para;</a></h4>
+<ol type="1">
+<li>
+<p><strong>Identification of Unique Values</strong>: The SQL engine identifies all unique values of the <code>customer_id</code> column in the
+   <code>orders</code> table. Each unique value becomes the basis for a group.</p>
+</li>
+<li>
+<p><strong>Row Grouping</strong>: All rows (or records) in the table that share the same value of <code>customer_id</code> are grouped together.
+   This means that each group contains all orders associated with a particular customer.</p>
+</li>
+</ol>
+<h4 id="grouping-process">Grouping Process<a class="headerlink" href="#grouping-process" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Data Extraction</strong>: The SQL engine goes through the <code>orders</code> table and extracts each row.</li>
+<li><strong>Group Association</strong>: For each row, the engine checks the value of <code>customer_id</code> and associates it with the
+  corresponding group. If a group for this value of <code>customer_id</code> doesn&rsquo;t exist yet, it&rsquo;s created.</li>
+<li><strong>Data Aggregation</strong>: Once rows are grouped, aggregate functions (like <code>COUNT</code>, <code>SUM</code>, etc.) are applied to each group
+  to calculate statistics or summaries.</li>
+</ul>
+<h4 id="visual-example">Visual Example<a class="headerlink" href="#visual-example" title="Permanent link">&para;</a></h4>
+<p>Imagine a simplified table with the following <code>customer_id</code> values: 1, 1, 2, 3, 4, 4, 4.</p>
+<ul>
+<li><strong>Groups Formed</strong>:<ul>
+<li>Group for <code>customer_id</code> 1: [1][1]</li>
+<li>Group for <code>customer_id</code> 2:</li>
+<li>Group for <code>customer_id</code> 3:</li>
+<li>Group for <code>customer_id</code> 4:</li>
+</ul>
+</li>
+</ul>
+<p>Each group contains all rows where <code>customer_id</code> has the same value. Aggregate functions are then applied to these
+groups to get results like the total number of orders per customer.</p>
+<h3 id="usefulness-of-grouping">Usefulness of Grouping<a class="headerlink" href="#usefulness-of-grouping" title="Permanent link">&para;</a></h3>
+<p>Grouping allows transforming raw data into meaningful information by summarizing and analyzing data according to
+specific criteria. This is particularly useful for generating reports, statistics, and analyses that require an overview
+of aggregated data.</p>
+<h3 id="example-2-total-order-amount-by-city">Example 2: Total Order Amount by City<a class="headerlink" href="#example-2-total-order-amount-by-city" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">orders</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_amount</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">         </span><span class="k">JOIN</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">customer_id</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">city</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Possible result:</p>
+<table>
+<thead>
+<tr>
+<th>city</th>
+<th>total_amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Paris</td>
+<td>350.50</td>
+</tr>
+<tr>
+<td>Lyon</td>
+<td>300.75</td>
+</tr>
+<tr>
+<td>Marseille</td>
+<td>120.00</td>
+</tr>
+<tr>
+<td>Toulouse</td>
+<td>1000.00</td>
+</tr>
+<tr>
+<td>Nantes</td>
+<td>60.00</td>
+</tr>
+<tr>
+<td>Strasbourg</td>
+<td>250.00</td>
+</tr>
+<tr>
+<td>Lille</td>
+<td>320.00</td>
+</tr>
+</tbody>
+</table>
+<h3 id="using-having">Using <code>HAVING</code><a class="headerlink" href="#using-having" title="Permanent link">&para;</a></h3>
+<p>The <code>HAVING</code> clause is used with <code>GROUP BY</code> to filter group results. Unlike <code>WHERE</code> which filters individual rows before
+grouping, <code>HAVING</code> filters groups after grouping.</p>
+<h3 id="example-3-customers-with-more-than-one-order">Example 3: Customers with More Than One Order<a class="headerlink" href="#example-3-customers-with-more-than-one-order" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">number_of_orders</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">customer_id</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Possible result:</p>
+<table>
+<thead>
+<tr>
+<th>customer_id</th>
+<th>number_of_orders</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-4-cities-with-a-total-order-amount-greater-than-500">Example 4: Cities with a Total Order Amount Greater Than 500<a class="headerlink" href="#example-4-cities-with-a-total-order-amount-greater-than-500" title="Permanent link">&para;</a></h3>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">orders</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_amount</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">         </span><span class="k">JOIN</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">orders</span><span class="p">.</span><span class="n">customer_id</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">customers</span><span class="p">.</span><span class="n">city</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="k">HAVING</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">orders</span><span class="p">.</span><span class="n">amount</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">500</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Possible result:</p>
+<div class="language-markdown highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>| city      | total_amount |
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>|-----------|--------------|
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>| Toulouse  | 1000.00      |
+</span></code></pre></div>
+<h3 id="summary_5">Summary<a class="headerlink" href="#summary_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>GROUP BY</code></strong>: Groups rows having the same values in the specified columns.</li>
+<li>Used with aggregate functions (<code>COUNT()</code>, <code>SUM()</code>, <code>AVG()</code>, etc.) to calculate statistics on each group.</li>
+<li><strong><code>HAVING</code></strong>: Filters group results after grouping.</li>
+<li><code>WHERE</code> filters individual rows before grouping, while <code>HAVING</code> filters groups after grouping.</li>
+</ul>
+<p>Groupings are essential for data analysis, allowing to summarize and aggregate information meaningfully from large
+datasets.</p>
+<hr />
+<details class="info">
+<summary>Use of AI</summary>
+<p>Page written in part with the help of an AI assistant, mainly using Perplexity AI. The AI was used to generate
+explanations, examples and/or structure suggestions. All information has been verified, edited and completed by the
+author.</p>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../04b-groupes-universit%C3%A9/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 4b - Grouping and Aggregates (University)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                4b - Grouping and Aggregates (University)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../06-imbriqu%C3%A9es/" class="md-footer__link md-footer__link--next" aria-label="Next: 6 - Nested SQL Queries">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                6 - Nested SQL Queries
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.select", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/puml.js"></script>
+      
+        <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/interaction.js"></script>
+      
+    
+  </body>
+</html>
