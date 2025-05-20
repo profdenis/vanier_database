@@ -1,0 +1,2595 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://profdenis.github.io/vanier_database/5.%20Advanced%20SQL/02-contraintes-et-d%C3%A9clencheurs/">
+      
+      
+        <link rel="prev" href="../01-vues/">
+      
+      
+        <link rel="next" href="../03-objet-relationel/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Contraintes et Déclencheurs - Database</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../style.css">
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/puml.css">
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/interaction.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#contraintes-et-declencheurs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Database" class="md-header__button md-logo" aria-label="Database" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Database
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Contraintes et Déclencheurs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/profdenis/vanier_database" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    profdenis/vanier_database
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Database Course
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../1.%20Introduction/01-Introduction-aux-bd/" class="md-tabs__link">
+          
+  
+  1. Introduction
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../2.%20The%20relational%20model/01-Pr%C3%A9sentation/" class="md-tabs__link">
+          
+  
+  2. The relational model
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../3.%20SQL/01-intro/" class="md-tabs__link">
+          
+  
+  3. SQL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../4.%20DB%20Design/01-mod%C3%A9lisation-EA/" class="md-tabs__link">
+          
+  
+  4. DB Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../01-vues/" class="md-tabs__link">
+          
+  
+  5. Advanced SQL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../6.%20Security%20and%20Users/01-s%C3%A9curit%C3%A9/" class="md-tabs__link">
+          
+  
+  6. Security and Users
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../7.%20Exercises/01-exercices/" class="md-tabs__link">
+          
+  
+  7. Exercises
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Database" class="md-nav__button md-logo" aria-label="Database" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Database
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/profdenis/vanier_database" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    profdenis/vanier_database
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Course
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    1. Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            1. Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/01-Introduction-aux-bd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    What is a Database?
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/02-Types-de-bases-de-donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/03-Historique-des-bases-de-donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    History of Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/04-Exemples-de-Bases-de-Donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Examples of Databases in Different Contexts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    PostgreSQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            PostgreSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/01-Intro-a-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to PostgreSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/02-Avantages-de-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advantages of PostgreSQL Compared to Other DBMSs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/03-Entreprises-utilisant-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Companies Using PostgreSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/04-Configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PostgreSQL Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    2. The relational model
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            2. The relational model
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2.%20The%20relational%20model/01-Pr%C3%A9sentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Presentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2.%20The%20relational%20model/02-ERD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to Entity-Relationship Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    3. SQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            3. SQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/01-intro/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1 - Introduction to SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/02a-bases-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2a - Contact Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/02b-bases-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2b - University Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/03a-jointures-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3a - Queries with More Than One Table (Contacts)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/03b-jointures-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3b - Queries with More Than One Table (University)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/04a-groupes-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4a - Grouping and Aggregates (Contacts)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/04b-groupes-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4b - Grouping and Aggregates (University)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/05-survol-op%C3%A9rations-SQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5 - Overview of Operations in SQL Queries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/06-imbriqu%C3%A9es/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6 - Nested SQL Queries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/07-r%C3%A9cursives/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7 - Recursive Queries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/08-dates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8 - Using date and timestamp
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    4. DB Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            4. DB Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4.%20DB%20Design/01-mod%C3%A9lisation-EA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modélisation Entité-Association
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4.%20DB%20Design/01b-enit%C3%A9s-faibles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Les Entités Faibles
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4.%20DB%20Design/02-notation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Différentes notations pour les DEA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4.%20DB%20Design/03-exemples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exemples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4.%20DB%20Design/04-ea-vers-relationnel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conversion d&rsquo;un diagramme EA en schéma relationnel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    5. Advanced SQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            5. Advanced SQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-vues/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Contraintes et Déclencheurs
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Contraintes et Déclencheurs
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-null-ou-not-null" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes null ou not null
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-de-cle-primaire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes de clé primaire
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-uniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes uniques
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-de-cle-etrangere" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes de clé étrangère
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#politique-des-contraintes-de-cle-etrangere" class="md-nav__link">
+    <span class="md-ellipsis">
+      Politique des contraintes de clé étrangère
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes check
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-de-domaine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes de domaine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assertions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assertions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#declencheurs-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Déclencheurs (Triggers)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Déclencheurs (Triggers)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quand-utiliser-les-declencheurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quand utiliser les déclencheurs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-objet-relationel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modèle objet-relationel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-transactions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transactions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    6. Security and Users
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            6. Security and Users
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6.%20Security%20and%20Users/01-s%C3%A9curit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gestion des Utilisateurs et Sécurité
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6.%20Security%20and%20Users/02-rbac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contrôle d&rsquo;Accès Basé sur les Rôles (RBAC)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6.%20Security%20and%20Users/03-utilisateurs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gestion des Utilisateurs dans PostgreSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../6.%20Security%20and%20Users/04-mots-de-passe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gestion des mots de passe d&rsquo;application dans une BD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    7. Exercises
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            7. Exercises
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/01-exercices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exercises
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    ERD
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            ERD
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/01-blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/02-livres/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Livres
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/03-transport/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. Réseau de transports en commun
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/04-restaurants/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. Chaîne de restaurants
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/05-voyages/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Agence de voyages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/06-hopital/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Système de gestion d&rsquo;un hôpital
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    SQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            SQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/SQL/01-pagila/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Pagila Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/SQL/02-recettes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Cooking Recipes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/SQL/03-northwind/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. BD Northwind
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-null-ou-not-null" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes null ou not null
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-de-cle-primaire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes de clé primaire
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-uniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes uniques
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-de-cle-etrangere" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes de clé étrangère
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#politique-des-contraintes-de-cle-etrangere" class="md-nav__link">
+    <span class="md-ellipsis">
+      Politique des contraintes de clé étrangère
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes check
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contraintes-de-domaine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contraintes de domaine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assertions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assertions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#declencheurs-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Déclencheurs (Triggers)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Déclencheurs (Triggers)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quand-utiliser-les-declencheurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quand utiliser les déclencheurs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="contraintes-et-declencheurs">Contraintes et Déclencheurs<a class="headerlink" href="#contraintes-et-declencheurs" title="Permanent link">&para;</a></h1>
+<ul>
+<li>Les contraintes peuvent être définies dans les instructions <code>create table</code></li>
+<li>Ou ajoutées aux tables existantes avec les instructions <code>alter table</code></li>
+<li>Différents types de contraintes<ul>
+<li><code>null</code> ou <code>not null</code></li>
+<li>Clé primaire</li>
+<li>Unique</li>
+<li>Clé étrangère</li>
+<li>Check</li>
+<li>Domaine</li>
+<li>Assertion</li>
+</ul>
+</li>
+</ul>
+<h2 id="contraintes-null-ou-not-null">Contraintes <code>null</code> ou <code>not null</code><a class="headerlink" href="#contraintes-null-ou-not-null" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Une colonne peut permettre des valeurs <code>null</code></li>
+<li>Ou les interdire avec <code>not null</code></li>
+<li>Par défaut : permettre des valeurs <code>null</code></li>
+</ul>
+<h2 id="contraintes-de-cle-primaire">Contraintes de clé primaire<a class="headerlink" href="#contraintes-de-cle-primaire" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Une colonne ou un groupe de colonnes peut être désigné comme <code>primary key</code> (
+  clé primaire)</li>
+<li>Les colonnes de clé primaire ne peuvent pas être <code>null</code></li>
+<li>implicite <code>not null</code> pour chaque colonne de clé primaire</li>
+<li>Nous pouvons utiliser une contrainte de colonne si la clé primaire n&rsquo;a qu&rsquo;une
+  seule colonne<ul>
+<li><code>sid integer primary key</code></li>
+</ul>
+</li>
+<li>Si la clé primaire a plus d&rsquo;une colonne, nous devons utiliser une contrainte
+  de table<ul>
+<li>spécifiée après toutes les colonnes dans l&rsquo;instruction <code>create table</code></li>
+<li><code>primary key(eid, sid)</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="contraintes-uniques">Contraintes uniques<a class="headerlink" href="#contraintes-uniques" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Comme les clés primaires, mais pour les clés candidates (secondaires)</li>
+<li>Définies de la même manière, mais avec <code>unique</code> au lieu de <code>primary key</code></li>
+<li><em>Exemple</em> :<ul>
+<li>ajout d&rsquo;une contrainte <code>unique</code> à la colonne <code>code</code> de la table <code>course</code></li>
+</ul>
+</li>
+</ul>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">set</span><span class="w"> </span><span class="n">search_path</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">university</span><span class="p">;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">-- alter table course drop constraint course_code_key;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">course</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="k">add</span><span class="w"> </span><span class="k">unique</span><span class="w"> </span><span class="p">(</span><span class="n">code</span><span class="p">);</span>
+</span></code></pre></div>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">course</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">credits</span><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Data Structures&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;DS&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1">-- delete from course where code = &#39;DS&#39;;</span>
+</span></code></pre></div>
+<h2 id="contraintes-de-cle-etrangere">Contraintes de clé étrangère<a class="headerlink" href="#contraintes-de-cle-etrangere" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Références à d&rsquo;autres tables</li>
+<li>Se réfère généralement aux clés primaires dans d&rsquo;autres tables</li>
+<li>Généralement créées pour représenter des relations lors de la traduction d&rsquo;un
+  diagramme ER en schéma relationnel</li>
+<li>Une colonne ou un groupe de colonnes peut être des références à une colonne ou
+  un groupe de colonnes dans une autre table</li>
+<li>Nous pouvons utiliser une contrainte de colonne si la clé étrangère n&rsquo;a qu&rsquo;une
+  seule colonne<ul>
+<li><code>sid integer references student(sid)</code></li>
+</ul>
+</li>
+<li>Si la clé étrangère a plus d&rsquo;une colonne, nous devons utiliser une contrainte
+  de table<ul>
+<li>spécifiée après toutes les colonnes dans l&rsquo;instruction <code>create table</code></li>
+<li><code>foreign key(eid, sid) references enrollment(eid, sid)</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="politique-des-contraintes-de-cle-etrangere">Politique des contraintes de clé étrangère<a class="headerlink" href="#politique-des-contraintes-de-cle-etrangere" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Lorsque nous insérons une nouvelle ligne dans une table avec une clé
+  étrangère, la valeur que nous spécifions pour la ou les colonnes de clé
+  étrangère doit exister dans l&rsquo;autre table à laquelle nous nous référons<ul>
+<li>cela est souvent appelé une <strong>contrainte d&rsquo;intégrité référentielle</strong></li>
+<li>cela correspond généralement à une relation <em>many-exactly-one</em> (
+  plusieurs-exactement-un)</li>
+<li>exception : si nous permettons des valeurs <code>null</code> pour la ou les colonnes
+  de clé étrangère, alors les valeurs <code>null</code> n&rsquo;ont pas besoin d&rsquo;exister dans
+  l&rsquo;autre table</li>
+<li>et les valeurs <code>null</code> n&rsquo;existeront généralement pas car la ou les colonnes
+  auxquelles la clé étrangère se réfère seront généralement des colonnes de
+  clé primaire</li>
+<li>cela correspond généralement à une relation <em>many-at-most-one</em> (
+  plusieurs-au-plus-un)</li>
+</ul>
+</li>
+<li>Mais que se passe-t-il lorsque nous supprimons ou mettons à jour une ligne
+  dans la table à laquelle la clé étrangère se réfère ?<ul>
+<li>Si la valeur à laquelle la ou les colonnes de clé étrangère se réfèrent
+  n&rsquo;existe plus, que faisons-nous ?</li>
+<li>Dans les standards SQL, les actions valides sont<ul>
+<li><code>RESTRICT</code>, <code>CASCADE</code>, <code>SET NULL</code>, <code>NO ACTION</code> et <code>SET DEFAULT</code></li>
+<li>Toutes les actions valides ne sont pas implémentées dans tous les
+  SGBDR</li>
+</ul>
+</li>
+<li>La politique par défaut des clés étrangères est <code>RESTRICT</code><ul>
+<li>si l&rsquo;exécution de la mise à jour ou de la suppression laisserait des
+  lignes &ldquo;orphelines&rdquo; (lignes qui se réfèrent à des valeurs
+  inexistantes), alors bloquer la mise à jour ou la suppression et
+  renvoyer un message d&rsquo;erreur</li>
+<li><code>NO ACTION</code> est un synonyme de <code>RESTRICT</code></li>
+</ul>
+</li>
+<li>Si la politique <code>CASCADE</code> est définie<ul>
+<li>alors les changements sont propagés aux lignes dépendant de la ligne
+  originale</li>
+<li>si la ligne est supprimée, alors les lignes dépendant d&rsquo;elle seront
+  également supprimées (<strong>très dangereux</strong>)</li>
+<li>si la ligne est mise à jour, alors les lignes dépendant d&rsquo;elle seront
+  également mises à jour</li>
+</ul>
+</li>
+<li>Si la politique est définie sur <code>SET NULL</code> ou <code>SET DEFAULT</code>, elle
+  remplacera les valeurs de la ou des colonnes de clé étrangère par la
+  valeur <code>null</code> ou par la valeur par défaut, si possible</li>
+</ul>
+</li>
+</ul>
+<h2 id="contraintes-check">Contraintes <code>check</code><a class="headerlink" href="#contraintes-check" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Vérifie une expression avant d&rsquo;effectuer une insertion ou une mise à jour<ul>
+<li>si l&rsquo;expression est fausse, alors l&rsquo;insertion ou la mise à jour échouera</li>
+<li>sinon, elle réussira</li>
+<li>attention : si l&rsquo;expression évalue à <code>null</code>, alors l&rsquo;insertion ou la mise
+  à jour réussira</li>
+</ul>
+</li>
+<li>Si les contraintes <code>check</code> se réfèrent à une seule colonne, elles peuvent être
+  spécifiées comme une contrainte de colonne<ul>
+<li><code>score integer check(score &gt;= 0 and score &lt;= 100)</code></li>
+</ul>
+</li>
+<li>Si les contraintes <code>check</code> se réfèrent à 2 colonnes ou plus, elles doivent
+  être spécifiées comme une contrainte de table<ul>
+<li><code>check(end_date &gt;= start_date)</code></li>
+<li>notez que si l&rsquo;une des dates est <code>null</code>, l&rsquo;expression sera <code>null</code> et la
+  vérification passera</li>
+</ul>
+</li>
+</ul>
+<h2 id="contraintes-de-domaine">Contraintes de domaine<a class="headerlink" href="#contraintes-de-domaine" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Un domaine est utilisé pour restreindre les valeurs possibles pour un type de
+  données</li>
+<li>Un domaine<ul>
+<li>peut avoir une valeur par défaut</li>
+<li>peut être défini avec une contrainte <code>null</code> ou <code>not null</code></li>
+<li>peut avoir une ou plusieurs contraintes <code>check</code></li>
+</ul>
+</li>
+<li>Un domaine peut être utilisé pour éviter de répéter trop de contraintes, en
+  particulier les contraintes <code>check</code><ul>
+<li><code>create domain score as integer check(score &gt;= 0 and score &lt;= 100)</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="assertions">Assertions<a class="headerlink" href="#assertions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Contraintes générales qui peuvent s&rsquo;appliquer à plus d&rsquo;une ligne d&rsquo;une table
+  ou à des colonnes de plus d&rsquo;une table</li>
+<li>Comme des contraintes <code>check</code> plus générales qui ne sont pas limitées à une
+  seule ligne</li>
+<li>La plupart des SGBDR n&rsquo;ont pas de support complet pour les assertions, voire
+  aucun support pour les assertions</li>
+</ul>
+<h2 id="declencheurs-triggers">Déclencheurs (<em>Triggers</em>)<a class="headerlink" href="#declencheurs-triggers" title="Permanent link">&para;</a></h2>
+<p><a href="../../src/trigger_examples.sql">trigger_examples.sql</a></p>
+<ul>
+<li>Les déclencheurs sont utilisés dans les bases de données actives</li>
+<li>Ils sont similaires aux <em>événements</em> dans une <em>architecture orientée
+  événements</em></li>
+<li>Un déclencheur exécute généralement une fonction sur un événement ou des
+  événements spécifiques</li>
+<li>La fonction qu&rsquo;il exécute est similaire à un gestionnaire d&rsquo;événements<ul>
+<li>par exemple, dans une page HTML, vous pouvez associer une fonction
+  JavaScript à un événement <code>onclick</code> sur un bouton</li>
+<li><code>Do something</code></li>
+</ul>
+</li>
+<li>Les déclencheurs suivent la <em>structure ECA</em> pour définir des <em>règles actives</em><ul>
+<li><strong>E</strong>vent : signal (déclencheur) invoquant la règle</li>
+<li><strong>C</strong>ondition : test logique, détermine si l&rsquo;action sera exécutée ou non</li>
+<li><strong>A</strong>ction : code ou fonction (en SQL, PL/SQL, ou un autre langage
+  supporté) s&rsquo;exécutant sur la base de données</li>
+</ul>
+</li>
+<li>Le support des déclencheurs varie selon les SGBDR</li>
+</ul>
+<h3 id="quand-utiliser-les-declencheurs">Quand utiliser les déclencheurs<a class="headerlink" href="#quand-utiliser-les-declencheurs" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Les déclencheurs peuvent être utilisés pour imposer des contraintes qui ne
+  peuvent pas être imposées autrement<ul>
+<li>si les assertions ne sont pas supportées, alors une fonctionnalité
+  similaire peut être obtenue avec des déclencheurs&hellip;</li>
+<li>mais les déclencheurs sont plus puissants que les assertions</li>
+</ul>
+</li>
+<li>Les déclencheurs peuvent être utilisés pour la journalisation<ul>
+<li>si vous voulez (ou devez) conserver des journaux de modifications, alors
+  les déclencheurs peuvent aider</li>
+<li>normalement, lorsque des insertions, mises à jour et suppressions sont
+  exécutées sur la base de données, aucune trace ne sera laissée</li>
+<li>créer des déclencheurs pour insérer des données dans une table de journal
+  ou d&rsquo;historique (ou des tables)</li>
+<li>plus de détails : https://en.wikipedia.org/wiki/Log_trigger</li>
+</ul>
+</li>
+<li>Les déclencheurs peuvent être utilisés pour de nombreuses autres choses<ul>
+<li>pour générer/mettre à jour des valeurs pour d&rsquo;autres colonnes</li>
+<li>pour mettre à jour une table de statistiques</li>
+<li>pour auditer des données sensibles</li>
+<li>pour envoyer des emails aux DBA lors d&rsquo;événements critiques</li>
+<li>pour implémenter d&rsquo;autres règles métier</li>
+</ul>
+</li>
+<li>De même que la programmation événementielle en JavaScript ou dans d&rsquo;autres
+  langages de programmation, des fonctions doivent être associées à certains
+  événements<ul>
+<li>les événements les plus courants sont : <code>INSERT</code>, <code>UPDATE</code>, et <code>DELETE</code></li>
+<li>avec un modificateur (spécifié avant l&rsquo;événement) : <code>BEFORE</code> ou <code>AFTER</code></li>
+<li>L&rsquo;événement peut être déclenché pour chaque ligne ou pour l&rsquo;ensemble de la
+  déclaration<ul>
+<li>une seule instruction <code>INSERT</code>, <code>UPDATE</code>, ou <code>DELETE</code> peut s&rsquo;appliquer
+  à une ou plusieurs lignes</li>
+<li>par défaut, nous obtenons un déclencheur au niveau de la déclaration</li>
+<li>si nous spécifions <em>FOR EACH ROW</em>, alors nous obtenons un déclencheur
+  au niveau de la ligne</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Par exemple, après avoir inséré les informations d&rsquo;un nouvel employé dans une
+  table <code>employee</code>, nous pourrions vouloir créer automatiquement un compte pour
+  permettre au nouvel employé de se connecter au système de l&rsquo;entreprise<ul>
+<li>la création d&rsquo;un tel compte nécessiterait probablement l&rsquo;insertion d&rsquo;une
+  ligne dans une table <code>account</code></li>
+<li>nous avons donc besoin d&rsquo;un déclencheur <code>AFTER INSERT</code> pour cela</li>
+<li>notez que parfois, cette fonctionnalité est gérée par l&rsquo;application
+  frontale, et non par la base de données</li>
+</ul>
+</li>
+<li>
+<p>Un autre exemple : nous pourrions avoir un déclencheur <code>BEFORE DELETE</code> pour
+  archiver les données supprimées importantes</p>
+<ul>
+<li>nous pourrions insérer les données supprimées dans une autre table</li>
+<li>nous pourrions également enregistrer qui a supprimé les données et quand
+  elles ont été supprimées</li>
+</ul>
+</li>
+<li>
+<p>Malheureusement, les implémentations de déclencheurs varient selon les SGBD</p>
+<ul>
+<li>Certains ne supportent que des sous-ensembles de la norme, d&rsquo;autres y
+  apportent de petites modifications</li>
+</ul>
+</li>
+<li>Dans PostgreSQL, les déclencheurs peuvent être créés avec la syntaxe (
+  simplifiée) suivante :</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>CREATE TRIGGER trigger_name 
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>{BEFORE | AFTER | INSTEAD OF} {event [OR ...]}
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>   ON table_name
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>   [FOR [EACH] {ROW | STATEMENT}]
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>       EXECUTE PROCEDURE trigger_function
+</span></code></pre></div>
+<ul>
+<li>où <code>event</code> peut être <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> ou <code>TRUNCATE</code></li>
+<li>
+<p>Référez-vous à ces liens pour plus de détails :</p>
+<ul>
+<li><a href="https://www.postgresqltutorial.com/creating-first-trigger-postgresql/">https://www.postgresqltutorial.com/creating-first-trigger-postgresql/</a></li>
+<li><a href="https://www.postgresql.org/docs/14/sql-createtrigger.html">https://www.postgresql.org/docs/14/sql-createtrigger.html</a></li>
+<li><a href="https://www.postgresql.org/docs/14/triggers.html">https://www.postgresql.org/docs/14/triggers.html</a></li>
+</ul>
+</li>
+<li>
+<p>Sur MySQL/MariaDB, la syntaxe de base est :</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>CREATE TRIGGER trigger_name
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>{BEFORE | AFTER} {INSERT | UPDATE| DELETE }
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ON table_name FOR EACH ROW
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>trigger_body;
+</span></code></pre></div>
+<ul>
+<li>
+<p>Référez-vous à ces liens pour plus de détails :</p>
+<ul>
+<li><a href="https://www.mysqltutorial.org/create-the-first-trigger-in-mysql.aspx">https://www.mysqltutorial.org/create-the-first-trigger-in-mysql.aspx</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/create-trigger.html">https://dev.mysql.com/doc/refman/8.0/en/create-trigger.html</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/trigger-syntax.html">https://dev.mysql.com/doc/refman/8.0/en/trigger-syntax.html</a></li>
+</ul>
+</li>
+<li>
+<p>Sur Oracle, les déclencheurs peuvent être créés en utilisant la syntaxe
+  suivante :</p>
+</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>CREATE [OR REPLACE] TRIGGER trigger_name
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>{BEFORE | AFTER } triggering_event ON table_name
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>[FOR EACH ROW]
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>[FOLLOWS | PRECEDES another_trigger]
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>[ENABLE / DISABLE ]
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>[WHEN condition]
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>DECLARE
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    declaration statements
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>BEGIN
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    executable statements
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>EXCEPTION
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    exception_handling statements
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>END;
+</span></code></pre></div>
+<ul>
+<li>
+<p><a href="https://www.oracletutorial.com/plsql-tutorial/oracle-trigger/">https://www.oracletutorial.com/plsql-tutorial/oracle-trigger/</a></p>
+</li>
+<li>
+<p>Pour bien utiliser les déclencheurs, nous devons écrire des fonctions ou des
+  procédures dans un certain langage de programmation</p>
+<ul>
+<li>PL/SQL (langage de programmation pour SQL) est supporté sous une certaine
+  forme dans la plupart des bases de données relationnelles</li>
+<li>ou un autre langage de programmation supporté, tel que C<ul>
+<li>PostgreSQL supporte les <em>types définis par l&rsquo;utilisateur (UDT)</em> et les
+  <em>fonctions définies par l&rsquo;utilisateur (UDF)</em></li>
+<li>Les UDF peuvent être définies en PL/SQL ou en C</li>
+<li>Les UDF peuvent être utilisées pour les déclencheurs</li>
+</ul>
+</li>
+<li>d&rsquo;autres langages de programmation supportent les langages de
+  programmation de différentes manières</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../01-vues/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Vues">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Vues
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../03-objet-relationel/" class="md-footer__link md-footer__link--next" aria-label="Next: Modèle objet-relationel">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Modèle objet-relationel
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.select", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+        <script src="../../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/puml.js"></script>
+      
+        <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/interaction.js"></script>
+      
+    
+  </body>
+</html>

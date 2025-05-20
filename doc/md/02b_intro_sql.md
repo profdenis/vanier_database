@@ -2,7 +2,7 @@
 
 ## University DB
 
-Run the `university.sql` file to create the University DB.
+Run the `university_create.sql` file to create the University DB.
 
 ```postgresql
 set search_path to university;

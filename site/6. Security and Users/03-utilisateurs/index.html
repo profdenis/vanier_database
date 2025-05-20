@@ -1,0 +1,2817 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://profdenis.github.io/vanier_database/6.%20Security%20and%20Users/03-utilisateurs/">
+      
+      
+        <link rel="prev" href="../02-rbac/">
+      
+      
+        <link rel="next" href="../04-mots-de-passe/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Gestion des Utilisateurs dans PostgreSQL - Database</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../style.css">
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/puml.css">
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/interaction.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gestion-des-utilisateurs-dans-postgresql" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Database" class="md-header__button md-logo" aria-label="Database" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Database
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Gestion des Utilisateurs dans PostgreSQL
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/profdenis/vanier_database" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    profdenis/vanier_database
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Database Course
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../1.%20Introduction/01-Introduction-aux-bd/" class="md-tabs__link">
+          
+  
+  1. Introduction
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../2.%20The%20relational%20model/01-Pr%C3%A9sentation/" class="md-tabs__link">
+          
+  
+  2. The relational model
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../3.%20SQL/01-intro/" class="md-tabs__link">
+          
+  
+  3. SQL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../4.%20DB%20Design/01-mod%C3%A9lisation-EA/" class="md-tabs__link">
+          
+  
+  4. DB Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../5.%20Advanced%20SQL/01-vues/" class="md-tabs__link">
+          
+  
+  5. Advanced SQL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../01-s%C3%A9curit%C3%A9/" class="md-tabs__link">
+          
+  
+  6. Security and Users
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../7.%20Exercises/01-exercices/" class="md-tabs__link">
+          
+  
+  7. Exercises
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Database" class="md-nav__button md-logo" aria-label="Database" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Database
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/profdenis/vanier_database" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    profdenis/vanier_database
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Course
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    1. Introduction
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            1. Introduction
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/01-Introduction-aux-bd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    What is a Database?
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/02-Types-de-bases-de-donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database Types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/03-Historique-des-bases-de-donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    History of Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/04-Exemples-de-Bases-de-Donnees/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Examples of Databases in Different Contexts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    PostgreSQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            PostgreSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/01-Intro-a-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to PostgreSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/02-Avantages-de-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advantages of PostgreSQL Compared to Other DBMSs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/03-Entreprises-utilisant-PostgreSQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Companies Using PostgreSQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1.%20Introduction/PostgreSQL/04-Configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PostgreSQL Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    2. The relational model
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            2. The relational model
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2.%20The%20relational%20model/01-Pr%C3%A9sentation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Presentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2.%20The%20relational%20model/02-ERD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to Entity-Relationship Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    3. SQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            3. SQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/01-intro/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1 - Introduction to SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/02a-bases-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2a - Contact Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/02b-bases-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2b - University Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/03a-jointures-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3a - Queries with More Than One Table (Contacts)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/03b-jointures-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3b - Queries with More Than One Table (University)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/04a-groupes-contacts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4a - Grouping and Aggregates (Contacts)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/04b-groupes-universit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4b - Grouping and Aggregates (University)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/05-survol-op%C3%A9rations-SQL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5 - Overview of Operations in SQL Queries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/06-imbriqu%C3%A9es/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6 - Nested SQL Queries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/07-r%C3%A9cursives/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7 - Recursive Queries
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3.%20SQL/08-dates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8 - Using date and timestamp
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    4. DB Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            4. DB Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4.%20DB%20Design/01-mod%C3%A9lisation-EA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modélisation Entité-Association
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4.%20DB%20Design/01b-enit%C3%A9s-faibles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Les Entités Faibles
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4.%20DB%20Design/02-notation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Différentes notations pour les DEA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4.%20DB%20Design/03-exemples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exemples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../4.%20DB%20Design/04-ea-vers-relationnel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conversion d&rsquo;un diagramme EA en schéma relationnel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    5. Advanced SQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            5. Advanced SQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5.%20Advanced%20SQL/01-vues/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5.%20Advanced%20SQL/02-contraintes-et-d%C3%A9clencheurs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contraintes et Déclencheurs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5.%20Advanced%20SQL/03-objet-relationel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Modèle objet-relationel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../5.%20Advanced%20SQL/04-transactions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transactions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    6. Security and Users
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            6. Security and Users
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-s%C3%A9curit%C3%A9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gestion des Utilisateurs et Sécurité
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-rbac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contrôle d&rsquo;Accès Basé sur les Rôles (RBAC)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Gestion des Utilisateurs dans PostgreSQL
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Gestion des Utilisateurs dans PostgreSQL
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-creation-et-gestion-des-comptes-utilisateurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Création et Gestion des Comptes Utilisateurs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Création et Gestion des Comptes Utilisateurs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-creation-dun-utilisateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1. Création d&rsquo;un Utilisateur
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-modification-dun-utilisateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2. Modification d&rsquo;un Utilisateur
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-suppression-dun-utilisateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3. Suppression d&rsquo;un Utilisateur
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-modification-de-mot-de-passe-dans-postgresql-a-partir-du-terminal-avec-psql" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Modification de Mot de Passe dans PostgreSQL à partir du Terminal avec psql
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Modification de Mot de Passe dans PostgreSQL à partir du Terminal avec psql">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-un-utilisateur-qui-veut-modifier-son-propre-mot-de-passe" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1. Un Utilisateur qui Veut Modifier son Propre Mot de Passe
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-un-administrateur-qui-veut-modifier-le-mot-de-passe-dun-autre-utilisateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2. Un Administrateur qui Veut Modifier le Mot de Passe d&rsquo;un Autre Utilisateur
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-options-de-create-role-et-create-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Options de CREATE ROLE et CREATE USER
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Options de CREATE ROLE et CREATE USER">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-options-de-create-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1. Options de CREATE ROLE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-options-de-create-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2. Options de CREATE USER
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-privileges" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Privilèges
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Privilèges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-privileges-de-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1. Privilèges de Base
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-attribution-de-privileges" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2. Attribution de Privilèges
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-controle-dacces" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Contrôle d&rsquo;Accès
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Contrôle d’Accès">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-controle-dacces-base-sur-les-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1. Contrôle d&rsquo;Accès Basé sur les Rôles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-exemple-de-controle-dacces" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2. Exemple de Contrôle d&rsquo;Accès
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-et-le-rbac" class="md-nav__link">
+    <span class="md-ellipsis">
+      PostgreSQL et le RBAC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modele-de-rbac-dans-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modèle de RBAC dans PostgreSQL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Modèle de RBAC dans PostgreSQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-rbac-de-base-rbac0" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. RBAC de Base (RBAC0)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rbac-hierarchique-rbac1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. RBAC Hiérarchique (RBAC1)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemples-dutilisation-du-rbac-dans-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemples d&rsquo;Utilisation du RBAC dans PostgreSQL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemples d’Utilisation du RBAC dans PostgreSQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creation-de-roles-et-attribution-de-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Création de Rôles et Attribution de Permissions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heritage-des-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Héritage des Permissions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-mots-de-passe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gestion des mots de passe d&rsquo;application dans une BD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    7. Exercises
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            7. Exercises
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/01-exercices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Exercises
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    ERD
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            ERD
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/01-blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/02-livres/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Livres
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/03-transport/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. Réseau de transports en commun
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/04-restaurants/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. Chaîne de restaurants
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/05-voyages/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Agence de voyages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/ERD/06-hopital/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Système de gestion d&rsquo;un hôpital
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    SQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            SQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/SQL/01-pagila/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Pagila Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/SQL/02-recettes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Cooking Recipes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../7.%20Exercises/SQL/03-northwind/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. BD Northwind
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-creation-et-gestion-des-comptes-utilisateurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Création et Gestion des Comptes Utilisateurs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Création et Gestion des Comptes Utilisateurs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-creation-dun-utilisateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1. Création d&rsquo;un Utilisateur
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-modification-dun-utilisateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2. Modification d&rsquo;un Utilisateur
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-suppression-dun-utilisateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3. Suppression d&rsquo;un Utilisateur
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-modification-de-mot-de-passe-dans-postgresql-a-partir-du-terminal-avec-psql" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Modification de Mot de Passe dans PostgreSQL à partir du Terminal avec psql
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Modification de Mot de Passe dans PostgreSQL à partir du Terminal avec psql">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-un-utilisateur-qui-veut-modifier-son-propre-mot-de-passe" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1. Un Utilisateur qui Veut Modifier son Propre Mot de Passe
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-un-administrateur-qui-veut-modifier-le-mot-de-passe-dun-autre-utilisateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2. Un Administrateur qui Veut Modifier le Mot de Passe d&rsquo;un Autre Utilisateur
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-options-de-create-role-et-create-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Options de CREATE ROLE et CREATE USER
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Options de CREATE ROLE et CREATE USER">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-options-de-create-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1. Options de CREATE ROLE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-options-de-create-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2. Options de CREATE USER
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-privileges" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Privilèges
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Privilèges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-privileges-de-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1. Privilèges de Base
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-attribution-de-privileges" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2. Attribution de Privilèges
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-controle-dacces" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Contrôle d&rsquo;Accès
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Contrôle d’Accès">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-controle-dacces-base-sur-les-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1. Contrôle d&rsquo;Accès Basé sur les Rôles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-exemple-de-controle-dacces" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2. Exemple de Contrôle d&rsquo;Accès
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-et-le-rbac" class="md-nav__link">
+    <span class="md-ellipsis">
+      PostgreSQL et le RBAC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modele-de-rbac-dans-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modèle de RBAC dans PostgreSQL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Modèle de RBAC dans PostgreSQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-rbac-de-base-rbac0" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. RBAC de Base (RBAC0)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-rbac-hierarchique-rbac1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. RBAC Hiérarchique (RBAC1)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemples-dutilisation-du-rbac-dans-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemples d&rsquo;Utilisation du RBAC dans PostgreSQL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemples d’Utilisation du RBAC dans PostgreSQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creation-de-roles-et-attribution-de-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Création de Rôles et Attribution de Permissions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heritage-des-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Héritage des Permissions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="gestion-des-utilisateurs-dans-postgresql">Gestion des Utilisateurs dans PostgreSQL<a class="headerlink" href="#gestion-des-utilisateurs-dans-postgresql" title="Permanent link">&para;</a></h1>
+<p>Dans PostgreSQL, les termes &ldquo;utilisateur&rdquo; et &ldquo;rôle&rdquo;
+sont souvent utilisés de manière interchangeable, mais il existe des différences
+subtiles. Un <code>user</code> est essentiellement un rôle avec la capacité de se
+connecter (l&rsquo;option <code>LOGIN</code>), tandis qu&rsquo;un <code>role</code> sans cette capacité est par
+défaut créé avec l&rsquo;option <code>NOLOGIN</code>. Cette distinction permet de créer des rôles
+qui servent uniquement à regrouper des privilèges sans permettre la connexion
+directe à la base de données.</p>
+<h2 id="1-creation-et-gestion-des-comptes-utilisateurs">1. Création et Gestion des Comptes Utilisateurs<a class="headerlink" href="#1-creation-et-gestion-des-comptes-utilisateurs" title="Permanent link">&para;</a></h2>
+<h3 id="11-creation-dun-utilisateur">1.1. Création d&rsquo;un Utilisateur<a class="headerlink" href="#11-creation-dun-utilisateur" title="Permanent link">&para;</a></h3>
+<p>Pour créer un nouvel utilisateur dans PostgreSQL, vous utilisez la
+commande <code>CREATE USER</code> ou <code>CREATE ROLE</code> avec l&rsquo;option <code>LOGIN</code>. Voici un exemple
+de création d&rsquo;un utilisateur avec un mot de passe :</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">nom_utilisateur</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;mot_de_passe&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Exemple :</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">alice</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;password123&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="12-modification-dun-utilisateur">1.2. Modification d&rsquo;un Utilisateur<a class="headerlink" href="#12-modification-dun-utilisateur" title="Permanent link">&para;</a></h3>
+<p>Pour modifier un utilisateur existant, vous pouvez utiliser la
+commande <code>ALTER USER</code>. Par exemple, pour changer le mot de passe d&rsquo;un
+utilisateur :</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">nom_utilisateur</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;nouveau_mot_de_passe&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Exemple :</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">alice</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;newpassword456&#39;</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="13-suppression-dun-utilisateur">1.3. Suppression d&rsquo;un Utilisateur<a class="headerlink" href="#13-suppression-dun-utilisateur" title="Permanent link">&para;</a></h3>
+<p>Pour supprimer un utilisateur, utilisez la commande <code>DROP USER</code> :</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">DROP</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">nom_utilisateur</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Exemple :</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">DROP</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">alice</span><span class="p">;</span>
+</span></code></pre></div>
+<h2 id="2-modification-de-mot-de-passe-dans-postgresql-a-partir-du-terminal-avec-psql">2. Modification de Mot de Passe dans PostgreSQL à partir du Terminal avec <code>psql</code><a class="headerlink" href="#2-modification-de-mot-de-passe-dans-postgresql-a-partir-du-terminal-avec-psql" title="Permanent link">&para;</a></h2>
+<p>Modifier un mot de passe dans PostgreSQL peut se faire de différentes manières
+selon si l&rsquo;utilisateur souhaite changer son propre mot de passe ou si un
+administrateur souhaite changer le mot de passe d&rsquo;un autre utilisateur. Voici
+comment procéder dans les deux cas, en utilisant <code>psql</code>.</p>
+<h4 id="21-un-utilisateur-qui-veut-modifier-son-propre-mot-de-passe">2.1. Un Utilisateur qui Veut Modifier son Propre Mot de Passe<a class="headerlink" href="#21-un-utilisateur-qui-veut-modifier-son-propre-mot-de-passe" title="Permanent link">&para;</a></h4>
+<p>Pour qu&rsquo;un utilisateur modifie son propre mot de passe sans l&rsquo;écrire en clair
+dans une commande <code>ALTER USER</code>, il peut utiliser la commande <code>\password</code>
+dans <code>psql</code>. Cette commande invite l&rsquo;utilisateur à entrer son nouveau mot de
+passe de manière sécurisée.</p>
+<p>Voici les étapes :</p>
+<ol type="1">
+<li>
+<p>Ouvrez le terminal et connectez-vous à PostgreSQL en tant qu&rsquo;utilisateur dont
+   vous souhaitez modifier le mot de passe :
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>psql<span class="w"> </span>-U<span class="w"> </span>nom_utilisateur<span class="w"> </span>-d<span class="w"> </span>nom_base_de_donnees
+</span></code></pre></div></p>
+</li>
+<li>
+<p>Une fois connecté, exécutez la commande <code>\password</code> :
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="err">\</span><span class="n">password</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p>PostgreSQL vous demandera d&rsquo;entrer le nouveau mot de passe deux fois pour
+   confirmation :
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Enter new password:
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Enter it again:
+</span></code></pre></div></p>
+</li>
+</ol>
+<p>Exemple complet :</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>psql<span class="w"> </span>-U<span class="w"> </span>alice<span class="w"> </span>-d<span class="w"> </span>mydatabase
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>\password
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Enter new password:
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Enter it again:
+</span></code></pre></div>
+<h4 id="22-un-administrateur-qui-veut-modifier-le-mot-de-passe-dun-autre-utilisateur">2.2. Un Administrateur qui Veut Modifier le Mot de Passe d&rsquo;un Autre Utilisateur<a class="headerlink" href="#22-un-administrateur-qui-veut-modifier-le-mot-de-passe-dun-autre-utilisateur" title="Permanent link">&para;</a></h4>
+<p>Pour qu&rsquo;un administrateur modifie le mot de passe d&rsquo;un autre utilisateur sans
+l&rsquo;écrire en clair dans une commande <code>ALTER USER</code>, il peut utiliser la
+commande <code>\password</code> suivie du nom de l&rsquo;utilisateur cible. Cela permet de
+modifier le mot de passe de l&rsquo;utilisateur de manière sécurisée.</p>
+<p>Voici les étapes :</p>
+<p>1- Ouvrez le terminal et connectez-vous à PostgreSQL en tant qu&rsquo;administrateur (
+   ou un utilisateur ayant les privilèges nécessaires) :
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>psql<span class="w"> </span>-U<span class="w"> </span>admin<span class="w"> </span>-d<span class="w"> </span>nom_base_de_donnees
+</span></code></pre></div></p>
+<p>2- Une fois connecté, exécutez la commande <code>\password</code> suivie du nom de
+   l&rsquo;utilisateur dont vous souhaitez modifier le mot de passe :
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="err">\</span><span class="n">password</span><span class="w"> </span><span class="n">nom_utilisateur</span>
+</span></code></pre></div></p>
+<p>3- PostgreSQL vous demandera d&rsquo;entrer le nouveau mot de passe deux fois pour
+   confirmation :
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Enter new password:
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>Enter it again:
+</span></code></pre></div></p>
+<p>Exemple complet :</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>psql<span class="w"> </span>-U<span class="w"> </span>admin<span class="w"> </span>-d<span class="w"> </span>mydatabase
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>\password alice
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>Enter new password:
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Enter it again:
+</span></code></pre></div>
+<h2 id="3-options-de-create-role-et-create-user">3. Options de <code>CREATE ROLE</code> et <code>CREATE USER</code><a class="headerlink" href="#3-options-de-create-role-et-create-user" title="Permanent link">&para;</a></h2>
+<p>PostgreSQL offre plusieurs options lors de la création d&rsquo;utilisateurs et de
+rôles pour spécifier leurs capacités et restrictions. Voici quelques-unes des
+options les plus courantes :</p>
+<h3 id="31-options-de-create-role">3.1. Options de <code>CREATE ROLE</code><a class="headerlink" href="#31-options-de-create-role" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>LOGIN/NOLOGIN</strong> : Spécifie si le rôle peut se connecter à la base de
+  données.</li>
+<li><strong>SUPERUSER/NOSUPERUSER</strong> : Spécifie si le rôle a des privilèges
+  superutilisateur.</li>
+<li><strong>CREATEDB/NOCREATEDB</strong> : Spécifie si le rôle peut créer des bases de données.</li>
+<li><strong>CREATEROLE/NOCREATEROLE</strong> : Spécifie si le rôle peut créer d&rsquo;autres rôles.</li>
+<li><strong>INHERIT/NOINHERIT</strong> : Spécifie si le rôle hérite des privilèges des rôles
+  auxquels il appartient.</li>
+<li><strong>REPLICATION/NOREPLICATION</strong> : Spécifie si le rôle peut initier des
+  connexions de réplication.</li>
+<li><strong>CONNECTION LIMIT</strong> : Limite le nombre de connexions simultanées pour le
+  rôle.</li>
+</ul>
+<p>Exemple :</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">dev_team</span><span class="w"> </span><span class="n">NOLOGIN</span><span class="p">;</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="k">admin</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">LOGIN</span><span class="w"> </span><span class="n">SUPERUSER</span><span class="w"> </span><span class="k">CREATEDB</span><span class="w"> </span><span class="n">CREATEROLE</span><span class="p">;</span>
+</span></code></pre></div>
+<h3 id="32-options-de-create-user">3.2. Options de <code>CREATE USER</code><a class="headerlink" href="#32-options-de-create-user" title="Permanent link">&para;</a></h3>
+<p>Les options pour <code>CREATE USER</code> sont similaires à celles de <code>CREATE ROLE</code>, avec
+l&rsquo;option <code>LOGIN</code> étant implicite :</p>
+<ul>
+<li><strong>PASSWORD</strong> : Définit le mot de passe pour l&rsquo;utilisateur.</li>
+<li><strong>VALID UNTIL</strong> : Définit une date d&rsquo;expiration pour le mot de passe.</li>
+<li><strong>CONNECTION LIMIT</strong> : Limite le nombre de connexions simultanées pour
+  l&rsquo;utilisateur.</li>
+</ul>
+<p>Exemple :</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">alice</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;password123&#39;</span><span class="w"> </span><span class="k">VALID</span><span class="w"> </span><span class="k">UNTIL</span><span class="w"> </span><span class="s1">&#39;2024-12-31&#39;</span><span class="w"> </span><span class="k">CONNECTION</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</span></code></pre></div>
+<h2 id="4-privileges">4. Privilèges<a class="headerlink" href="#4-privileges" title="Permanent link">&para;</a></h2>
+<h3 id="41-privileges-de-base">4.1. Privilèges de Base<a class="headerlink" href="#41-privileges-de-base" title="Permanent link">&para;</a></h3>
+<p>Voici quelques privilèges de base que vous pouvez attribuer aux utilisateurs ou
+aux rôles :</p>
+<ul>
+<li><strong>SELECT</strong> : Permet de lire les données d&rsquo;une table.</li>
+<li><strong>INSERT</strong> : Permet d&rsquo;ajouter des données dans une table.</li>
+<li><strong>UPDATE</strong> : Permet de modifier les données d&rsquo;une table.</li>
+<li><strong>DELETE</strong> : Permet de supprimer des données d&rsquo;une table.</li>
+<li><strong>CREATE</strong> : Permet de créer de nouvelles tables ou bases de données.</li>
+<li><strong>DROP</strong> : Permet de supprimer des tables ou bases de données.</li>
+</ul>
+<h3 id="42-attribution-de-privileges">4.2. Attribution de Privilèges<a class="headerlink" href="#42-attribution-de-privileges" title="Permanent link">&para;</a></h3>
+<p>Pour attribuer des privilèges à un utilisateur ou un rôle, utilisez la
+commande <code>GRANT</code>. Par exemple, pour donner des privilèges de lecture et
+d&rsquo;écriture sur une table :</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">nom_utilisateur</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Exemple :</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">alice</span><span class="p">;</span>
+</span></code></pre></div>
+<h2 id="5-controle-dacces">5. Contrôle d&rsquo;Accès<a class="headerlink" href="#5-controle-dacces" title="Permanent link">&para;</a></h2>
+<h3 id="51-controle-dacces-base-sur-les-roles">5.1. Contrôle d&rsquo;Accès Basé sur les Rôles<a class="headerlink" href="#51-controle-dacces-base-sur-les-roles" title="Permanent link">&para;</a></h3>
+<p>PostgreSQL utilise le modèle de Contrôle d&rsquo;Accès Basé sur les Rôles (RBAC). Les
+rôles peuvent être utilisés pour simplifier la gestion des privilèges. Par
+exemple, vous pouvez créer un rôle pour les développeurs et attribuer ce rôle à
+tous les utilisateurs qui sont des développeurs.</p>
+<h3 id="52-exemple-de-controle-dacces">5.2. Exemple de Contrôle d&rsquo;Accès<a class="headerlink" href="#52-exemple-de-controle-dacces" title="Permanent link">&para;</a></h3>
+<p>Supposons que vous avez une base de données avec plusieurs tables et que vous
+souhaitez gérer les accès de manière structurée :</p>
+<p>1- <strong>Créer un rôle pour les développeurs</strong> :
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">dev_team</span><span class="p">;</span>
+</span></code></pre></div></p>
+<p>2- <strong>Attribuer des privilèges au rôle</strong> :
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">dev_team</span><span class="p">;</span>
+</span></code></pre></div></p>
+<p>3- <strong>Attribuer le rôle aux utilisateurs</strong> :
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="n">dev_team</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">alice</span><span class="p">;</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">GRANT</span><span class="w"> </span><span class="n">dev_team</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">bob</span><span class="p">;</span>
+</span></code></pre></div></p>
+<h3 id="postgresql-et-le-rbac">PostgreSQL et le RBAC<a class="headerlink" href="#postgresql-et-le-rbac" title="Permanent link">&para;</a></h3>
+<p>PostgreSQL utilise le RBAC pour gérer
+les permissions et les accès des utilisateurs. PostgreSQL implémente
+principalement le modèle de <strong>RBAC de Base (RBAC0)</strong>, mais il supporte également
+certaines fonctionnalités avancées qui permettent de créer des hiérarchies de
+rôles, ce qui le rapproche du <strong>RBAC Hiérarchique (RBAC1)</strong>.</p>
+<h3 id="modele-de-rbac-dans-postgresql">Modèle de RBAC dans PostgreSQL<a class="headerlink" href="#modele-de-rbac-dans-postgresql" title="Permanent link">&para;</a></h3>
+<h4 id="1-rbac-de-base-rbac0">1. RBAC de Base (RBAC0)<a class="headerlink" href="#1-rbac-de-base-rbac0" title="Permanent link">&para;</a></h4>
+<p>Dans PostgreSQL, le RBAC de base permet d&rsquo;assigner des rôles aux utilisateurs et
+de définir des permissions pour chaque rôle. Les utilisateurs héritent des
+permissions de leurs rôles. Voici comment cela fonctionne :</p>
+<ul>
+<li><strong>Rôles et Utilisateurs</strong> : PostgreSQL traite les rôles et les utilisateurs de
+  manière interchangeable. Un utilisateur est simplement un rôle avec la
+  capacité de se connecter (<code>LOGIN</code>).</li>
+<li><strong>Permissions</strong> : Les permissions sont attribuées aux rôles et peuvent inclure
+  des actions comme <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>CREATE</code>, et <code>DROP</code>.</li>
+</ul>
+<h4 id="2-rbac-hierarchique-rbac1">2. RBAC Hiérarchique (RBAC1)<a class="headerlink" href="#2-rbac-hierarchique-rbac1" title="Permanent link">&para;</a></h4>
+<p>PostgreSQL supporte également des fonctionnalités de hiérarchie des rôles,
+permettant à un rôle d&rsquo;hériter des permissions d&rsquo;un autre rôle. Cela facilite la
+gestion des permissions en créant des rôles parents et enfants.</p>
+<ul>
+<li><strong>Héritage des Rôles</strong> : Les rôles peuvent être configurés pour hériter des
+  permissions d&rsquo;autres rôles en utilisant l&rsquo;option <code>INHERIT</code>. Par défaut, les
+  rôles sont créés avec l&rsquo;option <code>INHERIT</code>.</li>
+</ul>
+<h3 id="exemples-dutilisation-du-rbac-dans-postgresql">Exemples d&rsquo;Utilisation du RBAC dans PostgreSQL<a class="headerlink" href="#exemples-dutilisation-du-rbac-dans-postgresql" title="Permanent link">&para;</a></h3>
+<h4 id="creation-de-roles-et-attribution-de-permissions">Création de Rôles et Attribution de Permissions<a class="headerlink" href="#creation-de-roles-et-attribution-de-permissions" title="Permanent link">&para;</a></h4>
+<p>1- <strong>Créer des rôles</strong> :
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">dev_team</span><span class="p">;</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">qa_team</span><span class="p">;</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">admin_team</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">LOGIN</span><span class="w"> </span><span class="n">SUPERUSER</span><span class="p">;</span>
+</span></code></pre></div></p>
+<p>2- <strong>Attribuer des privilèges aux rôles</strong> :
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">dev_team</span><span class="p">;</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">qa_team</span><span class="p">;</span>
+</span></code></pre></div></p>
+<p>3- <strong>Créer des utilisateurs et attribuer des rôles</strong> :
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">alice</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;password123&#39;</span><span class="p">;</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">bob</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;password456&#39;</span><span class="p">;</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="k">GRANT</span><span class="w"> </span><span class="n">dev_team</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">alice</span><span class="p">;</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="k">GRANT</span><span class="w"> </span><span class="n">qa_team</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">bob</span><span class="p">;</span>
+</span></code></pre></div></p>
+<h4 id="heritage-des-permissions">Héritage des Permissions<a class="headerlink" href="#heritage-des-permissions" title="Permanent link">&para;</a></h4>
+<p>1- <strong>Créer un rôle parent et un rôle enfant</strong> :
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">senior_dev</span><span class="w"> </span><span class="n">INHERIT</span><span class="p">;</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="k">GRANT</span><span class="w"> </span><span class="n">dev_team</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">senior_dev</span><span class="p">;</span>
+</span></code></pre></div></p>
+<p>2- <strong>Attribuer le rôle enfant à un utilisateur</strong> :
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">charlie</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;password789&#39;</span><span class="p">;</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="k">GRANT</span><span class="w"> </span><span class="n">senior_dev</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">charlie</span><span class="p">;</span>
+</span></code></pre></div></p>
+<p>Dans cet exemple, <code>charlie</code> hérite des permissions du rôle <code>dev_team</code> via le
+rôle <code>senior_dev</code>.</p>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<p>La gestion des utilisateurs dans PostgreSQL est flexible et puissante grâce à
+l&rsquo;utilisation des rôles et des privilèges. En suivant les bonnes pratiques de
+gestion des utilisateurs et des privilèges, vous pouvez assurer une sécurité
+robuste et une administration efficace de votre base de données.</p>
+<hr />
+<p><small>
+   <cite>
+      <strong>Note</strong> : Page rédigée en partie avec l&rsquo;aide d&rsquo;un assistant IA, principalement
+      à l&rsquo;aide de Perplexity AI, avec les LLM <code>GPT-4 Omni</code> et <code>Claude 3.5 Sonnet</code>. L&rsquo;IA
+      a été utilisée pour générer des explications, des exemples et/ou des suggestions de
+      structure. Toutes les informations ont été vérifiées, éditées et complétées par
+      l&rsquo;auteur.
+   </cite>
+</small></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../02-rbac/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Contrôle d&amp;rsquo;Accès Basé sur les Rôles (RBAC)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Contrôle d&rsquo;Accès Basé sur les Rôles (RBAC)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../04-mots-de-passe/" class="md-footer__link md-footer__link--next" aria-label="Next: Gestion des mots de passe d&amp;rsquo;application dans une BD">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Gestion des mots de passe d&rsquo;application dans une BD
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "content.code.select", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "search.suggest", "search.highlight"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+        <script src="../../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/puml.js"></script>
+      
+        <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/interaction.js"></script>
+      
+    
+  </body>
+</html>

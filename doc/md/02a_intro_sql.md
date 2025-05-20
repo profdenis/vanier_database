@@ -21,7 +21,7 @@
 
 ### Creating the contacts DB
 
-1. Run the `contact.sql` file to create the DB
+1. Run the `contact_create.sql` file to create the DB
     - the SQL commands included in that file will be explained later
     - open the file in DataGrip, and run the file in an existing session, or create a new session
 2. To check the results, you can use the *Database Explorer* tab, or run the following queries:

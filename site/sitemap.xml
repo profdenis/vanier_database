@@ -2,90 +2,227 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://profdenis.github.io/vanier_database/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/1.%20Introduction/01-Introduction-aux-bd/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/1.%20Introduction/02-Types-de-bases-de-donnees/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/1.%20Introduction/03-Historique-des-bases-de-donnees/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/1.%20Introduction/04-Exemples-de-Bases-de-Donnees/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/1.%20Introduction/PostgreSQL/01-Intro-a-PostgreSQL/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/1.%20Introduction/PostgreSQL/02-Avantages-de-PostgreSQL/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/1.%20Introduction/PostgreSQL/03-Entreprises-utilisant-PostgreSQL/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/1.%20Introduction/PostgreSQL/04-Configuration/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/2.%20The%20relational%20model/01-Pr%C3%A9sentation/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/2.%20The%20relational%20model/02-ERD/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/01-intro/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/02a-bases-contacts/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/02b-bases-universit%C3%A9/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/03a-jointures-contacts/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/03b-jointures-universit%C3%A9/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/04a-groupes-contacts/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/04b-groupes-universit%C3%A9/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/05-survol-op%C3%A9rations-SQL/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/06-imbriqu%C3%A9es/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/07-r%C3%A9cursives/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://profdenis.github.io/vanier_database/3.%20SQL/08-dates/</loc>
-         <lastmod>2025-05-16</lastmod>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/4.%20DB%20Design/01-mod%C3%A9lisation-EA/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/4.%20DB%20Design/01b-enit%C3%A9s-faibles/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/4.%20DB%20Design/02-notation/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/4.%20DB%20Design/03-exemples/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/4.%20DB%20Design/04-ea-vers-relationnel/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/5.%20Advanced%20SQL/01-vues/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/5.%20Advanced%20SQL/02-contraintes-et-d%C3%A9clencheurs/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/5.%20Advanced%20SQL/03-objet-relationel/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/5.%20Advanced%20SQL/04-transactions/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/6.%20Security%20and%20Users/01-s%C3%A9curit%C3%A9/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/6.%20Security%20and%20Users/02-rbac/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/6.%20Security%20and%20Users/03-utilisateurs/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/6.%20Security%20and%20Users/04-mots-de-passe/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/7.%20Exercises/01-exercices/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/7.%20Exercises/ERD/01-blog/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/7.%20Exercises/ERD/02-livres/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/7.%20Exercises/ERD/03-transport/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/7.%20Exercises/ERD/04-restaurants/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/7.%20Exercises/ERD/05-voyages/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/7.%20Exercises/ERD/06-hopital/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/7.%20Exercises/SQL/01-pagila/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/7.%20Exercises/SQL/02-recettes/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://profdenis.github.io/vanier_database/7.%20Exercises/SQL/03-northwind/</loc>
+         <lastmod>2025-05-20</lastmod>
+         <changefreq>daily</changefreq>
     </url>
 </urlset>

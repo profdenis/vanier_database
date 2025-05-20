@@ -38,3 +38,10 @@ details.no-details:not([open]) > * {
 details.no-details:not([open]) summary {
   display: block;
 }
+
+
+label.md-nav__link {
+  font-size: 1.1em;
+  font-weight: bolder;
+  text-decoration: underline double ;
+}

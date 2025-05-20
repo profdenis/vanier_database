@@ -1,0 +1,145 @@
+@startuml
+
+'!theme plain
+top to bottom direction
+skinparam linetype ortho
+skinparam entityFontSize 18
+skinparam entityFontName Source Code Pro
+hide empty methods
+hide empty fields
+
+entity categories {
+   category_name: varchar(15)
+   description: text
+   picture: bytea
+   category_id: smallint
+}
+entity customer_customer_demo {
+   customer_id: varchar(5)
+   customer_type_id: varchar(5)
+}
+entity customer_demographics {
+   customer_desc: text
+   customer_type_id: varchar(5)
+}
+entity customers {
+   company_name: varchar(40)
+   contact_name: varchar(30)
+   contact_title: varchar(30)
+   address: varchar(60)
+   city: varchar(15)
+   region: varchar(15)
+   postal_code: varchar(10)
+   country: varchar(15)
+   phone: varchar(24)
+   fax: varchar(24)
+   customer_id: varchar(5)
+}
+entity employee_territories {
+   employee_id: smallint
+   territory_id: varchar(20)
+}
+entity employees {
+   last_name: varchar(20)
+   first_name: varchar(10)
+   title: varchar(30)
+   title_of_courtesy: varchar(25)
+   birth_date: date
+   hire_date: date
+   address: varchar(60)
+   city: varchar(15)
+   region: varchar(15)
+   postal_code: varchar(10)
+   country: varchar(15)
+   home_phone: varchar(24)
+   extension: varchar(4)
+   photo: bytea
+   notes: text
+   reports_to: smallint
+   photo_path: varchar(255)
+   employee_id: smallint
+}
+entity order_details {
+   unit_price: real
+   quantity: smallint
+   discount: real
+   order_id: smallint
+   product_id: smallint
+}
+entity orders {
+   customer_id: varchar(5)
+   employee_id: smallint
+   order_date: date
+   required_date: date
+   shipped_date: date
+   ship_via: smallint
+   freight: real
+   ship_name: varchar(40)
+   ship_address: varchar(60)
+   ship_city: varchar(15)
+   ship_region: varchar(15)
+   ship_postal_code: varchar(10)
+   ship_country: varchar(15)
+   order_id: smallint
+}
+entity products {
+   product_name: varchar(40)
+   supplier_id: smallint
+   category_id: smallint
+   quantity_per_unit: varchar(20)
+   unit_price: real
+   units_in_stock: smallint
+   units_on_order: smallint
+   reorder_level: smallint
+   discontinued: integer
+   product_id: smallint
+}
+entity region {
+   region_description: varchar(60)
+   region_id: smallint
+}
+entity shippers {
+   company_name: varchar(40)
+   phone: varchar(24)
+   shipper_id: smallint
+}
+entity suppliers {
+   company_name: varchar(40)
+   contact_name: varchar(30)
+   contact_title: varchar(30)
+   address: varchar(60)
+   city: varchar(15)
+   region: varchar(15)
+   postal_code: varchar(10)
+   country: varchar(15)
+   phone: varchar(24)
+   fax: varchar(24)
+   homepage: text
+   supplier_id: smallint
+}
+entity territories {
+   territory_description: varchar(60)
+   region_id: smallint
+   territory_id: varchar(20)
+}
+entity us_states {
+   state_name: varchar(100)
+   state_abbr: varchar(2)
+   state_region: varchar(50)
+   state_id: smallint
+}
+
+customer_customer_demo  -[#595959,plain]-^  customer_demographics  : "customer_type_id"
+customer_customer_demo  -[#595959,plain]-^  customers              : "customer_id"
+employee_territories    -[#595959,plain]-^  employees              : "employee_id"
+employee_territories    -[#595959,plain]-^  territories            : "territory_id"
+employees               -[#595959,plain]-^  employees              : "reports_to:employee_id"
+order_details           -[#595959,plain]-^  orders                 : "order_id"
+order_details           -[#595959,plain]-^  products               : "product_id"
+orders                  -[#595959,plain]-^  customers              : "customer_id"
+orders                  -[#595959,plain]-^  employees              : "employee_id"
+orders                  -[#595959,plain]-^  shippers               : "ship_via:shipper_id"
+categories              ^-[#595959,plain]-  products               : "category_id"
+products                -[#595959,plain]-^  suppliers              : "supplier_id"
+territories             -[#595959,plain]-^  region                 : "region_id"
+@enduml

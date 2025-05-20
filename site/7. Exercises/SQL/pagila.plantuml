@@ -1,0 +1,164 @@
+@startuml
+
+'top to bottom direction
+'skinparam linetype polyline
+!define TABLE(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define PK(x) <u>x</u>
+!define FK(x) <i>x</i>
+
+hide empty methods
+hide empty fields
+
+TABLE(actor, "actor") {
+   first_name: text
+   last_name: text
+   last_update: timestamp with time zone
+   actor_id: integer
+}
+TABLE(address, "address") {
+   address: text
+   address2: text
+   district: text
+   city_id: smallint
+   postal_code: text
+   phone: text
+   last_update: timestamp with time zone
+   address_id: integer
+}
+TABLE(category, "category") {
+   name: text
+   last_update: timestamp with time zone
+   category_id: integer
+}
+
+TABLE(city, "city") {
+   city: text
+   country_id: smallint
+   last_update: timestamp with time zone
+   city_id: integer
+}
+
+TABLE(country, "country") {
+   country: text
+   last_update: timestamp with time zone
+   country_id: integer
+}
+
+TABLE(customer, "customer") {
+   store_id: smallint
+   first_name: text
+   last_name: text
+   email: text
+   address_id: smallint
+   activebool: boolean
+   create_date: date
+   last_update: timestamp with time zone
+   active: integer
+   customer_id: integer
+}
+
+TABLE(film, "film") {
+   title: text
+   description: text
+   release_year: pagila.year
+   language_id: smallint
+   original_language_id: smallint
+   rental_duration: smallint
+   rental_rate: numeric(4,2)
+   length: smallint
+   replacement_cost: numeric(5,2)
+   rating: pagila.mpaa_rating
+   last_update: timestamp with time zone
+   special_features: text[]
+   fulltext: tsvector
+   film_id: integer
+}
+
+TABLE(film_actor, "film_actor") {
+   last_update: timestamp with time zone
+   actor_id: smallint
+   film_id: smallint
+}
+
+TABLE(film_category, "film_category") {
+   last_update: timestamp with time zone
+   film_id: smallint
+   category_id: smallint
+}
+
+TABLE(inventory, "inventory") {
+   film_id: smallint
+   store_id: smallint
+   last_update: timestamp with time zone
+   inventory_id: integer
+}
+
+TABLE(language, "language") {
+   name: char(20)
+   last_update: timestamp with time zone
+   language_id: integer
+}
+
+TABLE(payment, "payment") {
+   payment_id: integer
+   customer_id: smallint
+   staff_id: smallint
+   rental_id: integer
+   amount: numeric(5,2)
+   payment_date: timestamp with time zone
+}
+
+TABLE(rental, "rental") {
+   rental_date: timestamp with time zone
+   inventory_id: integer
+   customer_id: smallint
+   return_date: timestamp with time zone
+   staff_id: smallint
+   last_update: timestamp with time zone
+   rental_id: integer
+}
+
+TABLE(staff, "staff") {
+   first_name: text
+   last_name: text
+   address_id: smallint
+   email: text
+   store_id: smallint
+   active: boolean
+   username: text
+   password: text
+   last_update: timestamp with time zone
+   picture: bytea
+   staff_id: integer
+}
+
+TABLE(store, "store") {
+   manager_staff_id: smallint
+   address_id: smallint
+   last_update: timestamp with time zone
+   store_id: integer
+}
+
+address        -[#595959,plain]-^  city          : "city_id"
+city           -[#595959,plain]-^  country       : "country_id"
+customer       -[#595959,plain]-^  address       : "address_id"
+customer       -[#595959,plain]-^  store         : "store_id"
+film           -[#595959,plain]-^  language      : "language_id"
+film           -[#595959,plain]-^  language      : "original_language_id:language_id"
+film_actor     -[#595959,plain]-^  actor         : "actor_id"
+film_actor     -[#595959,plain]-^  film          : "film_id"
+film_category  -[#595959,plain]-^  category      : "category_id"
+film_category  -[#595959,plain]-^  film          : "film_id"
+inventory      -[#595959,plain]-^  film          : "film_id"
+inventory      -[#595959,plain]-^  store         : "store_id"
+payment        -[#595959,plain]-^  customer      : "customer_id"
+payment        -[#595959,plain]-^  rental        : "rental_id"
+payment        -[#595959,plain]-^  staff         : "staff_id"
+rental         -[#595959,plain]-^  customer      : "customer_id"
+rental         -[#595959,plain]-^  inventory     : "inventory_id"
+rental         -[#595959,plain]-^  staff         : "staff_id"
+staff          -[#595959,plain]-^  address       : "address_id"
+staff          -[#595959,plain]-^  store         : "store_id"
+store          -[#595959,plain]-^  address       : "address_id"
+@enduml
+
